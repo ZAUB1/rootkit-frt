@@ -1,0 +1,43 @@
+{
+  "name": "rootkit-frt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "rollup.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "rimraf ./dist && cross-env NODE_ENV=development rollup --config --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZAUB1/rootkit-frt.git"
+  },
+  "author": "ZAUB1",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZAUB1/rootkit-frt/issues"
+  },
+  "homepage": "https://github.com/ZAUB1/rootkit-frt#readme",
+  "dependencies": {
+    "svelte": "^3.20.1"
+  },
+  "devDependencies": {
+    "@pyoner/svelte-types": "^3.4.4-2",
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.1",
+    "@rollup/plugin-typescript": "^4.0.0",
+    "node-sass": "^4.13.1",
+    "rollup": "^2.3.4",
+    "rollup-plugin-html2": "^1.1.0",
+    "rollup-plugin-livereload": "^1.1.0",
+    "rollup-plugin-postcss": "^2.5.0",
+    "rollup-plugin-scss": "^2.1.0",
+    "rollup-plugin-serve": "^1.0.1",
+    "rollup-plugin-svelte": "^6.1.1",
+    "rollup-plugin-terser": "^5.3.0",
+    "svelte-preprocess": "^3.7.1",
+    "tslib": "^1.11.1",
+    "typescript": "^3.8.3",
+    "rimraf": "^3.0.2",
+    "cross-env": "^7.0.2"
+  }
+}
