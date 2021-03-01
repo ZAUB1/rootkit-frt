@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "baseUrl": "./",
-    "types": ["@pyoner/svelte-types"]
-  },
-  "include": [
-    "**/*"
-  ]
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "target": "es2020",
+    "allowJs": true
+  }
 }
