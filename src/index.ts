@@ -5,6 +5,7 @@ import * as grapesjs from 'grapesjs';
 
 import MapC from "./components/Map";
 import Text from "./components/Text/";
+import SimpleColumn from "./components/SimpleColumn";
 import DoubleColumn from "./components/DoubleColumn";
 
 (async () => {
@@ -23,6 +24,7 @@ import DoubleColumn from "./components/DoubleColumn";
 
     editor.BlockManager.add("MapC", MapC);
     editor.BlockManager.add("Text", Text);
+    editor.BlockManager.add("SimpleColumn", SimpleColumn);
     editor.BlockManager.add("DoubleColumn", DoubleColumn);
     console.log(Text);
 })();

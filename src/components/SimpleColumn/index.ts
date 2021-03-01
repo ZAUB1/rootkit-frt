@@ -2,8 +2,8 @@ import body from "./body.html";
 //import style from "./index.css"
 
 export default {
-    id: "DoubleColumn",
-    label: "DoubleColumn",
+    id: "SimpleColumn",
+    label: "SimpleColumn",
     content: body,
-    attributes: { class: 'gjs-fonts gjs-f-b2' },
+    attributes: { class: 'gjs-fonts gjs-f-b1' },
 }
