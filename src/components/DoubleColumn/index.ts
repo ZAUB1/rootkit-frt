@@ -1,11 +1,9 @@
 import body from "./body.html";
-import style from "./index.scss"
-
-console.log(style);
+//import style from "./index.css"
 
 export default {
-    id: "Column",
-    label: "Column",
+    id: "DoubleColumn",
+    label: "DoubleColumn",
     content: body,
     attributes: { class: 'gjs-fonts gjs-f-b1' },
 }
