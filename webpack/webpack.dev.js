@@ -16,7 +16,7 @@ module.exports = {
         main: './' + src_Path + '/index.ts'
     },
     resolve: {
-        extensions: ['.ts', '.js']
+        extensions: ['.ts', '.js', '.tsx', ".html"]
     },
     output: {
         path: path.resolve(__dirname, prod_Path),
@@ -28,7 +28,7 @@ module.exports = {
     },
     module: {
         rules: [{
-            test: /\.ts?$/,
+            test: /\.(ts|tsx)?$/,
             use: 'ts-loader',
             exclude: /node_modules/
         }, {
@@ -61,6 +61,10 @@ module.exports = {
                     limit: 10000
                 }
             }]
+        }, {
+            test: /\.html$/i,
+            loader: 'raw-loader',
+            exclude: /index.html/
         }, {
             test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
             use: [{

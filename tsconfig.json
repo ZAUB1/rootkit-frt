@@ -5,6 +5,7 @@
     "noImplicitAny": true,
     "module": "commonjs",
     "target": "es2020",
-    "allowJs": true
+    "allowJs": true,
+    "jsx": "react-native"
   }
 }

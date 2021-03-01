@@ -35,6 +35,7 @@
     "file-loader": "^6.2.0",
     "grapesjs": "^0.16.41",
     "normalize.css": "^8.0.1",
+    "raw-loader": "^4.0.2",
     "svg-url-loader": "^7.1.1"
   }
 }

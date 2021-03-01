@@ -3,9 +3,12 @@ import './index.scss';
 import 'grapesjs/dist/css/grapes.min.css';
 import * as grapesjs from 'grapesjs';
 
+import Text from "./components/Text/";
+
 (async () => {
+    let editor;
     try {
-        const editor = grapesjs.init({
+        editor = grapesjs.init({
             container: '#editor-container',
             fromElement: true,
             height: '100%',
@@ -15,4 +18,7 @@ import * as grapesjs from 'grapesjs';
     } catch (e) {
         console.log(e);
     }
+
+    editor.BlockManager.add("Text", Text);
+    console.log(Text);
 })();
