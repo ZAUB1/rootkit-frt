@@ -4,6 +4,7 @@ import 'grapesjs/dist/css/grapes.min.css';
 import * as grapesjs from 'grapesjs';
 
 import Text from "./components/Text/";
+import Column from "./components/Column/";
 
 (async () => {
     let editor;
@@ -20,5 +21,6 @@ import Text from "./components/Text/";
     }
 
     editor.BlockManager.add("Text", Text);
+    editor.BlockManager.add("Column", Column);
     console.log(Text);
 })();
