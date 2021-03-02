@@ -7,6 +7,6 @@ export default new Component(
     "Button",
     body,
     {  },
-    style
+    { style }
     //{ class: 'gjs-fonts gjs-f-b3' },
 );
