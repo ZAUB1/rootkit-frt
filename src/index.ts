@@ -22,6 +22,8 @@ import DoubleColumn from "./components/DoubleColumn";
         console.log(e);
     }
 
+    console.log(SimpleColumn, DoubleColumn)
+
     editor.BlockManager.add("MapC", MapC);
     editor.BlockManager.add("Text", Text);
     editor.BlockManager.add("SimpleColumn", SimpleColumn);
