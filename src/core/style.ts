@@ -1,12 +1,19 @@
-export const styleString = (style: any): any => {
+export const styleString = (style: any, className: string): any => {
     let vals = "";
     const keys = Object.keys(style);
     for (let k of keys) {
         const v = style[k];
         if (typeof v == "object") {
-            vals += `.${k}{`
-            vals += styleString(style[k]);
-            vals += "}"
+            switch (k) {
+                case "hover":
+                    vals += `}.${className.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`)}:${k}{`;
+                    vals += styleString(style[k], className);
+                    continue;
+                default:
+                    vals += `.${k}{`
+                    vals += styleString(style[k], className);
+                    vals += "}"
+            }
         } else {
             k = k.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`);
             vals += `${k}:${v};`;
@@ -30,7 +37,7 @@ export const parseStyle = (styleSheet: any) => {
             const formattedName = _class.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`);
             style += `.${(_class.match(/[A-Z]/g)) ? formattedName : _class}{`;
         }
-        style += styleString(styleSheet[_class]);
+        style += styleString(styleSheet[_class], _class);
         style += "}";
     }
     return style;
