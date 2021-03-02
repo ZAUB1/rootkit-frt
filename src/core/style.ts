@@ -27,7 +27,8 @@ export const parseStyle = (styleSheet: any) => {
                     break;
             }
         } else {
-            style += `.${_class}{`;
+            const formattedName = _class.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`);
+            style += `.${(_class.match(/[A-Z]/g)) ? formattedName : _class}{`;
         }
         style += styleString(styleSheet[_class]);
         style += "}";
