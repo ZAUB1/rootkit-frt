@@ -24,6 +24,6 @@ export default {
         alignItems: "center",
         hover: {
             backgroundColor: "#c7c7c7"
-        }
-    }
+        },
+    },
 }
