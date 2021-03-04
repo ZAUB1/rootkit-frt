@@ -10,16 +10,22 @@ export class Component {
     public constructor(label: string, content: string | object, attributes: object = {}, { style, traits }: any = {}) {
         this.id = label;
         this.label = label;
-        this.content = (style) ? `<style>${parseStyle(style)}</style>${content}` : content;
+        if (typeof content == "string") {
+            this.content = (style) ? `<style>${parseStyle(style)}</style>${content}` : content;
+            this.content = `<${label.toLowerCase()}>${this.content}</${label.toLowerCase()}>`
+        } else {
+            this.content = content;
+        }
         this.attributes = attributes;
-
-        console.log(label, this, traits);
-        editor.DomComponents.addType(label.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`), {
+        const baseModel = editor.DomComponents.getType("default");
+        editor.DomComponents.addType(label.toLowerCase(), {
             model: {
-
+                defaults: {
+                    ...baseModel,
+                    traits: traits || []
+                }
             }
         });
-
         editor.BlockManager.add(label, this);
     };
 };
