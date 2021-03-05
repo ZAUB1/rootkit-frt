@@ -1,3 +1,6 @@
+const camelToSnake = (camel: string) =>
+    camel.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`);
+
 export const styleString = (style: any, className: string): any => {
     let vals = "";
     const keys = Object.keys(style);
@@ -6,7 +9,7 @@ export const styleString = (style: any, className: string): any => {
         if (typeof v == "object") {
             switch (k) {
                 case "hover":
-                    vals += `}.${className.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`)}:${k}{`;
+                    vals += `}.${camelToSnake(className)}:${k}{`;
                     vals += styleString(style[k], className);
                     continue;
                 default:
@@ -15,8 +18,7 @@ export const styleString = (style: any, className: string): any => {
                     vals += "}"
             }
         } else {
-            k = k.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`);
-            vals += `${k}:${v};`;
+            vals += `${camelToSnake(k)}:${v};`;
         }
     }
     return vals;
@@ -34,8 +36,7 @@ export const parseStyle = (styleSheet: any) => {
                     break;
             }
         } else {
-            const formattedName = _class.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`);
-            style += `.${(_class.match(/[A-Z]/g)) ? formattedName : _class}{`;
+            style += `.${camelToSnake(_class)}{`;
         }
         style += styleString(styleSheet[_class], _class);
         style += "}";
