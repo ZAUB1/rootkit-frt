@@ -20,14 +20,16 @@ export class Component {
         }
         this.attributes = attributes;
         const baseModel = editor.DomComponents.getType("default");
-        editor.DomComponents.addType(label.toLowerCase(), {
-            model: {
-                defaults: {
-                    ...baseModel,
-                    traits: traits || []
+        if (typeof content == "string") {
+            editor.DomComponents.addType(label.toLowerCase(), {
+                model: {
+                    defaults: {
+                        ...baseModel,
+                        traits: traits || []
+                    }
                 }
-            }
-        });
+            });
+        }
         editor.BlockManager.add(label, this);
     };
 };
