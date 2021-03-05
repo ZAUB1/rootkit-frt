@@ -8,7 +8,7 @@ export class Component {
     public content: string | object;
     public attributes: any;
 
-    public constructor(label: string, content: string | object, attributes: object = {}, { style, traits, category = "Default" }: any = {}) {
+    public constructor(label: string, content: string | object, attributes: object = {}, { style, traits = [], category = "Default" }: any = {}) {
         this.id = label;
         this.label = label;
         this.category = category;
@@ -25,7 +25,12 @@ export class Component {
                 model: {
                     defaults: {
                         ...baseModel,
-                        traits: traits || []
+                        traits
+                    },
+                    init() {
+                        this.on("change:attributes", (_: any) => {
+                            const attributes = _.attributes.attributes;
+                        });
                     }
                 }
             });
