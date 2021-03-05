@@ -4,9 +4,9 @@ import style from "./style";
 import { Component } from "../../core/controllers/component";
 
 export default new Component(
-    "Button",
+    "Avatar",
     body,
     {  },
-    style
+    { style, category: "Container" }
     //{ class: 'gjs-fonts gjs-f-b3' },
 );

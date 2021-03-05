@@ -13,3 +13,4 @@ import "./components/DoubleColumn";
 import "./components/TripleColumn";
 import "./components/Button";
 import "./components/Avatar";
+import "./components/Image";

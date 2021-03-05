@@ -7,5 +7,5 @@ export default new Component(
     "TripleColumn",
     body,
     { class: 'gjs-fonts gjs-f-b3' },
-    { style }
+    { style, category: "Container" }
 );
