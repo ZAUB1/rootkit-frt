@@ -15,4 +15,7 @@ export const init = () => {
     } catch (e) {
         console.log(e);
     }
+
+    editor.SelectorManager.getAll().each((selector: any) => selector.set('private', 1));
+    editor.on('selector:add', (selector: any) => selector.set('private', 1));
 };

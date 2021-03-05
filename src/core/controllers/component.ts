@@ -32,6 +32,10 @@ export class Component {
                             const attributes = _.attributes.attributes;
                         });
                     }
+                },
+                isComponent: (el: any) => {
+                    if (el && el.classList && el.classList.contains(label.toLowerCase()))
+                        return { type: label.toLowerCase() }
                 }
             });
         }
