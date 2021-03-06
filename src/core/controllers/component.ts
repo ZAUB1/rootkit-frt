@@ -54,10 +54,12 @@ export class Component extends EventEmitter {
         this.id = label;
         this.label = label;
         this.category = category;
-        this.vars = vars;
         this.style = style;
         this.traits = traits;
         this.baseContent = content as string;
+
+        // Vars init
+        this.vars = vars;
         this.attributes = vars;
 
         if (typeof content == "string") {
