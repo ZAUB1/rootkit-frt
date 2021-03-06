@@ -1,4 +1,5 @@
 import body from "./body.html";
+
 import { Component } from "../../core/controllers/component";
 
 export default new Component(
@@ -56,6 +57,6 @@ export default new Component(
             font: "Arial",
             decoration: "none",
             capitalize: "none"
-        }
+        },
     }
 );

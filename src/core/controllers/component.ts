@@ -14,17 +14,19 @@ export class Component extends EventEmitter {
     private traits: any = {};
     private baseContent: string;
 
-    public rebuildContent(el: any) {
-        let content = this.baseContent.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
+    private replaceStrByVar(str: string) {
+        return str.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
             const save = sub.toString();
             sub = sub.split("{")[1].split("}")[0].replace(/\s/g, "");
             if (this.vars[sub])
                 return this.vars[sub];
             return save;
         });
+    }
 
-        this.content = (this.style) ? `<style>${parseStyle(this.style)}</style>${content}` : content;
-        this.content = `<${this.label.toLowerCase()}>${this.content}</${this.label.toLowerCase()}>`
+    public rebuildContent(el: any) {
+        this.content = (this.style) ? `<style>${parseStyle(this.style)}</style>${this.baseContent}` : this.baseContent;
+        this.content = `<${this.label.toLowerCase()}>${this.replaceStrByVar(this.content)}</${this.label.toLowerCase()}>`
         el.innerHTML = this.content;
     };
 
@@ -63,16 +65,8 @@ export class Component extends EventEmitter {
         this.attributes = vars;
 
         if (typeof content == "string") {
-            content = content.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
-                const save = sub.toString();
-                sub = sub.split("{")[1].split("}")[0].replace(/\s/g, "");
-                if (this.vars[sub])
-                    return this.vars[sub];
-                return save;
-            });
-
             this.content = (style) ? `<style>${parseStyle(style)}</style>${content}` : content;
-            this.content = `<${label.toLowerCase()}>${this.content}</${label.toLowerCase()}>`
+            this.content = `<${label.toLowerCase()}>${this.replaceStrByVar(this.content)}</${label.toLowerCase()}>`
         } else {
             this.content = content;
         }
