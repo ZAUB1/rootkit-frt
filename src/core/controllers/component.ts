@@ -1,7 +1,17 @@
 import { EventEmitter } from "events";
 
+import Controller from "./index";
 import { editor } from "../editor";
 import { parseStyle } from "../style";
+
+function clone(obj: any) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
+}
 
 export class Component extends EventEmitter {
     public id: string;
@@ -33,14 +43,16 @@ export class Component extends EventEmitter {
     private updateAttributesHandler(_: any) {
         let foundTrait;
         const el = _.view.el;
-        const attributes = _.changed.attributes;
+        const attributes = _.changed.attributes || _.attributes;
         const attrKeys = Object.keys(attributes);
         const attrVals = Object.values(attributes);
         const orAttrVals = Object.values(this.attributes);
 
         for (let i = 0; i < attrVals.length; i++) {
-            if (attrVals[i] != orAttrVals[i])
+            if (attrVals[i] != orAttrVals[i]) {
                 foundTrait = this.traits.find((trait: any) => trait.name == attrKeys[i]);
+                break;
+            }
         }
 
         if (!foundTrait)
@@ -82,8 +94,17 @@ export class Component extends EventEmitter {
                         attributes: this.attributes
                     },
                     init() {
-                        this.on("change:attributes", (_: any) => _this.updateAttributesHandler(_));
-                    }
+                        // This is what's creating the multiple instances
+                        // Along with this which clones the goddamn thing
+                        // The _this must be cloned when init() is called by grapes
+                        // So I fuck it all up by storing the instances
+                        this._this = _this;
+                        Controller.components[this.ccid] = Object.assign(Object.create(Object.getPrototypeOf(_this)), _this);
+                        this.on("change:attributes", (_: any) => {
+                            _this.updateAttributesHandler(_);
+                            _this.emit(`attributes::changed::${this.ccid}`, _);
+                        });
+                    },
                 },
                 isComponent: (el: any) => {
                     if (el && el.classList && el.classList.contains(label.toLowerCase()))
