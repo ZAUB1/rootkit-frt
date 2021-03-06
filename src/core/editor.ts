@@ -18,4 +18,8 @@ export const init = () => {
 
     editor.SelectorManager.getAll().each((selector: any) => selector.set('private', 1));
     editor.on('selector:add', (selector: any) => selector.set('private', 1));
+    editor.on('load', () => {
+        const blockBtn = editor.Panels.getButton('views', 'open-blocks');
+        blockBtn.set('active', 1);
+    });
 };

@@ -9,7 +9,10 @@ export default {
     columnCell: {
         minHeight: "75px",
         flexGrow: 1,
-        flexBasis: "100%"
+        flexBasis: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
     },
     media_maxWidth_768px: {
         columnRow: {

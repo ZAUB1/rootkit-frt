@@ -8,6 +8,9 @@ export default {
     navbarCell: {
         minWidth: "50px",
         height: "auto",
-        overflow: "hidden"
+        overflow: "hidden",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
     }
 }
