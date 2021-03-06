@@ -8,6 +8,11 @@ export default new Component(
     { class: 'gjs-fonts gjs-f-text' },
     {
         traits: [{
+            type: "text",
+            label: "Body",
+            name: "body",
+            placeholder: "Text.."
+        }, {
             type: "select",
             label: "Weight",
             name: "weight",
@@ -56,7 +61,8 @@ export default new Component(
             size: 20,
             font: "Arial",
             decoration: "none",
-            capitalize: "none"
+            capitalize: "none",
+            body: "Text.."
         },
     }
 );

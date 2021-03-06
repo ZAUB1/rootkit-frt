@@ -10,7 +10,7 @@ export const init = () => {
             fromElement: true,
             height: '100%',
             width: 'auto',
-            storageManager: false,
+            storageManager: false
         });
     } catch (e) {
         console.log(e);
