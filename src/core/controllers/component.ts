@@ -48,7 +48,7 @@ export class Component extends EventEmitter {
         this.style = style;
         this.traits = traits;
         this.baseContent = content as string;
-        this.attributes = attributes;
+        this.attributes = vars;
 
         if (typeof content == "string") {
             content = content.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
@@ -71,7 +71,8 @@ export class Component extends EventEmitter {
                 model: {
                     defaults: {
                         ...baseModel,
-                        traits
+                        traits,
+                        attributes: this.attributes
                     },
                     init() {
                         this.on("change:attributes", (_: any) => _this.updateAttributesHandler(_));
