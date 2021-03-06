@@ -29,18 +29,28 @@ export class Component extends EventEmitter {
     };
 
     private updateAttributesHandler(_: any) {
-        const attributes = _.changed.attributes;
+        let foundTrait;
         const el = _.view.el;
-        const foundTrait = this.traits.find((trait: any) => trait.name == Object.keys(attributes)[0]);
+        const attributes = _.changed.attributes;
+        const attrKeys = Object.keys(attributes);
+        const attrVals = Object.values(attributes);
+        const orAttrVals = Object.values(this.attributes);
+
+        for (let i = 0; i < attrVals.length; i++) {
+            if (attrVals[i] != orAttrVals[i])
+                foundTrait = this.traits.find((trait: any) => trait.name == attrKeys[i]);
+        }
+
         if (!foundTrait)
             return;
+
         this.vars[foundTrait.name] = attributes[foundTrait.name];
+        this.attributes = attributes;
         foundTrait.cb(this, el);
     };
 
     public constructor(label: string, content: string | object, attributes: object = {}, { style, traits = [], category = "Default", vars = {} }: any = {}) {
         super();
-        const _this = this;
         this.id = label;
         this.label = label;
         this.category = category;
@@ -67,6 +77,7 @@ export class Component extends EventEmitter {
 
         const baseModel = editor.DomComponents.getType("default");
         if (typeof content == "string") {
+            const _this = this;
             editor.DomComponents.addType(label.toLowerCase(), {
                 model: {
                     defaults: {

@@ -17,9 +17,17 @@ export default new Component(
             cb: (_this: any, el: any) => {
                 _this.rebuildContent(el);
             }
+        }, {
+            type: "color",
+            label: "Color",
+            name: "color",
+            cb: (_this: any, el: any) => {
+                _this.rebuildContent(el);
+            }
         }],
         vars: {
-            weight: "bold"
+            weight: "bold",
+            color: "black"
         }
     }
 );
