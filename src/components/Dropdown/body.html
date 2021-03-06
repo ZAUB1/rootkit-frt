@@ -1,0 +1,72 @@
+<div class="dropdown-container">
+    <nav>
+        <ul>
+            <li><a href="#">Dropdown</a>
+            <ul>
+                <li><a href="#">Themes</a></li>
+                <li><a href="#">Plugins</a></li>
+                <li><a href="#">Tutorials</a></li>
+            </ul>
+            </li>
+        </ul>
+    </nav>  
+</div>
+
+<style>
+
+nav {
+    background-color: #E64A19;
+}
+
+nav ul {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+nav ul li {
+    width: 100%;
+    display: inline-block;
+    background-color: #E64A19;
+}
+
+nav a {
+    display: block;
+    padding: 0 10px;
+    color:#FFF;
+    font-size:  20px;
+    line-height: 60px;
+    text-decoration: none;
+}
+
+nav a:hover { 
+    background-color: #000000; 
+}
+
+nav ul ul {
+    display: none;
+    position: absolute; 
+    top: 60px; /* the height of the main nav */
+}
+
+nav ul li:hover > ul {
+    display: inherit;
+}
+
+nav ul ul li {
+    float: none;
+    display: list-item;
+    position: relative;
+}
+
+nav ul ul ul li {
+    position: relative;
+    top: -60px; 
+    left: 170px;
+}
+
+li > a:after { content:  ' +'; }
+li > a:only-child:after { content: ''; }
+
+</style>
