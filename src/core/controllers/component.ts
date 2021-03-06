@@ -15,11 +15,12 @@ export class Component extends EventEmitter {
     private baseContent: string;
 
     public rebuildContent(el: any) {
-        let content = this.baseContent.replace(/\{ (.*?) \}|\{(.*?)\}/, (sub: string, ...args: any[]): any => {
+        let content = this.baseContent.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
+            const save = sub.toString();
             sub = sub.split("{")[1].split("}")[0].replace(/\s/g, "");
-            console.log(sub);
             if (this.vars[sub])
                 return this.vars[sub];
+            return save;
         });
 
         this.content = (this.style) ? `<style>${parseStyle(this.style)}</style>${content}` : content;
@@ -50,11 +51,12 @@ export class Component extends EventEmitter {
         this.attributes = attributes;
 
         if (typeof content == "string") {
-            content = content.replace(/\{ (.*?) \}|\{(.*?)\}/, (sub: string, ...args: any[]): any => {
+            content = content.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
+                const save = sub.toString();
                 sub = sub.split("{")[1].split("}")[0].replace(/\s/g, "");
                 if (this.vars[sub])
                     return this.vars[sub];
-                return sub;
+                return save;
             });
 
             this.content = (style) ? `<style>${parseStyle(style)}</style>${content}` : content;
