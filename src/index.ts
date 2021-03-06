@@ -13,4 +13,4 @@ import "./components/DoubleColumn";
 import "./components/TripleColumn";
 import "./components/Button";
 import "./components/Image";
-import "./components/Dropdown";
+import "./components/Navbar";
