@@ -1,5 +1,5 @@
 export default {
-    buttonsCont: {
+    buttonsContainer: {
         position: "relative",
         display: "inline-flex",
         outline: 0,
@@ -8,7 +8,7 @@ export default {
         padding: "0 16px",
         backgroundColor: "#d7d7d7",
         borderRadius: "4px",
-        color: "rgba(0,0,0,.87)",
+        color: "rgba(0, 0, 0, .87)",
         cursor: "pointer",
         userSelect: "none",
         textDecoration: "none",

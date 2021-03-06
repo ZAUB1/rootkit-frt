@@ -14,3 +14,5 @@ import "./components/TripleColumn";
 import "./components/Button";
 import "./components/Image";
 import "./components/Navbar";
+import "./components/Dropdown";
+import "./components/Card";

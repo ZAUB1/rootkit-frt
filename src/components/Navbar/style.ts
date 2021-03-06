@@ -2,7 +2,9 @@ export default {
     navbarContainer: {
         display: "flex",
         justifyContent: "flex-start",
-        height: "75px",
+        boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 1)",
+        maxHeight: "100px",
+        minHeight: "50px",
         padding: "10px"
     },
     navbarCell: {
