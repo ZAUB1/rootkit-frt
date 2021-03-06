@@ -86,6 +86,7 @@ export class Component extends EventEmitter {
             id: this.id,
             label: this.label,
             content: this.content,
+            category: this.category,
             attributes: attributes
         });
     };
