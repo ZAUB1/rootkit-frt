@@ -14,16 +14,10 @@ export default new Component(
                 { id: "normal", name: "Normal" },
                 { id: "bold", name: "Bold" }
             ],
-            cb: (_this: any, el: any) => {
-                _this.rebuildContent(el);
-            }
         }, {
             type: "color",
             label: "Color",
             name: "color",
-            cb: (_this: any, el: any) => {
-                _this.rebuildContent(el);
-            }
         }, {
             type: "number",
             label: "Size",
@@ -32,9 +26,6 @@ export default new Component(
             min: 1,
             max: 200,
             step: 3,
-            cb: (_this: any, el: any) => {
-                _this.rebuildContent(el);
-            }
         }, {
             type: "select",
             label: "Font",
@@ -43,9 +34,6 @@ export default new Component(
                 "Arial",
                 "Halvetica"
             ],
-            cb: (_this: any, el: any) => {
-                _this.rebuildContent(el);
-            }
         }, {
             type: "select",
             label: "Decoration",
@@ -54,18 +42,12 @@ export default new Component(
                 { id: "none", name: " " },
                 { id: "underline", name: "Underline" }
             ],
-            cb: (_this: any, el: any) => {
-                _this.rebuildContent(el);
-            }
         }, {
             type: "checkbox",
             label: "Capitalize",
             name: "capitalize",
             valueTrue: "uppercase",
             valueFalse: "none",
-            cb: (_this: any, el: any) => {
-                _this.rebuildContent(el);
-            }
         }],
         vars: {
             weight: "normal",

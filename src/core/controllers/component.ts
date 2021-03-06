@@ -46,7 +46,7 @@ export class Component extends EventEmitter {
 
         this.vars[foundTrait.name] = attributes[foundTrait.name];
         this.attributes = attributes;
-        foundTrait.cb(this, el);
+        (foundTrait.cb) ? foundTrait.cb(this, el) : this.rebuildContent(el);
     };
 
     public constructor(label: string, content: string | object, attributes: object = {}, { style, traits = [], category = "Default", vars = {} }: any = {}) {
