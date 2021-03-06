@@ -1,15 +1,14 @@
 export default {
     columnRow: {
         display: "flex",
-        justifyContent: "flex-start",
+        justifyContent: "center",
         alignItems: "stretch",
         flexWrap: "nowrap",
         padding: "10px"
     },
     columnCell: {
+        minWidth: "100px",
         minHeight: "75px",
-        flexGrow: 1,
-        flexBasis: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center"
