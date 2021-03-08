@@ -16,6 +16,7 @@ export default new Component(
             type: "select",
             label: "Weight",
             name: "weight",
+            placeholder: "Normal",
             options: [
                 { id: "normal", name: "Normal" },
                 { id: "bold", name: "Bold" }

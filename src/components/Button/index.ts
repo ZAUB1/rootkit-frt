@@ -10,7 +10,6 @@ export default new Component(
     {
         style,
         traits: [
-            "name"
         ]
     }
 );

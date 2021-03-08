@@ -4,25 +4,16 @@ import Controller from "./index";
 import { editor } from "../editor";
 import { parseStyle } from "../style";
 
-function clone(obj: any) {
-    if (null == obj || "object" != typeof obj) return obj;
-    var copy = obj.constructor();
-    for (var attr in obj) {
-        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
-    }
-    return copy;
-}
-
-export class Component extends EventEmitter {
+class ComponentInstance {
     public id: string;
     public label: string;
-    public category: string;
-    public content: string | object;
     public attributes: any;
+    public content: string | object;
     private vars: any = {};
     private style: any = {};
     private traits: any = {};
     private baseContent: string;
+    public DOMElem: any;
 
     private replaceStrByVar(str: string) {
         return str.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
@@ -34,54 +25,65 @@ export class Component extends EventEmitter {
         });
     }
 
-    public rebuildContent(el: any) {
+    public rebuildContent() {
         this.content = (this.style) ? `<style>${parseStyle(this.style)}</style>${this.baseContent}` : this.baseContent;
         this.content = `<${this.label.toLowerCase()}>${this.replaceStrByVar(this.content)}</${this.label.toLowerCase()}>`
-        el.innerHTML = this.content;
+        this.DOMElem.innerHTML = this.content;
     };
 
-    private updateAttributesHandler(_: any) {
-        let foundTrait;
-        const el = _.view.el;
-        const attributes = _.changed.attributes || _.attributes;
-        const attrKeys = Object.keys(attributes);
-        const attrVals = Object.values(attributes);
-        const orAttrVals = Object.values(this.attributes);
-
-        for (let i = 0; i < attrVals.length; i++) {
-            if (attrVals[i] != orAttrVals[i]) {
-                foundTrait = this.traits.find((trait: any) => trait.name == attrKeys[i]);
-                break;
-            }
+    public updateAttributesHandler(changed: any) {
+        const changedKeys = Object.keys(changed);
+        const changedVals = Object.values(changed);
+        for (let i = 0; i < changedKeys.length; i++) {
+            const changedKey = changedKeys[i];
+            if (this.vars[changedKey])
+                this.vars[changedKey] = changedVals[i];
+            const foundTrait = this.traits.find((trait: any) => trait.name == changedKey);
+            if (!foundTrait)
+                continue;
+            (foundTrait.cb) ? foundTrait.cb(this) : void 0;
         }
-
-        if (!foundTrait)
-            return;
-
-        this.vars[foundTrait.name] = attributes[foundTrait.name];
-        this.attributes = attributes;
-        (foundTrait.cb) ? foundTrait.cb(this, el) : this.rebuildContent(el);
     };
+
+    public constructor(label: string, content: string | object, element: any, { style, traits = [], vars = [], id }: any) {
+        this.label = label;
+        this.content = content;
+        this.baseContent = content as string;
+        this.vars = JSON.parse(JSON.stringify(vars));
+        this.attributes = this.vars;
+        this.style = style;
+        this.traits = traits;
+        this.DOMElem = element;
+        this.id = id;
+        this.rebuildContent();
+    };
+};
+
+export class Component extends EventEmitter {
+    public id: string;
+    public label: string;
+    public category: string;
+    public content: string | object;
+    public attributes: any;
 
     public constructor(label: string, content: string | object, attributes: object = {}, { style, traits = [], category = "Default", vars = {} }: any = {}) {
         super();
         this.id = label;
         this.label = label;
         this.category = category;
-        this.style = style;
-        this.traits = traits;
-        this.baseContent = content as string;
-
-        // Vars init
-        this.vars = vars;
         this.attributes = vars;
 
-        if (typeof content == "string") {
+        if (typeof content == "string")
             this.content = (style) ? `<style>${parseStyle(style)}</style>${content}` : content;
-            this.content = `<${label.toLowerCase()}>${this.replaceStrByVar(this.content)}</${label.toLowerCase()}>`
-        } else {
+        else
             this.content = content;
-        }
+
+        traits = traits.map((trait: any) => {
+            return {
+                changeProp: 1,
+                ...trait
+            }
+        });
 
         const baseModel = editor.DomComponents.getType("default");
         if (typeof content == "string") {
@@ -90,21 +92,19 @@ export class Component extends EventEmitter {
                 model: {
                     defaults: {
                         ...baseModel,
-                        traits,
-                        attributes: this.attributes
+                        traits: traits,
                     },
                     init() {
-                        // This is what's creating the multiple instances
-                        // Along with this which clones the goddamn thing
-                        // The _this must be cloned when init() is called by grapes
-                        // So I fuck it all up by storing the instances
-                        this._this = _this;
-                        Controller.components[this.ccid] = Object.assign(Object.create(Object.getPrototypeOf(_this)), _this);
-                        this.on("change:attributes", (_: any) => {
-                            _this.updateAttributesHandler(_);
-                            _this.emit(`attributes::changed::${this.ccid}`, _);
-                        });
+                        setTimeout(() => {
+                            Controller.components[this.ccid] = new ComponentInstance(_this.label, _this.content, this.view.el, { style, traits, vars, id: this.ccid });
+                        }, 0)
                     },
+                    updated() {
+                        if (!this._changing)
+                            return;
+                        Controller.components[this.ccid].updateAttributesHandler(this.changed);
+                        Controller.components[this.ccid].rebuildContent();
+                    }
                 },
                 isComponent: (el: any) => {
                     if (el && el.classList && el.classList.contains(label.toLowerCase()))
