@@ -1,4 +1,5 @@
 import body from "./body.html";
+
 import { Component } from "../../core/controllers/component";
 
 export default new Component(
@@ -7,6 +8,11 @@ export default new Component(
     { class: 'gjs-fonts gjs-f-text' },
     {
         traits: [{
+            type: "text",
+            label: "Body",
+            name: "body",
+            placeholder: "Text.."
+        }, {
             type: "select",
             label: "Weight",
             name: "weight",
@@ -14,12 +20,49 @@ export default new Component(
                 { id: "normal", name: "Normal" },
                 { id: "bold", name: "Bold" }
             ],
-            cb: (_this: any, el: any) => {
-                _this.rebuildContent(el);
-            }
+        }, {
+            type: "color",
+            label: "Color",
+            name: "color",
+        }, {
+            type: "number",
+            label: "Size",
+            name: "size",
+            placeholder: "1px-200px",
+            min: 1,
+            max: 200,
+            step: 3,
+        }, {
+            type: "select",
+            label: "Font",
+            name: "font",
+            options: [
+                "Arial",
+                "Halvetica"
+            ],
+        }, {
+            type: "select",
+            label: "Decoration",
+            name: "decoration",
+            options: [
+                { id: "none", name: " " },
+                { id: "underline", name: "Underline" }
+            ],
+        }, {
+            type: "checkbox",
+            label: "Capitalize",
+            name: "capitalize",
+            valueTrue: "uppercase",
+            valueFalse: "none",
         }],
         vars: {
-            weight: "bold"
-        }
+            weight: "normal",
+            color: "black",
+            size: 20,
+            font: "Arial",
+            decoration: "none",
+            capitalize: "none",
+            body: "Text.."
+        },
     }
 );
