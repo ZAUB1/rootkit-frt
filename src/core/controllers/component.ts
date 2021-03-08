@@ -56,6 +56,8 @@ class ComponentInstance {
         this.DOMElem = element;
         this.id = id;
         this.rebuildContent();
+
+        console.log("Component instance spawned")
     };
 };
 
@@ -109,6 +111,12 @@ export class Component extends EventEmitter {
                 isComponent: (el: any) => {
                     if (el && el.classList && el.classList.contains(label.toLowerCase()))
                         return { type: label.toLowerCase() }
+                },
+                view: {
+                    removed() {
+                        console.log(this.el.id)
+                        delete Controller.components[this.el.id];
+                    }
                 }
             });
         }
