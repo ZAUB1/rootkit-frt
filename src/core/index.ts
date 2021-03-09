@@ -1,0 +1,2 @@
+// Core components
+import "./components";

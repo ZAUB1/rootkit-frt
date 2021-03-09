@@ -4,11 +4,24 @@ import Controller from "./index";
 import { editor } from "../editor";
 import { parseStyle } from "../style";
 
-class ComponentInstance {
+const routerContainer = document.getElementById("editor-container");
+
+function genRandId(length: number) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < length; i++)
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+
+    return result;
+}
+
+export class ComponentInstance {
     public id: string;
     public label: string;
     public attributes: any;
-    public content: string | object;
+    public content: string;
     private vars: any = {};
     private style: any = {};
     private traits: any = {};
@@ -25,9 +38,19 @@ class ComponentInstance {
         });
     }
 
+    private spawnSubComponents() {
+        this.content = this.content.replace(/\[ (.*?) \]|\[(.*?)\]/g, (sub: string, ...args: any[]): any => {
+            const compName = sub.split("[")[1].split("]")[0].replace(/\s/g, "");
+            //const comp = Controller.components[compName].create();
+            console.log(compName, Controller.components[compName]);
+        });
+    };
+
     public rebuildContent() {
         this.content = (this.style) ? `<style>${parseStyle(this.style)}</style>${this.baseContent}` : this.baseContent;
-        this.content = `<${this.label.toLowerCase()}>${this.replaceStrByVar(this.content)}</${this.label.toLowerCase()}>`
+        this.content = this.replaceStrByVar(this.content);
+        // this.spawnSubComponents();
+        //this.content = `<${this.label.toLowerCase()}>${this.replaceStrByVar(this.content)}</${this.label.toLowerCase()}>`
         this.DOMElem.innerHTML = this.content;
     };
 
@@ -45,7 +68,22 @@ class ComponentInstance {
         }
     };
 
-    public constructor(label: string, content: string | object, element: any, { style, traits = [], vars = [], id }: any) {
+    public append() {
+        routerContainer.appendChild(this.DOMElem);
+    };
+
+    public remove() {
+        routerContainer.removeChild(this.DOMElem);
+    };
+
+    public setVar(key: string, value: any) {
+        if (!this.vars[key])
+            return;
+        this.vars[key] = value;
+        this.rebuildContent();
+    };
+
+    public constructor(label: string, content: string, element: any, { style, traits = [], vars = [], id }: any) {
         this.label = label;
         this.content = content;
         this.baseContent = content as string;
@@ -61,24 +99,26 @@ class ComponentInstance {
     };
 };
 
-export class Component extends EventEmitter {
+export class Component {
     public id: string;
     public label: string;
     public category: string;
-    public content: string | object;
+    public content: string;
     public attributes: any;
+    private vars: any = {};
+    private style: any = {};
+    private traits: any = {};
 
-    public constructor(label: string, content: string | object, attributes: object = {}, { style, traits = [], category = "Default", vars = {} }: any = {}) {
-        super();
+    public constructor(label: string, content: string, attributes: object = {}, { style, traits = [], category = "Default", vars = {} }: any = {}) {
+        //super();
         this.id = label;
         this.label = label;
         this.category = category;
         this.attributes = vars;
-
-        if (typeof content == "string")
-            this.content = (style) ? `<style>${parseStyle(style)}</style>${content}` : content;
-        else
-            this.content = content;
+        this.style = style;
+        this.traits = traits;
+        this.vars = vars;
+        this.content = (style) ? `<style>${parseStyle(style)}</style>${content}` : content;
 
         traits = traits.map((trait: any) => {
             return {
@@ -87,46 +127,21 @@ export class Component extends EventEmitter {
             }
         });
 
-        const baseModel = editor.DomComponents.getType("default");
-        if (typeof content == "string") {
-            const _this = this;
-            editor.DomComponents.addType(label.toLowerCase(), {
-                model: {
-                    defaults: {
-                        ...baseModel,
-                        traits: traits,
-                    },
-                    init() {
-                        setTimeout(() => {
-                            Controller.components[this.ccid] = new ComponentInstance(_this.label, _this.content, this.view.el, { style, traits, vars, id: this.ccid });
-                        }, 0)
-                    },
-                    updated() {
-                        if (!this._changing)
-                            return;
-                        Controller.components[this.ccid].updateAttributesHandler(this.changed);
-                        Controller.components[this.ccid].rebuildContent();
-                    }
-                },
-                isComponent: (el: any) => {
-                    if (el && el.classList && el.classList.contains(label.toLowerCase()))
-                        return { type: label.toLowerCase() }
-                },
-                view: {
-                    removed() {
-                        console.log(this.el.id)
-                        delete Controller.components[this.el.id];
-                    }
-                }
-            });
-        }
-
-        editor.BlockManager.add(label, {
-            id: this.id,
-            label: this.label,
-            content: this.content,
-            category: this.category,
-            attributes: attributes
-        });
+        Controller.components[this.label] = this;
     };
+
+    public create(): ComponentInstance {
+        const randId = genRandId(5);
+        const el = document.createElement("div");
+        el.setAttribute("id", randId);
+        const compInstance = new ComponentInstance(this.label, this.content, el, { style: this.style, traits: this.traits, vars: this.vars });
+        Controller.componentsInstances[randId] = compInstance;
+        return compInstance;
+    };
+
+    public createAndAppend(): ComponentInstance {
+        const com = this.create();
+        com.append();
+        return com;
+    }
 };
