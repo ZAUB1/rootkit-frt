@@ -1,11 +1,5 @@
 import './index.scss';
 
-import Editor from "./core/editor";
-
-(async () => {
-    new Editor();
-})();
-
 // import "./components/Map";
 import Text from "./components/Text";
 import "./components/SimpleColumn";
@@ -21,6 +15,12 @@ import "./core";
 import Controller from "./core/controllers";
 
 import { parseDocument } from "./core/markup";
+
+import Editor from "./core/editor";
+
+(async () => {
+    new Editor();
+})();
 
 (async () => {
     const text1 = Text.createAndAppend();

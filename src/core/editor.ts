@@ -52,6 +52,13 @@ export default class Editor {
                 </header>
                 <components editor>
                     <button editor onclick="editor.createComponent()">Text</button>
+                    ${(() => {
+                        /* let compsButtons = "";
+                        for (const comp of Object.keys(Controller.components))
+                            compsButtons += `<button editor onclick="editor.createComponent(${comp})">${comp}</button>`
+                        return compsButtons; */
+                        return ""
+                    })()}
                 </components>
             </editor-sidemenu>
         `;
