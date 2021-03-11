@@ -50,7 +50,7 @@ export class ComponentInstance {
         this.content = (this.style) ? `<style>${parseStyle(this.style)}</style>${this.baseContent}` : this.baseContent;
         this.content = this.replaceStrByVar(this.content);
         // this.spawnSubComponents();
-        //this.content = `<${this.label.toLowerCase()}>${this.replaceStrByVar(this.content)}</${this.label.toLowerCase()}>`
+        //this.content = `<${this.label.toLowerCase()} id="${genRandId(5)}">${this.content}</${this.label.toLowerCase()}>`
         this.DOMElem.innerHTML = this.content;
     };
 
