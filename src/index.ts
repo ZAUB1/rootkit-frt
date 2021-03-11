@@ -14,8 +14,6 @@ import "./components/Card";
 import "./core";
 import Controller from "./core/controllers";
 
-import { parseDocument } from "./core/markup";
-
 import Editor from "./core/editor";
 
 (async () => {
