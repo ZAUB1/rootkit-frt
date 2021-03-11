@@ -1,9 +1,9 @@
 import './index.scss';
 
-import * as editor from "./core/editor";
+import Editor from "./core/editor";
 
 (async () => {
-    editor.init();
+    new Editor();
 })();
 
 // import "./components/Map";
@@ -23,12 +23,6 @@ import Controller from "./core/controllers";
 import { parseDocument } from "./core/markup";
 
 (async () => {
-    /* const text = Text.create();
-    text.setVar("body", "LOL");
-    text.setVar("color", "crimson");
-    text.append();
-
-    const text2 = Text.createAndAppend(); */
-
-    Controller.components["EditDrawer"].createAndAppend();
+    const text1 = Text.createAndAppend();
+    const text2 = Text.createAndAppend();
 })();

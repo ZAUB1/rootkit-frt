@@ -1,7 +1,6 @@
 import { EventEmitter } from "events";
 
 import Controller from "./index";
-import { editor } from "../editor";
 import { parseStyle } from "../style";
 
 const routerContainer = document.getElementById("editor-container");
@@ -22,11 +21,12 @@ export class ComponentInstance {
     public label: string;
     public attributes: any;
     public content: string;
-    private vars: any = {};
+    protected vars: any = {};
     private style: any = {};
     private traits: any = {};
     private baseContent: string;
-    public DOMElem: any;
+    public DOMElem: HTMLDivElement;
+    private replacables: any = [];
 
     private replaceStrByVar(str: string) {
         return str.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
@@ -53,6 +53,13 @@ export class ComponentInstance {
         //this.content = `<${this.label.toLowerCase()}>${this.replaceStrByVar(this.content)}</${this.label.toLowerCase()}>`
         this.DOMElem.innerHTML = this.content;
     };
+
+    /* private parseChildren(elem: any) {
+        if (!elem.children.length)
+            console.log(elem.outerHTML);
+        for (let i = 0; i < elem.children.length; i++)
+            this.parseChildren(elem.children[i]);
+    }; */
 
     public updateAttributesHandler(changed: any) {
         const changedKeys = Object.keys(changed);
@@ -95,7 +102,9 @@ export class ComponentInstance {
         this.id = id;
         this.rebuildContent();
 
-        console.log("Component instance spawned")
+        console.log("Component instance spawned", this.DOMElem.childNodes);
+        
+        //this.parseChildren(this.DOMElem);
     };
 };
 
