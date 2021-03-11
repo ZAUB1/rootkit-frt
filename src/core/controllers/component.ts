@@ -42,7 +42,7 @@ export class ComponentInstance {
         this.content = this.content.replace(/\[ (.*?) \]|\[(.*?)\]/g, (sub: string, ...args: any[]): any => {
             const compName = sub.split("[")[1].split("]")[0].replace(/\s/g, "");
             //const comp = Controller.components[compName].create();
-            console.log(compName, Controller.components[compName]);
+            console.log(compName, Controller.getComponent(compName));
         });
     };
 

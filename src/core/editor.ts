@@ -71,11 +71,11 @@ export default class Editor {
     };
 
     private createComponent(name: string = "Text") {
-        return Controller.components[name].createAndAppend();
+        return Controller.getComponent(name).createAndAppend();
     };
 
     private destroySelectedElem() {
-        const comp = Controller.componentsInstances[this.selectedElem.parentElement.id];
+        const comp = Controller.getComponentInstance(this.selectedElem.parentElement.id);
         if (!comp)
             return; // @TODO Error case
         comp.remove();
