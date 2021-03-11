@@ -1,6 +1,6 @@
 declare global {
     interface Window { editor: any; }
-}
+};
 
 import Controller from "../core/controllers";
 import { ComponentInstance } from "./controllers/component";
@@ -148,4 +148,4 @@ export default class Editor {
 
         this.displayUi();
     };
-}
+};
