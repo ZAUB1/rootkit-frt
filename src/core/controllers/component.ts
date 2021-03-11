@@ -84,6 +84,11 @@ export class ComponentInstance {
         this.append();
     };
 
+    public moveTo(container: HTMLElement) {
+        this.remove();
+        this.appendTo(container);
+    };
+
     public remove() {
         this.originContainer.removeChild(this.DOMElem);
     };
@@ -107,8 +112,7 @@ export class ComponentInstance {
         this.id = id;
         this.rebuildContent();
 
-        console.log("Component instance spawned", this.DOMElem.childNodes);
-        
+        console.log("Component instance spawned", (this.DOMElem as any).children);
         //this.parseChildren(this.DOMElem);
     };
 };

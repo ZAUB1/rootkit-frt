@@ -3,12 +3,14 @@ declare global {
 }
 
 import Controller from "../core/controllers";
+import { ComponentInstance } from "./controllers/component";
 
 const routerContainer = document.getElementById("editor-container");
 
 export default class Editor {
     public lastHover: HTMLElement;
     public selectedElem: HTMLElement;
+    public selectedComp: ComponentInstance;
     public selecterComp: any;
     public dragHoverElem: HTMLElement = routerContainer;
     public currentDragComp: string;
@@ -30,7 +32,7 @@ export default class Editor {
         const rect = this.selectedElem.getBoundingClientRect();
         const el = document.createElement("div");
         el.style.position = "absolute";
-        el.style.left = `${rect.right + 2}px`;
+        el.style.left = `${rect.x + 2}px`;
         el.style.top = `${rect.bottom + 3}px`;
         el.style.backgroundColor = "crimson";
         el.style.borderRadius = "5px";
@@ -100,10 +102,18 @@ export default class Editor {
     };
 
     private destroySelectedElem() {
-        const comp = Controller.getComponentInstance(this.selectedElem.parentElement.id);
-        if (!comp)
+        if (!this.selectedComp)
             return; // @TODO Error case
-        comp.remove();
+        this.selectedComp.remove();
+    };
+
+    private setDraggable() {
+        this.selectedElem.draggable = true;
+        this.selectedElem.ondragstart = (event) => this.startDrag(event, this.selectedComp.label);
+        this.selectedElem.ondragend = (event) => {
+            this.selectedComp.moveTo(this.dragHoverElem);
+            this.closeElementTools();
+        };
     };
 
     private elementClickHandler(ev: MouseEvent) {
@@ -115,8 +125,10 @@ export default class Editor {
         this.lastHover = null;
         hoverElement.style.outline = "2px solid #51c2d5";
         this.selectedElem = hoverElement;
+        this.selectedComp = Controller.getComponentInstance(this.selectedElem.parentElement.id);
 
         this.displayElementTools();
+        this.setDraggable();
     };
 
     public constructor() {

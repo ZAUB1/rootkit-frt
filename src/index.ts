@@ -20,9 +20,5 @@ import Editor from "./core/editor";
 
 (async () => {
     new Editor();
-})();
-
-(async () => {
-    const text1 = Text.createAndAppend();
-    const text2 = Text.createAndAppend();
+    Text;
 })();
