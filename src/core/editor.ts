@@ -53,6 +53,7 @@ export default class Editor {
                 </header>
                 <components editor>
                     <div editor draggable="true" ondragstart="editor.startDrag(event, 'Text')" ondragend="editor.stopDrag(event)">Text</div>
+                    <div editor draggable="true" ondragstart="editor.startDrag(event, 'SimpleColumn')" ondragend="editor.stopDrag(event)">Container</div>
                     ${(() => {
                         /* let compsButtons = "";
                         for (const comp of Object.keys(Controller.components))
@@ -77,6 +78,7 @@ export default class Editor {
     };
 
     private setDragElem(el: HTMLElement) {
+        console.log("ui");
         this.dragHoverElem = el;
     };
 
