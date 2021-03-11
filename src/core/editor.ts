@@ -43,9 +43,28 @@ export default class Editor {
         routerContainer.appendChild(el);
     };
 
+    private displayUi() {
+        const mainEl = document.createElement("div");
+        mainEl.innerHTML = `
+            <editor-sidemenu>
+                <header editor>
+                    <span editor>Components</span>
+                </header>
+                <components editor>
+                    <button editor onclick="editor.createComponent()">Text</button>
+                </components>
+            </editor-sidemenu>
+        `;
+        routerContainer.appendChild(mainEl);
+    };
+
     private closeElementTools() {
         routerContainer.removeChild(this.selecterComp);
         this.selecterComp = null;
+    };
+
+    private createComponent(name: string = "Text") {
+        return Controller.components[name].createAndAppend();
     };
 
     private destroySelectedElem() {
@@ -74,5 +93,8 @@ export default class Editor {
 
         window.editor = {};
         window.editor.destroySelectedElem = () => { this.destroySelectedElem(); this.closeElementTools() };
+        window.editor.createComponent = () => { this.createComponent() };
+
+        this.displayUi();
     };
 }
