@@ -43,6 +43,11 @@ export default class Editor {
         routerContainer.appendChild(el);
     };
 
+    private closeElementTools() {
+        routerContainer.removeChild(this.selecterComp);
+        this.selecterComp = null;
+    };
+
     private destroySelectedElem() {
         const comp = Controller.componentsInstances[this.selectedElem.parentElement.id];
         if (!comp)
@@ -68,6 +73,6 @@ export default class Editor {
         window.addEventListener("mousedown", ev => this.elementClickHandler(ev));
 
         window.editor = {};
-        window.editor.destroySelectedElem = () => { this.destroySelectedElem() };
+        window.editor.destroySelectedElem = () => { this.destroySelectedElem(); this.closeElementTools() };
     };
 }
