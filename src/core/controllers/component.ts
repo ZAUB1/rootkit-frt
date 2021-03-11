@@ -79,6 +79,10 @@ export class ComponentInstance {
         routerContainer.appendChild(this.DOMElem);
     };
 
+    public appendTo(container: HTMLElement) {
+        container.appendChild(this.DOMElem);
+    };
+
     public remove() {
         routerContainer.removeChild(this.DOMElem);
     };
@@ -152,5 +156,5 @@ export class Component {
         const com = this.create();
         com.append();
         return com;
-    }
+    };
 };

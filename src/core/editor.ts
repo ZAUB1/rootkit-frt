@@ -10,6 +10,7 @@ export default class Editor {
     public lastHover: HTMLElement;
     public selectedElem: HTMLElement;
     public selecterComp: any;
+    public dragHoverElem: HTMLElement = routerContainer;
 
     private elementHoverHandler(ev: MouseEvent) {
         const hoverElement = document.elementFromPoint(ev.x, ev.y) as HTMLElement;
@@ -51,7 +52,7 @@ export default class Editor {
                     <span editor>Components</span>
                 </header>
                 <components editor>
-                    <button editor onclick="editor.createComponent()">Text</button>
+                    <div editor draggable="true" ondragstart="editor.startDrag(event, 'Text')" ondragend="editor.stopDrag(event)">Text</div>
                     ${(() => {
                         /* let compsButtons = "";
                         for (const comp of Object.keys(Controller.components))
@@ -63,6 +64,20 @@ export default class Editor {
             </editor-sidemenu>
         `;
         routerContainer.appendChild(mainEl);
+    };
+
+    private startDrag(event: DragEvent, compType: string) {
+        event.dataTransfer.setData("compType", compType);
+    };
+
+    private stopDrag(event: DragEvent) {
+        const compType = event.dataTransfer.getData("compType");
+        const comp = Controller.getComponent(compType).create();
+        comp.appendTo(this.dragHoverElem);
+    };
+
+    private setDragElem(el: HTMLElement) {
+        this.dragHoverElem = el;
     };
 
     private closeElementTools() {
@@ -101,6 +116,9 @@ export default class Editor {
         window.editor = {};
         window.editor.destroySelectedElem = () => { this.destroySelectedElem(); this.closeElementTools() };
         window.editor.createComponent = () => { this.createComponent() };
+        window.editor.startDrag = (event: DragEvent, compType: string) => { /* event.preventDefault(); */ this.startDrag(event, compType) };
+        window.editor.stopDrag = (event: DragEvent) => { /* event.preventDefault();  */this.stopDrag(event) };
+        window.editor.setDragElem = (el: HTMLElement) => { this.setDragElem(el) };
 
         this.displayUi();
     };
