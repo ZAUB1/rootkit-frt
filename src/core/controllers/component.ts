@@ -26,7 +26,7 @@ export class ComponentInstance {
     private traits: any = {};
     private baseContent: string;
     public DOMElem: HTMLDivElement;
-    private replacables: any = [];
+    public originContainer: HTMLElement = routerContainer;
 
     private replaceStrByVar(str: string) {
         return str.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
@@ -76,15 +76,16 @@ export class ComponentInstance {
     };
 
     public append() {
-        routerContainer.appendChild(this.DOMElem);
+        this.originContainer.appendChild(this.DOMElem);
     };
 
     public appendTo(container: HTMLElement) {
-        container.appendChild(this.DOMElem);
+        this.originContainer = container;
+        this.append();
     };
 
     public remove() {
-        routerContainer.removeChild(this.DOMElem);
+        this.originContainer.removeChild(this.DOMElem);
     };
 
     public setVar(key: string, value: any) {
