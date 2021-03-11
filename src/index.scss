@@ -39,6 +39,32 @@ editor-sidemenu {
     }
 };
 
+editor-traitmenu {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 100vh;
+    min-width: 200px;
+    border-left: 1px solid #efefef;
+    background-color: white;
+    display: none;
+
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+    }
+
+    traits {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+    }
+};
+
 .editor-pick-button {
     
 };

@@ -27,6 +27,37 @@ export default class Editor {
         this.lastHover = hoverElement;
     };
 
+    private displayUi() {
+        const mainEl = document.createElement("div");
+        mainEl.innerHTML = `
+            <editor-sidemenu>
+                <header editor>
+                    <span editor>Components</span>
+                </header>
+                <components editor>
+                    <div editor draggable="true" ondragstart="editor.startDrag(event, 'Text')" ondragend="editor.stopDrag(event)">Text</div>
+                    <div editor draggable="true" ondragstart="editor.startDrag(event, 'SimpleColumn')" ondragend="editor.stopDrag(event)">Container</div>
+                    ${(() => {
+                        /* let compsButtons = "";
+                        for (const comp of Object.keys(Controller.components))
+                            compsButtons += `<button editor onclick="editor.createComponent(${comp})">${comp}</button>`
+                        return compsButtons; */
+                        return ""
+                    })()}
+                </components>
+            </editor-sidemenu>
+            <editor-traitmenu editor>
+                <header editor>
+                    <span editor>Traits</span>
+                </header>
+                <traits id="component-traits" editor>
+                    
+                </traits>
+            </editor-traitmenu>
+        `;
+        routerContainer.appendChild(mainEl);
+    };
+
     private displayElementTools() {
         (this.selecterComp) ? routerContainer.removeChild(this.selecterComp) : void 0;
         const rect = this.selectedElem.getBoundingClientRect();
@@ -47,27 +78,35 @@ export default class Editor {
         routerContainer.appendChild(el);
     };
 
-    private displayUi() {
-        const mainEl = document.createElement("div");
-        mainEl.innerHTML = `
-            <editor-sidemenu>
-                <header editor>
-                    <span editor>Components</span>
-                </header>
-                <components editor>
-                    <div editor draggable="true" ondragstart="editor.startDrag(event, 'Text')" ondragend="editor.stopDrag(event)">Text</div>
-                    <div editor draggable="true" ondragstart="editor.startDrag(event, 'SimpleColumn')" ondragend="editor.stopDrag(event)">Container</div>
-                    ${(() => {
-                        /* let compsButtons = "";
-                        for (const comp of Object.keys(Controller.components))
-                            compsButtons += `<button editor onclick="editor.createComponent(${comp})">${comp}</button>`
-                        return compsButtons; */
-                        return ""
-                    })()}
-                </components>
-            </editor-sidemenu>
+    private closeElementTools() {
+        routerContainer.removeChild(this.selecterComp);
+        this.selecterComp = null;
+    };
+
+    private displayTraitsMenu() {
+        const sideMenu = document.getElementsByTagName("editor-sidemenu")[0] as HTMLElement;
+        const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
+        const traitsBody = document.getElementById("component-traits");
+        traitsBody.innerHTML = `
+            <span>Component ID: #${(this.selectedElem.parentNode as HTMLElement).id}</span>
+            <span>Component type: ${this.selectedComp.label}</span>
         `;
-        routerContainer.appendChild(mainEl);
+        sideMenu.style.display = null;
+        traitsMenu.style.display = "block";
+    };
+
+    private hideTraitsMenu() {
+        const sideMenu = document.getElementsByTagName("editor-sidemenu")[0] as HTMLElement;
+        const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
+        sideMenu.style.display = "block";
+        traitsMenu.style.display = null;
+    };
+
+    private closeElemMenus() {
+        if (!this.selecterComp)
+            return;
+        this.closeElementTools();
+        this.hideTraitsMenu();
     };
 
     private startDrag(event: DragEvent, compType: string) {
@@ -92,11 +131,6 @@ export default class Editor {
         }, 5);
     };
 
-    private closeElementTools() {
-        routerContainer.removeChild(this.selecterComp);
-        this.selecterComp = null;
-    };
-
     private createComponent(name: string = "Text") {
         return Controller.getComponent(name).createAndAppend();
     };
@@ -118,15 +152,18 @@ export default class Editor {
 
     private elementClickHandler(ev: MouseEvent) {
         const hoverElement = document.elementFromPoint(ev.x, ev.y) as HTMLElement;
+        if (hoverElement.nodeName.toLocaleLowerCase() == "body")
+            return this.closeElemMenus();
         if (hoverElement.nodeName.toLocaleLowerCase().includes("editor")
         || hoverElement.attributes.getNamedItem("editor"))
-            return;
+            return /* this.closeElemMenus() */;
         (this.selectedElem) ? this.selectedElem.style.outline = null : void 0;
         this.lastHover = null;
         hoverElement.style.outline = "2px solid #51c2d5";
         this.selectedElem = hoverElement;
         this.selectedComp = Controller.getComponentInstance(this.selectedElem.parentElement.id);
 
+        this.displayTraitsMenu();
         this.displayElementTools();
         this.setDraggable();
     };
