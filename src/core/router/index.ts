@@ -16,13 +16,13 @@ export default new class Router {
 
     private replaceHistoryState() {
         window.history.replaceState('Object', 'Title', this.currentRoute.path);
-    }
+    };
 
     public getElem() {
         return this.DOMElem;
-    }
+    };
 
-    public setComponent(comp: ComponentInstance) {
+    private setComponent(comp: ComponentInstance) {
         comp.appendTo(this.DOMElem);
     };
 
@@ -32,10 +32,14 @@ export default new class Router {
             return;
         this.currentRoute = route;
         this.setComponent(route.componentLoad ? route.componentLoad() : route.component);
-        this.replaceHistoryState();
+        // this.replaceHistoryState();
     };
 
     public constructor() {
         this.DOMElem = document.getElementById(this.defaultContainer) as HTMLDivElement;
+
+        /* window.addEventListener('popstate', function (event) {
+            console.log("changed")
+        }); */
     };
 };

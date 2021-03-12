@@ -25,7 +25,8 @@ export default class Editor {
     private elementHoverHandler(ev: MouseEvent) {
         const hoverElement = document.elementFromPoint(ev.x, ev.y) as HTMLElement;
         // Shouldn't be identified as a custom elem
-        if (hoverElement == this.selectedElem
+        if (!hoverElement
+        || hoverElement == this.selectedElem
         || hoverElement.nodeName.toLocaleLowerCase().includes("editor")
         || hoverElement.attributes.getNamedItem("editor"))
             return;
