@@ -88,8 +88,8 @@ export default class Editor {
         const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
         const traitsBody = document.getElementById("component-traits");
         traitsBody.innerHTML = `
-            <span>Component ID: #${(this.selectedElem.parentNode as HTMLElement).id}</span>
-            <span>Component type: ${this.selectedComp.label}</span>
+            <span editor>Component ID: #${(this.selectedElem.parentNode as HTMLElement).id}</span>
+            <span editor>Component type: ${this.selectedComp.label}</span>
         `;
         sideMenu.style.display = null;
         traitsMenu.style.display = "block";
@@ -115,6 +115,13 @@ export default class Editor {
 
     private stopDrag(event: DragEvent) {
         const comp = Controller.getComponent(this.currentDragComp).create();
+        comp.childrens.map(child => {
+            if (child.attributes.getNamedItem("editor-container")) {
+                child.ondrop = () => { window.editor.setDragOut(child) };
+                child.ondragover = () => { window.editor.setDragElem(child) };
+                child.ondragleave = () => { window.editor.setDragOut(child) };
+            }
+        });
         comp.appendTo(this.dragHoverElem);
     };
 

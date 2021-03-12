@@ -27,6 +27,7 @@ export class ComponentInstance {
     private baseContent: string;
     public DOMElem: HTMLDivElement;
     public originContainer: HTMLElement = routerContainer;
+    public childrens: any[] = [];
 
     private replaceStrByVar(str: string) {
         return str.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
@@ -54,12 +55,12 @@ export class ComponentInstance {
         this.DOMElem.innerHTML = this.content;
     };
 
-    /* private parseChildren(elem: any) {
+    private parseChildren(elem: any) {
         if (!elem.children.length)
-            console.log(elem.outerHTML);
+            this.childrens.push(elem);
         for (let i = 0; i < elem.children.length; i++)
             this.parseChildren(elem.children[i]);
-    }; */
+    };
 
     public updateAttributesHandler(changed: any) {
         const changedKeys = Object.keys(changed);
@@ -111,9 +112,9 @@ export class ComponentInstance {
         this.DOMElem = element;
         this.id = id;
         this.rebuildContent();
+        this.parseChildren(this.DOMElem);
 
         console.log("Component instance spawned", (this.DOMElem as any).children);
-        //this.parseChildren(this.DOMElem);
     };
 };
 
