@@ -3,7 +3,10 @@ declare global {
 };
 
 import "./style.scss";
+import "./selector/style.scss";
 import body from "./body.html";
+import selectorBody from "./selector/body.html";
+
 import Controller from "../../core/controllers";
 import { Component, ComponentInstance } from "../controllers/component";
 
@@ -13,7 +16,7 @@ export default class Editor {
     public lastHover: HTMLElement;
     public selectedElem: HTMLElement;
     public selectedComp: ComponentInstance;
-    public selecterComp: any;
+    public selecterComp: ComponentInstance;
     public dragHoverElem: HTMLElement = routerContainer;
     public currentDragComp: string;
 
@@ -43,27 +46,18 @@ export default class Editor {
     };
 
     private displayElementTools() {
-        (this.selecterComp) ? routerContainer.removeChild(this.selecterComp) : void 0;
+        (this.selecterComp) ? this.selecterComp.remove() : void 0;
         const rect = this.selectedElem.getBoundingClientRect();
-        const el = document.createElement("div");
-        el.style.position = "absolute";
+        const comp = (new Component("EditorSelector", selectorBody, { }, { hideFromStack: true })).create();
+        const el = comp.getFirstChild("editor-pick");
         el.style.left = `${rect.x + 2}px`;
         el.style.top = `${rect.bottom + 3}px`;
-        el.style.backgroundColor = "crimson";
-        el.style.borderRadius = "5px";
-        el.innerHTML = `
-            <editor-pick style="display: flex;">
-                <editor-div style="margin: 5px; user-select: none">
-                    <button editor onclick="editor.destroySelectedElem()">DELETE</button>
-                </editor-div>
-            </editor-pick>
-        `;
-        this.selecterComp = el;
-        routerContainer.appendChild(el);
+        this.selecterComp = comp;
+        comp.appendTo(routerContainer);
     };
 
     private closeElementTools() {
-        routerContainer.removeChild(this.selecterComp);
+        this.selecterComp.remove();
         this.selecterComp = null;
     };
 

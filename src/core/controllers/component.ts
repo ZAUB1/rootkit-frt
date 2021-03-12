@@ -58,8 +58,10 @@ export class ComponentInstance {
     private parseChildren(elem: any) {
         if (!elem.children.length)
             this.childrens.push(elem);
-        for (let i = 0; i < elem.children.length; i++)
+        for (let i = 0; i < elem.children.length; i++) {
             this.parseChildren(elem.children[i]);
+            this.childrens.push(elem);
+        }
     };
 
     public updateAttributesHandler(changed: any) {
@@ -100,6 +102,21 @@ export class ComponentInstance {
         this.vars[key] = value;
         this.rebuildContent();
     };
+
+    public getChilds(key: string = "*") {
+        if (key == "*")
+            return this.childrens;
+        const childs = [];
+        for (const child of this.childrens) {
+            if (child.nodeName.toLowerCase() == key)
+                childs.push(child);
+        }
+        return childs;
+    };
+
+    public getFirstChild(key: string) {
+        return this.getChilds(key)[0];
+    }
 
     public constructor(label: string, content: string, element: any, { style, traits = [], vars = [], id }: any) {
         this.label = label;
