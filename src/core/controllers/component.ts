@@ -21,13 +21,17 @@ export class ComponentInstance {
     public label: string;
     public attributes: any;
     public content: string;
+
     protected vars: any = {};
     private style: any = {};
     private traits: any = {};
     private baseContent: string;
+
     public DOMElem: HTMLDivElement;
     public originContainer: HTMLElement = routerContainer;
     public childrens: any[] = [];
+
+    public appened: boolean = false;
 
     private replaceStrByVar(str: string) {
         return str.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
@@ -80,6 +84,7 @@ export class ComponentInstance {
 
     public append() {
         this.originContainer.appendChild(this.DOMElem);
+        this.appened = true;
     };
 
     public appendTo(container: HTMLElement) {
@@ -94,6 +99,7 @@ export class ComponentInstance {
 
     public remove() {
         this.originContainer.removeChild(this.DOMElem);
+        this.appened = false;
     };
 
     public setVar(key: string, value: any) {

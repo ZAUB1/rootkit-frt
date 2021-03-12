@@ -46,19 +46,17 @@ export default class Editor {
     };
 
     private displayElementTools() {
-        (this.selecterComp) ? this.selecterComp.remove() : void 0;
+        (this.selecterComp.appened) ? this.selecterComp.remove() : void 0;
         const rect = this.selectedElem.getBoundingClientRect();
-        const comp = (new Component("EditorSelector", selectorBody, { }, { hideFromStack: true })).create();
-        const el = comp.getFirstChild("editor-pick");
+        const el = this.selecterComp.getFirstChild("editor-pick");
         el.style.left = `${rect.x + 2}px`;
         el.style.top = `${rect.bottom + 3}px`;
-        this.selecterComp = comp;
-        comp.appendTo(routerContainer);
+        this.selecterComp = this.selecterComp;
+        this.selecterComp.appendTo(routerContainer);
     };
 
     private closeElementTools() {
-        this.selecterComp.remove();
-        this.selecterComp = null;
+        (this.selecterComp.appened) ? this.selecterComp.remove() : void 0;
     };
 
     private displayTraitsMenu() {
@@ -168,6 +166,7 @@ export default class Editor {
         window.editor.setDragElem = (el: HTMLElement) => { this.setDragElem(el) };
         window.editor.setDragOut = (el: HTMLElement) => { this.setDragOut(el) };
 
+        this.selecterComp = (new Component("EditorSelector", selectorBody, { }, { hideFromStack: true })).create();
         this.displayUi();
     };
 };
