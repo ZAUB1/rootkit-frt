@@ -128,7 +128,7 @@ export class Component {
     private style: any = {};
     private traits: any = {};
 
-    public constructor(label: string, content: string, attributes: object = {}, { style, traits = [], category = "Default", vars = {} }: any = {}) {
+    public constructor(label: string, content: string, attributes: object = {}, { style, traits = [], category = "Default", vars = {}, hideFromStack = false }: any = {}) {
         //super();
         this.id = label;
         this.label = label;
@@ -146,7 +146,7 @@ export class Component {
             }
         });
 
-        Controller.components[this.label] = this;
+        (!hideFromStack) ? Controller.components[this.label] = this : void 0;
     };
 
     public create(): ComponentInstance {

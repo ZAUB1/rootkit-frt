@@ -2,8 +2,10 @@ declare global {
     interface Window { editor: any; }
 };
 
-import Controller from "../core/controllers";
-import { ComponentInstance } from "./controllers/component";
+import "./style.scss";
+import body from "./body.html";
+import Controller from "../../core/controllers";
+import { Component, ComponentInstance } from "../controllers/component";
 
 const routerContainer = document.getElementById("editor-container");
 
@@ -28,34 +30,16 @@ export default class Editor {
     };
 
     private displayUi() {
-        const mainEl = document.createElement("div");
-        mainEl.innerHTML = `
-            <editor-sidemenu>
-                <header editor>
-                    <span editor>Components</span>
-                </header>
-                <components editor>
-                    <div editor draggable="true" ondragstart="editor.startDrag(event, 'Text')" ondragend="editor.stopDrag(event)">Text</div>
-                    <div editor draggable="true" ondragstart="editor.startDrag(event, 'SimpleColumn')" ondragend="editor.stopDrag(event)">Container</div>
-                    ${(() => {
-                        /* let compsButtons = "";
-                        for (const comp of Object.keys(Controller.components))
-                            compsButtons += `<button editor onclick="editor.createComponent(${comp})">${comp}</button>`
-                        return compsButtons; */
-                        return ""
-                    })()}
-                </components>
-            </editor-sidemenu>
-            <editor-traitmenu editor>
-                <header editor>
-                    <span editor>Traits</span>
-                </header>
-                <traits id="component-traits" editor>
-                    
-                </traits>
-            </editor-traitmenu>
-        `;
-        routerContainer.appendChild(mainEl);
+        // ${(() => {
+        //     /* let compsButtons = "";
+        //     for (const comp of Object.keys(Controller.components))
+        //         compsButtons += `<button editor onclick="editor.createComponent(${comp})">${comp}</button>`
+        //     return compsButtons; */
+        //     return ""
+        // })()}
+
+        const comp = (new Component("EditorMain", body, { }, { hideFromStack: true })).create();
+        comp.appendTo(routerContainer);
     };
 
     private displayElementTools() {
