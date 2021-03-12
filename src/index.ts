@@ -15,8 +15,12 @@ import "./core";
 import Controller from "./core/controllers";
 
 import Editor from "./core/editor";
+import Router from "./core/router";
 
 (async () => {
     new Editor();
     Text;
+    Router;
+
+    Router.navigate("/editor");
 })();

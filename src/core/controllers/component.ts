@@ -1,9 +1,8 @@
 import { EventEmitter } from "events";
 
+import Router from "../router";
 import Controller from "./index";
 import { parseStyle } from "../style";
-
-const routerContainer = document.getElementById("editor-container");
 
 function genRandId(length: number) {
     let result = '';
@@ -28,7 +27,7 @@ export class ComponentInstance {
     private baseContent: string;
 
     public DOMElem: HTMLDivElement;
-    public originContainer: HTMLElement = routerContainer;
+    public originContainer: HTMLElement = Router.getElem();
     public childrens: any[] = [];
 
     public appened: boolean = false;

@@ -7,17 +7,19 @@ import "./selector/style.scss";
 import body from "./body.html";
 import selectorBody from "./selector/body.html";
 
+import Router from "../router";
 import Controller from "../../core/controllers";
 import { Component, ComponentInstance } from "../controllers/component";
 
-const routerContainer = document.getElementById("editor-container");
+let currentInstance: any;
 
 export default class Editor {
     public lastHover: HTMLElement;
     public selectedElem: HTMLElement;
+    public editorComp: ComponentInstance;
     public selectedComp: ComponentInstance;
     public selecterComp: ComponentInstance;
-    public dragHoverElem: HTMLElement = routerContainer;
+    public dragHoverElem: HTMLElement = Router.getElem();
     public currentDragComp: string;
 
     private elementHoverHandler(ev: MouseEvent) {
@@ -32,18 +34,13 @@ export default class Editor {
         this.lastHover = hoverElement;
     };
 
-    private displayUi() {
-        // ${(() => {
-        //     /* let compsButtons = "";
-        //     for (const comp of Object.keys(Controller.components))
-        //         compsButtons += `<button editor onclick="editor.createComponent(${comp})">${comp}</button>`
-        //     return compsButtons; */
-        //     return ""
-        // })()}
-
-        const comp = (new Component("EditorMain", body, { }, { hideFromStack: true })).create();
-        comp.appendTo(routerContainer);
-    };
+    // ${(() => {
+    //     /* let compsButtons = "";
+    //     for (const comp of Object.keys(Controller.components))
+    //         compsButtons += `<button editor onclick="editor.createComponent(${comp})">${comp}</button>`
+    //     return compsButtons; */
+    //     return ""
+    // })()}
 
     private displayElementTools() {
         (this.selecterComp.appened) ? this.selecterComp.remove() : void 0;
@@ -52,7 +49,7 @@ export default class Editor {
         el.style.left = `${rect.x + 2}px`;
         el.style.top = `${rect.bottom + 3}px`;
         this.selecterComp = this.selecterComp;
-        this.selecterComp.appendTo(routerContainer);
+        this.selecterComp.appendTo(Router.getElem());
     };
 
     private closeElementTools() {
@@ -110,7 +107,7 @@ export default class Editor {
         el.style.backgroundColor = null;
         // Ugly solution but works for now
         setTimeout(() => {
-            this.dragHoverElem = routerContainer
+            this.dragHoverElem = Router.getElem()
         }, 5);
     };
 
@@ -151,6 +148,10 @@ export default class Editor {
         this.setDraggable();
     };
 
+    public static getInstance(): Editor {
+        return currentInstance;
+    };
+
     public constructor() {
         window.addEventListener("mousemove", ev => this.elementHoverHandler(ev));
         window.addEventListener("mousedown", ev => this.elementClickHandler(ev));
@@ -167,6 +168,7 @@ export default class Editor {
         window.editor.setDragOut = (el: HTMLElement) => { this.setDragOut(el) };
 
         this.selecterComp = (new Component("EditorSelector", selectorBody, { }, { hideFromStack: true })).create();
-        this.displayUi();
+        this.editorComp = (new Component("EditorMain", body, { }, { hideFromStack: true })).create();
+        currentInstance = this;
     };
 };
