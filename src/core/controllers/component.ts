@@ -42,14 +42,6 @@ export class ComponentInstance {
         });
     }
 
-    private spawnSubComponents() {
-        this.content = this.content.replace(/\[ (.*?) \]|\[(.*?)\]/g, (sub: string, ...args: any[]): any => {
-            const compName = sub.split("[")[1].split("]")[0].replace(/\s/g, "");
-            //const comp = Controller.components[compName].create();
-            console.log(compName, Controller.getComponent(compName));
-        });
-    };
-
     public rebuildContent() {
         // <([^>]+)>((?:(?!</\1).)*)</\1> : Match every tags
 
@@ -57,10 +49,6 @@ export class ComponentInstance {
         const style = (this.content.match(/<style>(.|\n)*?<\/style>/)) ? this.content.match(/<style>(.|\n)*?<\/style>/)[0]?.split("<style>")[1]?.split("</style>")[0] : void 0;
         this.content = (this.style) ? `<style>${(style || "") + parseStyle(this.style)}</style>${this.baseContent}` : this.baseContent;
         this.content = this.replaceStrByVar(this.content);
-
-        // this.spawnSubComponents();
-        // this.content = `<${this.label.toLowerCase()} id="${genRandId(5)}">${this.content}</${this.label.toLowerCase()}>`
-
         this.DOMElem.innerHTML = this.content;
     };
 
@@ -70,20 +58,6 @@ export class ComponentInstance {
         for (let i = 0; i < elem.children.length; i++) {
             this.parseChildren(elem.children[i]);
             this.childrens.push(elem);
-        }
-    };
-
-    public updateAttributesHandler(changed: any) {
-        const changedKeys = Object.keys(changed);
-        const changedVals = Object.values(changed);
-        for (let i = 0; i < changedKeys.length; i++) {
-            const changedKey = changedKeys[i];
-            if (this.vars[changedKey])
-                this.vars[changedKey] = changedVals[i];
-            const foundTrait = this.traits.find((trait: any) => trait.name == changedKey);
-            if (!foundTrait)
-                continue;
-            (foundTrait.cb) ? foundTrait.cb(this) : void 0;
         }
     };
 
