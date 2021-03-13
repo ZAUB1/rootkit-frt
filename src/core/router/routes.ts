@@ -3,9 +3,16 @@ import { ComponentInstance } from "../controllers/component";
 import Editor from "../editor";
 
 const routes: Array<Route> = [{
+    name: "Viewer",
+    path: "/",
+}, {
     name: "Editor",
     path: "/editor",
-    componentLoad: () => Editor.getInstance().editorComp,
+    componentLoad: (): ComponentInstance => {
+        if (!Editor.getInstance())
+            new Editor();
+        return Editor.getInstance().editorComp;
+    }
 }];
 
 export default routes;

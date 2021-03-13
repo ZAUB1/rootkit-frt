@@ -1,7 +1,7 @@
 import './index.scss';
 
 // import "./components/Map";
-import Text from "./components/Text";
+import "./components/Text";
 import "./components/SimpleColumn";
 import "./components/DoubleColumn";
 import "./components/TripleColumn";
@@ -18,9 +18,5 @@ import Editor from "./core/editor";
 import Router from "./core/router";
 
 (async () => {
-    new Editor();
-    Text;
-    Router;
-
     Router.navigate("/editor");
 })();
