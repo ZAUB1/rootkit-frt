@@ -1,17 +1,39 @@
+<nav editor>
+  <ul editor>
+    <li editor><a href="#" class="active first">Kit</a></li>
+    <li editor><a href="#" class="aaa">See</a></li>
+    <li editor><a href="#" class="aaa">Code</a></li>
+    <li editor><a href="#" class="last">About</a></li>
+  </ul>
+</nav>
 <editor-sidemenu>
-    <header editor>
-        <span editor>Components</span>
-    </header>
-    <components editor>
-        <div editor draggable="true" ondragstart="editor.startDrag(event, 'Text')" ondragend="editor.stopDrag(event)">Text</div>
-        <div editor draggable="true" ondragstart="editor.startDrag(event, 'SimpleColumn')" ondragend="editor.stopDrag(event)">Container</div>
-    </components>
+  <header editor>
+    <div editor class="title">
+      <span editor>Composants</span>
+    </div>
+  </header>
+  <components editor>
+    <div
+      editor
+      draggable="true"
+      ondragstart="editor.startDrag(event, 'Text')"
+      ondragend="editor.stopDrag(event)"
+    >
+      <i editor class="fas fa-pen"></i>Text
+    </div>
+    <div
+      editor
+      draggable="true"
+      ondragstart="editor.startDrag(event, 'SimpleColumn')"
+      ondragend="editor.stopDrag(event)"
+    >
+    <i editor class="fas fa-bookmark"></i>Container
+    </div>
+  </components>
 </editor-sidemenu>
 <editor-traitmenu editor>
-    <header editor>
-        <span editor>Traits</span>
-    </header>
-    <traits id="component-traits" editor>
-        
-    </traits>
+  <header editor>
+    <span editor>Traits</span>
+  </header>
+  <traits id="component-traits" editor> </traits>
 </editor-traitmenu>
