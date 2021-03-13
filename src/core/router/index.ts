@@ -22,24 +22,30 @@ export default new class Router {
         return this.DOMElem;
     };
 
+    private showError(str: string) {
+        this.DOMElem.style.margin = "5px";
+        this.DOMElem.innerHTML = str;
+    };
+
     private setComponent(comp: ComponentInstance) {
+        if (!comp)
+            return this.showError("Component not found");
         comp.appendTo(this.DOMElem);
     };
 
     public navigate(to: string = "/") {
         const route = this.routes.find(route => route.path == to);
         if (!route)
-            return;
+            return this.showError("Page not found");
         this.currentRoute = route;
         this.setComponent(route.componentLoad ? route.componentLoad() : route.component);
-        // this.replaceHistoryState();
     };
 
     public constructor() {
         this.DOMElem = document.getElementById(this.defaultContainer) as HTMLDivElement;
 
-        /* window.addEventListener('popstate', function (event) {
-            console.log("changed")
-        }); */
+        window.onload = (event: any) => {
+            this.navigate(window.location.pathname);
+        };
     };
 };

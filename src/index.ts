@@ -14,9 +14,8 @@ import "./components/Card";
 import "./core";
 import Controller from "./core/controllers";
 
-import Editor from "./core/editor";
-import Router from "./core/router";
+import "./core/editor";
+import "./core/router";
 
 (async () => {
-    Router.navigate("/editor");
 })();
