@@ -168,8 +168,8 @@ export default class Editor {
         window.editor.setDragElem = (el: HTMLElement) => { this.setDragElem(el) };
         window.editor.setDragOut = (el: HTMLElement) => { this.setDragOut(el) };
 
-        this.selecterComp = (new Component("EditorSelector", selectorBody, { }, { hideFromStack: true })).create();
-        this.editorComp = (new Component("EditorMain", body, { }, { hideFromStack: true })).create();
+        this.selecterComp = (new Component("EditorSelector", selectorBody, { hideFromStack: true })).create();
+        this.editorComp = (new Component("EditorMain", body, { hideFromStack: true })).create();
         currentInstance = this;
     };
 };

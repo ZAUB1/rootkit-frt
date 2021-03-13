@@ -6,7 +6,6 @@ import { Component } from "../../core/controllers/component";
 export default new Component(
     "Dropdown",
     body,
-    {  },
     { }
     //{ class: 'gjs-fonts gjs-f-b3' },
 );

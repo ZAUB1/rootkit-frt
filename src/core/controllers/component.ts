@@ -86,8 +86,10 @@ export class ComponentInstance {
         this.appened = true;
     };
 
-    public appendTo(container: HTMLElement) {
-        this.originContainer = container;
+    public appendTo(comp: ComponentInstance): void
+    public appendTo(container: HTMLElement): void
+    public appendTo(elem: ComponentInstance | HTMLElement): void {
+        this.originContainer = (elem instanceof ComponentInstance) ? elem.DOMElem : elem;
         this.append();
     };
 
@@ -150,7 +152,7 @@ export class Component {
     private style: any = {};
     private traits: any = {};
 
-    public constructor(label: string, content: string, attributes: object = {}, { style, traits = [], category = "Default", vars = {}, hideFromStack = false }: any = {}) {
+    public constructor(label: string, content: string, { style, traits = [], category = "Default", vars = {}, hideFromStack = false }: any = {}) {
         //super();
         this.id = label;
         this.label = label;
