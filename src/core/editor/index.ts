@@ -24,13 +24,13 @@ export default class Editor {
 
     private elementHoverHandler(ev: MouseEvent) {
         const hoverElement = document.elementFromPoint(ev.x, ev.y) as HTMLElement;
+        (this.lastHover) ? this.lastHover.style.outline = null : void 0;
         // Shouldn't be identified as a custom elem
         if (!hoverElement
         || hoverElement == this.selectedElem
         || hoverElement.nodeName.toLocaleLowerCase().includes("editor")
         || hoverElement.attributes.getNamedItem("editor"))
             return;
-        (this.lastHover) ? this.lastHover.style.outline = null : void 0;
         hoverElement.style.outline = "2px solid #ec4646";
         this.lastHover = hoverElement;
     };
@@ -51,10 +51,12 @@ export default class Editor {
         el.style.top = `${rect.bottom + 3}px`;
         this.selecterComp = this.selecterComp;
         this.selecterComp.appendTo(Router.getElem());
+        this.selectedElem.style.outline = "2px solid #51c2d5";
     };
 
     private closeElementTools() {
         (this.selecterComp.appened) ? this.selecterComp.remove() : void 0;
+        this.selectedElem.style.outline = null;
     };
 
     private displayTraitsMenu() {
@@ -89,11 +91,13 @@ export default class Editor {
 
     private stopDrag(event: DragEvent) {
         const comp = Controller.getComponent(this.currentDragComp).create();
-        comp.childrens.map(child => {
+        comp.childrens.map((child: HTMLElement) => {
             if (child.attributes.getNamedItem("editor-container")) {
                 child.ondrop = () => { window.editor.setDragOut(child) };
                 child.ondragover = () => { window.editor.setDragElem(child) };
                 child.ondragleave = () => { window.editor.setDragOut(child) };
+                child.style.border = "1px dotted black";
+                child.parentElement.style.border = "1px dotted black";
             }
         });
         comp.appendTo(this.dragHoverElem);
@@ -108,7 +112,7 @@ export default class Editor {
         el.style.backgroundColor = null;
         // Ugly solution but works for now
         setTimeout(() => {
-            this.dragHoverElem = Router.getElem()
+            this.dragHoverElem = this.editorComp.getFirstChild("editor-main");
         }, 5);
     };
 
@@ -140,7 +144,6 @@ export default class Editor {
             return /* this.closeElemMenus() */;
         (this.selectedElem) ? this.selectedElem.style.outline = null : void 0;
         this.lastHover = null;
-        hoverElement.style.outline = "2px solid #51c2d5";
         this.selectedElem = hoverElement;
         this.selectedComp = Controller.getComponentInstance(this.selectedElem.parentElement.id);
 
