@@ -1,0 +1,105 @@
+$menu-width: 200px;
+$navbar-height: 50px;
+
+editor-main {
+    position: absolute;
+    width: calc(100% - #{$menu-width});
+    left: $menu-width;
+    top: $navbar-height;
+};
+
+nav {
+    position: absolute;
+    top: 0px;
+    width: calc(100% - #{$menu-width});
+    height: $navbar-height;
+    left: $menu-width;
+    box-shadow: 1px 1px 12px #aaa;
+}
+
+editor-sidemenu {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 100vh;
+    min-width: $menu-width;
+    box-shadow: 1px 1px 12px #aaa;
+    background-color: white;
+
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+    }
+
+    .title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        width: 100%;
+        background: black;
+    }
+
+    span {
+        color: white;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    components {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            min-height: 30px;
+            min-width: 150px;
+            background-color: lightgrey;
+            margin: 5px;
+
+        }
+
+        div i {
+            text-align: start;
+            
+        }
+    }
+
+    button {
+        margin: 5px;
+        width: 150px;
+    }
+};
+
+editor-traitmenu {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 100vh;
+    min-width: 200px;
+    border-left: 1px solid #efefef;
+    background-color: white;
+    display: none;
+
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+    }
+
+    traits {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+    }
+};

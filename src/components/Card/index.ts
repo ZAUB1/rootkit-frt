@@ -6,6 +6,5 @@ import { Component } from "../../core/controllers/component";
 export default new Component(
     "Card",
     body,
-    { },
     {style}
 );

@@ -20,11 +20,13 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, prod_Path),
-        filename: '[name].[chunkhash].js'
+        filename: '[name].[chunkhash].js',
+        publicPath: "/"
     },
     devtool: 'source-map',
     devServer: {
         open: true,
+        historyApiFallback: true
     },
     module: {
         rules: [{

@@ -1,19 +1,36 @@
 import { EventEmitter } from "events";
 
+import Router from "../router";
 import Controller from "./index";
-import { editor } from "../editor";
 import { parseStyle } from "../style";
 
-class ComponentInstance {
+function genRandId(length: number) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < length; i++)
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+
+    return result;
+}
+
+export class ComponentInstance {
     public id: string;
     public label: string;
     public attributes: any;
-    public content: string | object;
-    private vars: any = {};
+    public content: string;
+
+    protected vars: any = {};
     private style: any = {};
     private traits: any = {};
     private baseContent: string;
-    public DOMElem: any;
+
+    public DOMElem: HTMLDivElement;
+    public originContainer: HTMLElement = Router.getElem();
+    public childrens: any[] = [];
+
+    public appened: boolean = false;
 
     private replaceStrByVar(str: string) {
         return str.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
@@ -26,26 +43,69 @@ class ComponentInstance {
     }
 
     public rebuildContent() {
-        this.content = (this.style) ? `<style>${parseStyle(this.style)}</style>${this.baseContent}` : this.baseContent;
-        this.content = `<${this.label.toLowerCase()}>${this.replaceStrByVar(this.content)}</${this.label.toLowerCase()}>`
+        // <([^>]+)>((?:(?!</\1).)*)</\1> : Match every tags
+
+        // Parse style from inner body
+        const style = (this.content.match(/<style>(.|\n)*?<\/style>/)) ? this.content.match(/<style>(.|\n)*?<\/style>/)[0]?.split("<style>")[1]?.split("</style>")[0] : void 0;
+        this.content = (this.style) ? `<style>${(style || "") + parseStyle(this.style)}</style>${this.baseContent}` : this.baseContent;
+        this.content = this.replaceStrByVar(this.content);
         this.DOMElem.innerHTML = this.content;
     };
 
-    public updateAttributesHandler(changed: any) {
-        const changedKeys = Object.keys(changed);
-        const changedVals = Object.values(changed);
-        for (let i = 0; i < changedKeys.length; i++) {
-            const changedKey = changedKeys[i];
-            if (this.vars[changedKey])
-                this.vars[changedKey] = changedVals[i];
-            const foundTrait = this.traits.find((trait: any) => trait.name == changedKey);
-            if (!foundTrait)
-                continue;
-            (foundTrait.cb) ? foundTrait.cb(this) : void 0;
+    private parseChildren(elem: any) {
+        if (!elem.children.length)
+            this.childrens.push(elem);
+        for (let i = 0; i < elem.children.length; i++) {
+            this.parseChildren(elem.children[i]);
+            this.childrens.push(elem);
         }
     };
 
-    public constructor(label: string, content: string | object, element: any, { style, traits = [], vars = [], id }: any) {
+    public append() {
+        this.originContainer.appendChild(this.DOMElem);
+        this.appened = true;
+    };
+
+    public appendTo(comp: ComponentInstance): void
+    public appendTo(container: HTMLElement): void
+    public appendTo(elem: ComponentInstance | HTMLElement): void {
+        this.originContainer = (elem instanceof ComponentInstance) ? elem.DOMElem : elem;
+        this.append();
+    };
+
+    public moveTo(container: HTMLElement) {
+        this.remove();
+        this.appendTo(container);
+    };
+
+    public remove() {
+        this.originContainer.removeChild(this.DOMElem);
+        this.appened = false;
+    };
+
+    public setVar(key: string, value: any) {
+        if (!this.vars[key])
+            return;
+        this.vars[key] = value;
+        this.rebuildContent();
+    };
+
+    public getChilds(key: string = "*") {
+        if (key == "*")
+            return this.childrens;
+        const childs = [];
+        for (const child of this.childrens) {
+            if (child.nodeName.toLowerCase() == key)
+                childs.push(child);
+        }
+        return childs;
+    };
+
+    public getFirstChild(key: string) {
+        return this.getChilds(key)[0];
+    }
+
+    public constructor(label: string, content: string, element: any, { style, traits = [], vars = [], id }: any) {
         this.label = label;
         this.content = content;
         this.baseContent = content as string;
@@ -56,29 +116,32 @@ class ComponentInstance {
         this.DOMElem = element;
         this.id = id;
         this.rebuildContent();
+        this.parseChildren(this.DOMElem);
 
-        console.log("Component instance spawned")
+        console.log("Component instance spawned:", this.label);
     };
 };
 
-export class Component extends EventEmitter {
+export class Component {
     public id: string;
     public label: string;
     public category: string;
-    public content: string | object;
+    public content: string;
     public attributes: any;
+    private vars: any = {};
+    private style: any = {};
+    private traits: any = {};
 
-    public constructor(label: string, content: string | object, attributes: object = {}, { style, traits = [], category = "Default", vars = {} }: any = {}) {
-        super();
+    public constructor(label: string, content: string, { style, traits = [], category = "Default", vars = {}, hideFromStack = false }: any = {}) {
+        //super();
         this.id = label;
         this.label = label;
         this.category = category;
         this.attributes = vars;
-
-        if (typeof content == "string")
-            this.content = (style) ? `<style>${parseStyle(style)}</style>${content}` : content;
-        else
-            this.content = content;
+        this.style = style;
+        this.traits = traits;
+        this.vars = vars;
+        this.content = content;
 
         traits = traits.map((trait: any) => {
             return {
@@ -87,46 +150,21 @@ export class Component extends EventEmitter {
             }
         });
 
-        const baseModel = editor.DomComponents.getType("default");
-        if (typeof content == "string") {
-            const _this = this;
-            editor.DomComponents.addType(label.toLowerCase(), {
-                model: {
-                    defaults: {
-                        ...baseModel,
-                        traits: traits,
-                    },
-                    init() {
-                        setTimeout(() => {
-                            Controller.components[this.ccid] = new ComponentInstance(_this.label, _this.content, this.view.el, { style, traits, vars, id: this.ccid });
-                        }, 0)
-                    },
-                    updated() {
-                        if (!this._changing)
-                            return;
-                        Controller.components[this.ccid].updateAttributesHandler(this.changed);
-                        Controller.components[this.ccid].rebuildContent();
-                    }
-                },
-                isComponent: (el: any) => {
-                    if (el && el.classList && el.classList.contains(label.toLowerCase()))
-                        return { type: label.toLowerCase() }
-                },
-                view: {
-                    removed() {
-                        console.log(this.el.id)
-                        delete Controller.components[this.el.id];
-                    }
-                }
-            });
-        }
+        (!hideFromStack) ? Controller.components[this.label] = this : void 0;
+    };
 
-        editor.BlockManager.add(label, {
-            id: this.id,
-            label: this.label,
-            content: this.content,
-            category: this.category,
-            attributes: attributes
-        });
+    public create(): ComponentInstance {
+        const randId = genRandId(5);
+        const el = document.createElement("div");
+        el.setAttribute("id", randId);
+        const compInstance = new ComponentInstance(this.label, this.content, el, { style: this.style, traits: this.traits, vars: this.vars });
+        Controller.componentsInstances[randId] = compInstance;
+        return compInstance;
+    };
+
+    public createAndAppend(): ComponentInstance {
+        const com = this.create();
+        com.append();
+        return com;
     };
 };

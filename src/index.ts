@@ -1,18 +1,12 @@
 import './index.scss';
+import "./components";
 
-import * as editor from "./core/editor";
+import Text from "./components/Text";
+import Simple from "./components/SimpleColumn";
 
-(async () => {
-    editor.init();
-})();
+import "./core/router";
+import Viewer from './core/viewer';
 
-import "./components/Map";
-import "./components/Text";
-import "./components/SimpleColumn";
-import "./components/DoubleColumn";
-import "./components/TripleColumn";
-import "./components/Button";
-import "./components/Image";
-import "./components/Navbar";
-import "./components/Dropdown";
-import "./components/Card";
+Viewer.onLoad((viewer: Viewer) => {
+    viewer.createComp(Simple);
+});
