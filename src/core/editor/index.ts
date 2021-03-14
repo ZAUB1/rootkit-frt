@@ -113,7 +113,7 @@ export default class Editor {
         // Ugly solution but works for now
         setTimeout(() => {
             this.dragHoverElem = this.editorComp.getFirstChild("editor-main");
-        }, 100);
+        }, 1000);
     };
 
     private createComponent(name: string = "Text") {

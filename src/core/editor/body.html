@@ -27,10 +27,34 @@
         <div
             editor
             draggable="true"
+            ondragstart="editor.startDrag(event, 'Button')"
+            ondragend="editor.stopDrag(event)"
+        >
+            <i class="fas fa-lemon"></i>Button
+        </div>
+        <div
+            editor
+            draggable="true"
             ondragstart="editor.startDrag(event, 'SimpleColumn')"
             ondragend="editor.stopDrag(event)"
         >
             <i editor class="fas fa-bookmark"></i>Container
+        </div>
+        <div
+            editor
+            draggable="true"
+            ondragstart="editor.startDrag(event, 'DoubleColumn')"
+            ondragend="editor.stopDrag(event)"
+        >
+            <i editor class="fas fa-bookmark"></i>Double Container
+        </div>
+        <div
+            editor
+            draggable="true"
+            ondragstart="editor.startDrag(event, 'TripleColumn')"
+            ondragend="editor.stopDrag(event)"
+        >
+            <i editor class="fas fa-bookmark"></i>Triple Container
         </div>
     </components>
 </editor-sidemenu>
