@@ -8,6 +8,7 @@ import body from "./body.html";
 import selectorBody from "./selector/body.html";
 
 import Router from "../router";
+import { genRandId } from "../etc/rand";
 import Controller from "../../core/controllers";
 import { Component, ComponentInstance } from "../controllers/component";
 
@@ -63,9 +64,44 @@ export default class Editor {
         const sideMenu = document.getElementsByTagName("editor-sidemenu")[0] as HTMLElement;
         const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
         const traitsBody = document.getElementById("component-traits");
+        console.log(this.selectedComp?.traits)
         traitsBody.innerHTML = `
             <span editor>Component ID: #${(this.selectedElem.parentNode as HTMLElement).id}</span>
             <span editor>Component type: ${this.selectedComp.label}</span>
+            ${(() => {
+                let traitElems = "";
+                for (const trait of this.selectedComp?.traits) {
+                    const traitId = genRandId(10);
+                    switch (trait.type) {
+                        case "text":
+                            traitElems += `
+                                <label editor for="${traitId}">${trait.label}</label>
+                                <input editor id="${traitId}" type='text' onkeydown='editor.traitKeyHandler(event, "${trait.name}")' value="${this.selectedComp.getVar(trait.name)}">
+                            `;
+                            break;
+                        case "number":
+                            traitElems += `
+                                <label editor for="${traitId}">${trait.label}</label>
+                                <input editor id="${traitId}" type='number' onkeydown='editor.traitKeyHandler(event, "${trait.name}")' onchange='editor.traitChangeHandler(event, "${trait.name}")' value="${this.selectedComp.getVar(trait.name)}">
+                            `;
+                            break;
+                        case "select":
+                            traitElems += `
+                                <label editor for="${traitId}">${trait.label}</label>
+                                <select editor id="${traitId}" onchange='editor.traitChangeHandler(event, "${trait.name}")' value="${this.selectedComp.getVar(trait.name)}">>
+                                    ${(() => {
+                                        let selectOptions = "";
+                                        for (const option of trait.options)
+                                            selectOptions += `<option editor value="${option.id}">${option.name}</option>`;
+                                        return selectOptions;
+                                    })()}
+                                </select>
+                            `;
+                            break;
+                    }
+                }
+                return traitElems;
+            })()}
         `;
         sideMenu.style.display = null;
         traitsMenu.style.display = "block";
@@ -76,6 +112,22 @@ export default class Editor {
         const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
         sideMenu.style.display = "block";
         traitsMenu.style.display = null;
+    };
+
+    private traitKeyHandler(event: KeyboardEvent, traitName: string) {
+        if (event.key != "Enter")
+            return;
+        const el = event.target as any;
+        if (!el)
+            return;
+        this.selectedComp.setVar(traitName, el.value);
+    };
+
+    private traitChangeHandler(event: any, traitName: string) {
+        const el = event.target as any;
+        if (!el)
+            return;
+        this.selectedComp.setVar(traitName, el.value);
     };
 
     private closeElemMenus() {
@@ -163,10 +215,16 @@ export default class Editor {
         window.editor = {};
         window.editor.destroySelectedElem = () => { this.destroySelectedElem(); this.closeElementTools() };
         window.editor.createComponent = () => { this.createComponent() };
+
+        // Drag & Drop declarations
         window.editor.startDrag = (event: DragEvent, compType: string) => { /* event.preventDefault(); */ this.startDrag(event, compType) };
         window.editor.stopDrag = (event: DragEvent) => { /* event.preventDefault();  */this.stopDrag(event) };
         window.editor.setDragElem = (el: HTMLElement) => { this.setDragElem(el) };
         window.editor.setDragOut = (el: HTMLElement) => { this.setDragOut(el) };
+
+        // Traits methods declarations
+        window.editor.traitKeyHandler = (event: KeyboardEvent, traitName: string) => { this.traitKeyHandler(event, traitName) };
+        window.editor.traitChangeHandler = (event: KeyboardEvent, traitName: string) => { this.traitChangeHandler(event, traitName) };
 
         this.selecterComp = (new Component("EditorSelector", selectorBody, { hideFromStack: true })).create();
         this.editorComp = (new Component("EditorMain", body, { hideFromStack: true })).create();

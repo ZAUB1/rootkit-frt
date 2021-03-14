@@ -3,17 +3,7 @@ import { EventEmitter } from "events";
 import Router from "../router";
 import Controller from "./index";
 import { parseStyle } from "../style";
-
-function genRandId(length: number) {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-
-    for (let i = 0; i < length; i++)
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-
-    return result;
-}
+import { genRandId } from "../etc/rand";
 
 export class ComponentInstance {
     public id: string;
@@ -23,7 +13,7 @@ export class ComponentInstance {
 
     protected vars: any = {};
     private style: any = {};
-    private traits: any = {};
+    public traits: any = {};
     private baseContent: string;
 
     public DOMElem: HTMLDivElement;
@@ -81,6 +71,12 @@ export class ComponentInstance {
     public remove() {
         this.originContainer.removeChild(this.DOMElem);
         this.appened = false;
+    };
+
+    public getVar(key: string) {
+        if (!this.vars[key])
+            return false;
+        return this.vars[key];
     };
 
     public setVar(key: string, value: any) {
