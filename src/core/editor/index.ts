@@ -160,9 +160,6 @@ export default class Editor {
         window.addEventListener("mousemove", ev => this.elementHoverHandler(ev));
         window.addEventListener("mousedown", ev => this.elementClickHandler(ev));
 
-        // @TODO Put into mi
-        // routerContainer.addEventListener("dragover", ev => this.dragHoverElem != routerContainer && this.setDragElem(routerContainer));
-
         window.editor = {};
         window.editor.destroySelectedElem = () => { this.destroySelectedElem(); this.closeElementTools() };
         window.editor.createComponent = () => { this.createComponent() };
