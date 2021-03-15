@@ -41,15 +41,15 @@ export default new Component(
             label: "Font",
             name: "font",
             options: [
-                "Arial",
-                "Halvetica"
+                { id: "arial", name: "Arial" },
+                { id: "halvetica", name: "Halvetica" },
             ],
         }, {
             type: "select",
             label: "Decoration",
             name: "decoration",
             options: [
-                { id: "none", name: " " },
+                { id: "none", name: "--" },
                 { id: "underline", name: "Underline" }
             ],
         }, {

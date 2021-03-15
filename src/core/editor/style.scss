@@ -1,3 +1,13 @@
+$menu-width: 200px;
+$navbar-height: 50px;
+
+editor-main {
+    position: absolute;
+    width: calc(100% - #{$menu-width});
+    left: $menu-width;
+    top: $navbar-height;
+};
+
 nav {
     display: flex;
     flex-direction: row;
@@ -6,10 +16,10 @@ nav {
     z-index: 2;
     position: absolute;
     top: 0px;
-    width: calc(100% - 200px);
-    height: 50px;
+    width: calc(100% - #{$menu-width});
+    height: $navbar-height;
+    left: $menu-width;
     box-shadow: 1px 1px 12px #aaa;
-    
 }
 
 editor-sidemenu {
@@ -17,7 +27,7 @@ editor-sidemenu {
     left: 0px;
     top: 0px;
     height: 100vh;
-    min-width: 200px;
+    min-width: $menu-width;
     box-shadow: 1px 1px 12px #aaa;
     background-color: white;
 

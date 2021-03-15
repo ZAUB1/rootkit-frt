@@ -8,6 +8,7 @@ import body from "./body.html";
 import selectorBody from "./selector/body.html";
 
 import Router from "../router";
+import { genRandId } from "../etc/rand";
 import Controller from "../../core/controllers";
 import { Component, ComponentInstance } from "../controllers/component";
 
@@ -24,13 +25,13 @@ export default class Editor {
 
     private elementHoverHandler(ev: MouseEvent) {
         const hoverElement = document.elementFromPoint(ev.x, ev.y) as HTMLElement;
+        (this.lastHover) ? this.lastHover.style.outline = null : void 0;
         // Shouldn't be identified as a custom elem
         if (!hoverElement
         || hoverElement == this.selectedElem
         || hoverElement.nodeName.toLocaleLowerCase().includes("editor")
         || hoverElement.attributes.getNamedItem("editor"))
             return;
-        (this.lastHover) ? this.lastHover.style.outline = null : void 0;
         hoverElement.style.outline = "2px solid #ec4646";
         this.lastHover = hoverElement;
     };
@@ -51,19 +52,56 @@ export default class Editor {
         el.style.top = `${rect.bottom + 3}px`;
         this.selecterComp = this.selecterComp;
         this.selecterComp.appendTo(Router.getElem());
+        this.selectedElem.style.outline = "2px solid #51c2d5";
     };
 
     private closeElementTools() {
         (this.selecterComp.appened) ? this.selecterComp.remove() : void 0;
+        this.selectedElem.style.outline = null;
     };
 
     private displayTraitsMenu() {
         const sideMenu = document.getElementsByTagName("editor-sidemenu")[0] as HTMLElement;
         const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
         const traitsBody = document.getElementById("component-traits");
+        console.log(this.selectedComp?.traits)
         traitsBody.innerHTML = `
             <span editor>Component ID: #${(this.selectedElem.parentNode as HTMLElement).id}</span>
             <span editor>Component type: ${this.selectedComp.label}</span>
+            ${(() => {
+                let traitElems = "";
+                for (const trait of this.selectedComp?.traits) {
+                    const traitId = genRandId(10);
+                    switch (trait.type) {
+                        case "text":
+                            traitElems += `
+                                <label editor for="${traitId}">${trait.label}</label>
+                                <input editor id="${traitId}" type='text' onkeydown='editor.traitKeyHandler(event, "${trait.name}")' value="${this.selectedComp.getVar(trait.name)}">
+                            `;
+                            break;
+                        case "number":
+                            traitElems += `
+                                <label editor for="${traitId}">${trait.label}</label>
+                                <input editor id="${traitId}" type='number' onkeydown='editor.traitKeyHandler(event, "${trait.name}")' onchange='editor.traitChangeHandler(event, "${trait.name}")' value="${this.selectedComp.getVar(trait.name)}">
+                            `;
+                            break;
+                        case "select":
+                            traitElems += `
+                                <label editor for="${traitId}">${trait.label}</label>
+                                <select editor id="${traitId}" onchange='editor.traitChangeHandler(event, "${trait.name}")' value="${this.selectedComp.getVar(trait.name)}">>
+                                    ${(() => {
+                                        let selectOptions = "";
+                                        for (const option of trait.options)
+                                            selectOptions += `<option editor value="${option.id}">${option.name}</option>`;
+                                        return selectOptions;
+                                    })()}
+                                </select>
+                            `;
+                            break;
+                    }
+                }
+                return traitElems;
+            })()}
         `;
         sideMenu.style.display = null;
         traitsMenu.style.display = "block";
@@ -74,6 +112,22 @@ export default class Editor {
         const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
         sideMenu.style.display = "block";
         traitsMenu.style.display = null;
+    };
+
+    private traitKeyHandler(event: KeyboardEvent, traitName: string) {
+        if (event.key != "Enter")
+            return;
+        const el = event.target as any;
+        if (!el)
+            return;
+        this.selectedComp.setVar(traitName, el.value);
+    };
+
+    private traitChangeHandler(event: any, traitName: string) {
+        const el = event.target as any;
+        if (!el)
+            return;
+        this.selectedComp.setVar(traitName, el.value);
     };
 
     private closeElemMenus() {
@@ -89,11 +143,13 @@ export default class Editor {
 
     private stopDrag(event: DragEvent) {
         const comp = Controller.getComponent(this.currentDragComp).create();
-        comp.childrens.map(child => {
+        comp.childrens.map((child: HTMLElement) => {
             if (child.attributes.getNamedItem("editor-container")) {
                 child.ondrop = () => { window.editor.setDragOut(child) };
                 child.ondragover = () => { window.editor.setDragElem(child) };
                 child.ondragleave = () => { window.editor.setDragOut(child) };
+                child.style.border = "1px dotted black";
+                child.parentElement.style.border = "1px dotted black";
             }
         });
         comp.appendTo(this.dragHoverElem);
@@ -108,8 +164,8 @@ export default class Editor {
         el.style.backgroundColor = null;
         // Ugly solution but works for now
         setTimeout(() => {
-            this.dragHoverElem = Router.getElem()
-        }, 5);
+            this.dragHoverElem = this.editorComp.getFirstChild("editor-main");
+        }, 1000);
     };
 
     private createComponent(name: string = "Text") {
@@ -140,7 +196,6 @@ export default class Editor {
             return /* this.closeElemMenus() */;
         (this.selectedElem) ? this.selectedElem.style.outline = null : void 0;
         this.lastHover = null;
-        hoverElement.style.outline = "2px solid #51c2d5";
         this.selectedElem = hoverElement;
         this.selectedComp = Controller.getComponentInstance(this.selectedElem.parentElement.id);
 
@@ -157,19 +212,23 @@ export default class Editor {
         window.addEventListener("mousemove", ev => this.elementHoverHandler(ev));
         window.addEventListener("mousedown", ev => this.elementClickHandler(ev));
 
-        // @TODO Put into mi
-        // routerContainer.addEventListener("dragover", ev => this.dragHoverElem != routerContainer && this.setDragElem(routerContainer));
-
         window.editor = {};
         window.editor.destroySelectedElem = () => { this.destroySelectedElem(); this.closeElementTools() };
         window.editor.createComponent = () => { this.createComponent() };
+
+        // Drag & Drop declarations
         window.editor.startDrag = (event: DragEvent, compType: string) => { /* event.preventDefault(); */ this.startDrag(event, compType) };
         window.editor.stopDrag = (event: DragEvent) => { /* event.preventDefault();  */this.stopDrag(event) };
         window.editor.setDragElem = (el: HTMLElement) => { this.setDragElem(el) };
         window.editor.setDragOut = (el: HTMLElement) => { this.setDragOut(el) };
 
+        // Traits methods declarations
+        window.editor.traitKeyHandler = (event: KeyboardEvent, traitName: string) => { this.traitKeyHandler(event, traitName) };
+        window.editor.traitChangeHandler = (event: KeyboardEvent, traitName: string) => { this.traitChangeHandler(event, traitName) };
+
         this.selecterComp = (new Component("EditorSelector", selectorBody, { hideFromStack: true })).create();
         this.editorComp = (new Component("EditorMain", body, { hideFromStack: true })).create();
+        this.dragHoverElem = this.editorComp.getFirstChild("editor-main");
         currentInstance = this;
     };
 };

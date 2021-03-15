@@ -3,17 +3,7 @@ import { EventEmitter } from "events";
 import Router from "../router";
 import Controller from "./index";
 import { parseStyle } from "../style";
-
-function genRandId(length: number) {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-
-    for (let i = 0; i < length; i++)
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-
-    return result;
-}
+import { genRandId } from "../etc/rand";
 
 export class ComponentInstance {
     public id: string;
@@ -23,7 +13,7 @@ export class ComponentInstance {
 
     protected vars: any = {};
     private style: any = {};
-    private traits: any = {};
+    public traits: any = {};
     private baseContent: string;
 
     public DOMElem: HTMLDivElement;
@@ -42,19 +32,13 @@ export class ComponentInstance {
         });
     }
 
-    private spawnSubComponents() {
-        this.content = this.content.replace(/\[ (.*?) \]|\[(.*?)\]/g, (sub: string, ...args: any[]): any => {
-            const compName = sub.split("[")[1].split("]")[0].replace(/\s/g, "");
-            //const comp = Controller.components[compName].create();
-            console.log(compName, Controller.getComponent(compName));
-        });
-    };
-
     public rebuildContent() {
-        this.content = (this.style) ? `<style>${parseStyle(this.style)}</style>${this.baseContent}` : this.baseContent;
+        // <([^>]+)>((?:(?!</\1).)*)</\1> : Match every tags
+
+        // Parse style from inner body
+        const style = (this.content.match(/<style>(.|\n)*?<\/style>/)) ? this.content.match(/<style>(.|\n)*?<\/style>/)[0]?.split("<style>")[1]?.split("</style>")[0] : void 0;
+        this.content = (this.style) ? `<style>${(style || "") + parseStyle(this.style)}</style>${this.baseContent}` : this.baseContent;
         this.content = this.replaceStrByVar(this.content);
-        // this.spawnSubComponents();
-        //this.content = `<${this.label.toLowerCase()} id="${genRandId(5)}">${this.content}</${this.label.toLowerCase()}>`
         this.DOMElem.innerHTML = this.content;
     };
 
@@ -64,20 +48,6 @@ export class ComponentInstance {
         for (let i = 0; i < elem.children.length; i++) {
             this.parseChildren(elem.children[i]);
             this.childrens.push(elem);
-        }
-    };
-
-    public updateAttributesHandler(changed: any) {
-        const changedKeys = Object.keys(changed);
-        const changedVals = Object.values(changed);
-        for (let i = 0; i < changedKeys.length; i++) {
-            const changedKey = changedKeys[i];
-            if (this.vars[changedKey])
-                this.vars[changedKey] = changedVals[i];
-            const foundTrait = this.traits.find((trait: any) => trait.name == changedKey);
-            if (!foundTrait)
-                continue;
-            (foundTrait.cb) ? foundTrait.cb(this) : void 0;
         }
     };
 
@@ -101,6 +71,12 @@ export class ComponentInstance {
     public remove() {
         this.originContainer.removeChild(this.DOMElem);
         this.appened = false;
+    };
+
+    public getVar(key: string) {
+        if (!this.vars[key])
+            return false;
+        return this.vars[key];
     };
 
     public setVar(key: string, value: any) {
@@ -138,7 +114,7 @@ export class ComponentInstance {
         this.rebuildContent();
         this.parseChildren(this.DOMElem);
 
-        console.log("Component instance spawned", (this.DOMElem as any).children);
+        console.log("Component instance spawned:", this.label);
     };
 };
 
@@ -161,7 +137,7 @@ export class Component {
         this.style = style;
         this.traits = traits;
         this.vars = vars;
-        this.content = (style) ? `<style>${parseStyle(style)}</style>${content}` : content;
+        this.content = content;
 
         traits = traits.map((trait: any) => {
             return {
