@@ -1,4 +1,9 @@
 nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
     position: absolute;
     top: 0px;
     width: calc(100% - 200px);
