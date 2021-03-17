@@ -5,7 +5,6 @@ declare global {
 import "./style.scss";
 import style from "./style.scss";
 
-console.log(style);
 import "./selector/style.scss";
 import body from "./body.html";
 import selectorBody from "./selector/body.html";
@@ -222,7 +221,7 @@ export default class Editor {
             return this.closeElemMenus();
         if (hoverElement.nodeName.toLocaleLowerCase().includes("editor")
         || hoverElement.attributes.getNamedItem("editor"))
-            return /* this.closeElemMenus() */;
+            return;
         (this.selectedElem) ? this.selectedElem.style.outline = null : void 0;
         this.lastHover = null;
         this.selectedElem = hoverElement;
@@ -235,6 +234,16 @@ export default class Editor {
 
     public static getInstance(): Editor {
         return currentInstance;
+    };
+
+    private flagChildsAsEditor(el: HTMLElement) {
+        if (!el)
+            return;
+        el.setAttribute("editor", "true");
+        if (!el.children.length)
+            return;
+        for (const child of el.children)
+            this.flagChildsAsEditor(child as HTMLElement);
     };
 
     public constructor() {
@@ -258,6 +267,7 @@ export default class Editor {
 
         this.selecterComp = (new Component("EditorSelector", selectorBody, { hideFromStack: true })).create();
         this.editorComp = (new Component("EditorMain", body, { hideFromStack: true })).create();
+        this.flagChildsAsEditor(this.editorComp.DOMElem);
         this.dragHoverElem = this.editorComp.getFirstChild("editor-main");
         currentInstance = this;
     };
