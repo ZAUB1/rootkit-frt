@@ -16,19 +16,18 @@ nav {
     z-index: 2;
     position: absolute;
     top: 0px;
-    width: calc(100% - #{$menu-width});
+    width: 100%;
     height: $navbar-height;
-    left: $menu-width;
-    box-shadow: 1px 1px 12px #aaa;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)!important;
 }
 
 editor-sidemenu {
     position: absolute;
     left: 0px;
-    top: 0px;
+    top: $navbar-height;
     height: 100vh;
     min-width: $menu-width;
-    box-shadow: 1px 1px 12px #aaa;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)!important;
     background-color: white;
 
     header {
@@ -45,7 +44,6 @@ editor-sidemenu {
         height: 40px;
         width: 100%;
         background: black;
-        margin-top: 90px;
     }
 
     span {
@@ -59,7 +57,6 @@ editor-sidemenu {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        margin-top: 60px;
 
         div {
             display: flex;

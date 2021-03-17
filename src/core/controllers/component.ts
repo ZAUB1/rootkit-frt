@@ -153,6 +153,7 @@ export class Component {
         const randId = genRandId(5);
         const el = document.createElement("div");
         el.setAttribute("id", randId);
+        el.setAttribute("component-instance", "true");
         const compInstance = new ComponentInstance(this.label, this.content, el, { style: this.style, traits: this.traits, vars: this.vars });
         Controller.componentsInstances[randId] = compInstance;
         return compInstance;

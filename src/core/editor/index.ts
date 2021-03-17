@@ -49,7 +49,7 @@ export default class Editor {
 
     private displayElementTools() {
         (this.selecterComp.appened) ? this.selecterComp.remove() : void 0;
-        const rect = this.selectedElem.getBoundingClientRect();
+        const rect = this.getParentMovable(this.selectedElem).getBoundingClientRect();
         const el = this.selecterComp.getFirstChild("editor-pick");
         el.style.left = `${rect.x + 2}px`;
         el.style.top = `${rect.bottom + 3}px`;
@@ -164,6 +164,7 @@ export default class Editor {
 
     private stopDrag(event: DragEvent) {
         const comp = Controller.getComponent(this.currentDragComp).create();
+        this.setDraggable(comp.DOMElem);
         comp.childrens.map((child: HTMLElement) => {
             if (child.attributes.getNamedItem("editor-container")) {
                 child.ondrop = () => { window.editor.setDragOut(child) };
@@ -199,13 +200,20 @@ export default class Editor {
         this.selectedComp.remove();
     };
 
-    private setDraggable() {
-        this.selectedElem.draggable = true;
-        this.selectedElem.ondragstart = (event) => this.startDrag(event, this.selectedComp.label);
-        this.selectedElem.ondragend = (event) => {
+    private setDraggable(el: HTMLElement) {
+        el.draggable = true;
+        el.ondragstart = (event) => this.startDrag(event, this.selectedComp.label);
+        el.ondragend = (event) => {
+            console.log("eend;")
             this.selectedComp.moveTo(this.dragHoverElem);
             this.closeElementTools();
         };
+    };
+
+    private getParentMovable(el: Element): Element {
+        if (!el.attributes.getNamedItem("component-instance"))
+            return this.getParentMovable(el.parentElement);
+        return el;
     };
 
     private elementClickHandler(ev: MouseEvent) {
@@ -218,11 +226,11 @@ export default class Editor {
         (this.selectedElem) ? this.selectedElem.style.outline = null : void 0;
         this.lastHover = null;
         this.selectedElem = hoverElement;
-        this.selectedComp = Controller.getComponentInstance(this.selectedElem.parentElement.id);
+        const parentCompElem = this.getParentMovable(this.selectedElem);
+        this.selectedComp = Controller.getComponentInstance(parentCompElem.id);
 
         this.displayTraitsMenu();
         this.displayElementTools();
-        this.setDraggable();
     };
 
     public static getInstance(): Editor {

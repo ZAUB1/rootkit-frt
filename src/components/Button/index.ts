@@ -8,7 +8,19 @@ export default new Component(
     body,
     {
         style,
-        traits: [
-        ]
+        vars: {
+            body: "Text...",
+            fontColor: "rgba(0, 0, 0, .87)",
+            backColor: "#d7d7d7"
+        },
+        traits: [{
+            type: "text",
+            name: "body",
+            label: "Content"
+        }, {
+            type: "color",
+            name: "fontColor",
+            label: "Font color"
+        }]
     }
 );

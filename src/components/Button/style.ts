@@ -8,7 +8,7 @@ export default {
         padding: "0 16px",
         backgroundColor: "#d7d7d7",
         borderRadius: "4px",
-        color: "rgba(0, 0, 0, .87)",
+        color: "{ fontColor }",
         cursor: "pointer",
         userSelect: "none",
         textDecoration: "none",
