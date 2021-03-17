@@ -3,6 +3,9 @@ declare global {
 };
 
 import "./style.scss";
+import style from "./style.scss";
+
+console.log(style);
 import "./selector/style.scss";
 import body from "./body.html";
 import selectorBody from "./selector/body.html";
@@ -64,7 +67,6 @@ export default class Editor {
         const sideMenu = document.getElementsByTagName("editor-sidemenu")[0] as HTMLElement;
         const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
         const traitsBody = document.getElementById("component-traits");
-        console.log(this.selectedComp?.traits)
         traitsBody.innerHTML = `
             <span editor>Component ID: #${(this.selectedElem.parentNode as HTMLElement).id}</span>
             <span editor>Component type: ${this.selectedComp.label}</span>
@@ -83,6 +85,12 @@ export default class Editor {
                             traitElems += `
                                 <label editor for="${traitId}">${trait.label}</label>
                                 <input editor id="${traitId}" type='number' onkeydown='editor.traitKeyHandler(event, "${trait.name}")' onchange='editor.traitChangeHandler(event, "${trait.name}")' value="${this.selectedComp.getVar(trait.name)}">
+                            `;
+                            break;
+                        case "checkbox":
+                            traitElems += `
+                                <label editor for="${traitId}">${trait.label}</label>
+                                <input editor id="${traitId}" type='checkbox' onclick='editor.traitCheckHandler(event, "${trait.name}", ["${trait.valueTrue}", "${trait.valueFalse}"])' value="${this.selectedComp.getVar(trait.name)}">
                             `;
                             break;
                         case "select":
@@ -129,6 +137,13 @@ export default class Editor {
             return;
         this.selectedComp.setVar(traitName, el.value);
     };
+
+    private traitCheckHandler(event: any, traitName: string, [ traitTrue, traitFalse ]: any) {
+        const el = event.target as any;
+        if (!el)
+            return;
+        this.selectedComp.setVar(traitName, el.checked ? traitTrue : traitFalse);
+    }
 
     private closeElemMenus() {
         if (!this.selecterComp)
@@ -225,6 +240,7 @@ export default class Editor {
         // Traits methods declarations
         window.editor.traitKeyHandler = (event: KeyboardEvent, traitName: string) => { this.traitKeyHandler(event, traitName) };
         window.editor.traitChangeHandler = (event: KeyboardEvent, traitName: string) => { this.traitChangeHandler(event, traitName) };
+        window.editor.traitCheckHandler = (event: KeyboardEvent, traitName: string, array: any) => { this.traitCheckHandler(event, traitName, array) };
 
         this.selecterComp = (new Component("EditorSelector", selectorBody, { hideFromStack: true })).create();
         this.editorComp = (new Component("EditorMain", body, { hideFromStack: true })).create();
