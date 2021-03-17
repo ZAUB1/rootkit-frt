@@ -65,7 +65,7 @@ export default class Editor {
         const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
         const traitsBody = document.getElementById("component-traits");
         console.log(this.selectedComp?.traits)
-        traitsBody.innerHTML = `
+         traitsBody.innerHTML = `
             <span editor>Component ID: #${(this.selectedElem.parentNode as HTMLElement).id}</span>
             <span editor>Component type: ${this.selectedComp.label}</span>
             ${(() => {
