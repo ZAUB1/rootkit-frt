@@ -93,6 +93,12 @@ export default class Editor {
                                 <input editor id="${traitId}" type='checkbox' onclick='editor.traitCheckHandler(event, "${trait.name}", ["${trait.valueTrue}", "${trait.valueFalse}"])' value="${this.selectedComp.getVar(trait.name)}">
                             `;
                             break;
+                        case "color":
+                            traitElems += `
+                                <label editor for="${traitId}">${trait.label}</label>
+                                <input editor id="${traitId}" type='color' oninput='editor.traitChangeHandler(event, "${trait.name}")'>
+                            `;
+                            break;
                         case "select":
                             traitElems += `
                                 <label editor for="${traitId}">${trait.label}</label>
