@@ -38,13 +38,30 @@ export default class Editor {
         this.lastHover = hoverElement;
     };
 
-    // ${(() => {
-    //     /* let compsButtons = "";
-    //     for (const comp of Object.keys(Controller.components))
-    //         compsButtons += `<button editor onclick="editor.createComponent(${comp})">${comp}</button>`
-    //     return compsButtons; */
-    //     return ""
-    // })()}
+    private displayComponents() {
+        const compMenu = this.editorComp.getFirstChild("editor-components");
+        if (!compMenu)
+            return;
+        compMenu.innerHTML = `
+            ${(() => {
+                let compsButtons = "";
+                for (const comp of Object.keys(Controller.components))
+                    compsButtons += `
+                        <div
+                            draggable="true"
+                            ondragstart="editor.startDrag(event, '${comp}')"
+                            ondragend="editor.stopDrag(event)"
+                        >
+                            <i class="fas fa-pen" style="margin-left: 15px"></i>
+                            <div style="flex-grow: 1">
+                                ${comp}
+                            </div>
+                        </div>
+                    `
+                return compsButtons;
+            })()}
+        `;
+    };
 
     private displayElementTools() {
         (this.selecterComp.appened) ? this.selecterComp.remove() : void 0;
@@ -268,6 +285,7 @@ export default class Editor {
         this.selecterComp = (new Component("EditorSelector", selectorBody, { hideFromStack: true })).create();
         this.editorComp = (new Component("EditorMain", body, { hideFromStack: true })).create();
         this.flagChildsAsEditor(this.selecterComp.DOMElem);
+        this.displayComponents();
         this.flagChildsAsEditor(this.editorComp.DOMElem);
         this.dragHoverElem = this.editorComp.getFirstChild("editor-main");
         currentInstance = this;

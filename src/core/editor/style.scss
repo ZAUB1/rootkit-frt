@@ -39,20 +39,18 @@ editor-sidemenu {
 
     .title {
         display: flex;
-        justify-content: center;
         align-items: center;
+        margin: 0 10px;
         height: 40px;
         width: 100%;
-        background: black;
+        color: rgb(39, 39, 39);
     }
 
     span {
-        color: white;
         font-weight: bold;
-        text-transform: uppercase;
     }
 
-    components {
+    editor-components {
         display: flex;
         flex-direction: column;
         align-items: center;
