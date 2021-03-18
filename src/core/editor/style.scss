@@ -73,14 +73,23 @@ editor-sidemenu {
 
 };
 
-editor-traitmenu {
+editor-traitcontainer {
     position: absolute;
-    right: 0px;
-    top: 0px;
     height: 100vh;
-    min-width: 200px;
-    border-left: 1px solid #efefef;
+    right: 0px;
+    min-width: 300px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+editor-traitmenu {
+    height: 80%;
+    margin-top: 5%;
+    width: 250px;
     background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)!important;
     display: none;
 
     header {
