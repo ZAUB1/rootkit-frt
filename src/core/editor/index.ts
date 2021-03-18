@@ -267,6 +267,7 @@ export default class Editor {
 
         this.selecterComp = (new Component("EditorSelector", selectorBody, { hideFromStack: true })).create();
         this.editorComp = (new Component("EditorMain", body, { hideFromStack: true })).create();
+        this.flagChildsAsEditor(this.selecterComp.DOMElem);
         this.flagChildsAsEditor(this.editorComp.DOMElem);
         this.dragHoverElem = this.editorComp.getFirstChild("editor-main");
         currentInstance = this;

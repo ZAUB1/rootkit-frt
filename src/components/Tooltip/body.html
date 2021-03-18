@@ -1,15 +1,15 @@
-<div class="tooltip">Hover over me
-    <span class="tooltiptext">Tooltip text</span>
+<div class="tooltip">
+  Hover over me
+  <span class="tooltiptext">Tooltip text</span>
 </div>
 
 <style>
-    .tooltip {
-      position: relative;
-      display: inline-block;
-      border-bottom: 1px dotted black;
-    }
-    
-    .tooltip .tooltiptext {
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+
+    .tooltiptext {
       visibility: hidden;
       width: 120px;
       background-color: black;
@@ -17,16 +17,18 @@
       text-align: center;
       border-radius: 6px;
       padding: 5px 0;
-    
+
       /* Position the tooltip */
       position: absolute;
       z-index: 1;
       top: -5px;
       left: 105%;
     }
-    
-    .tooltip:hover .tooltiptext {
+
+   .tooltiptext {
+      &:hover {
       visibility: visible;
+     }
     }
-    </style>
-  
+  }
+</style>
