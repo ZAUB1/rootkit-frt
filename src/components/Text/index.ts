@@ -3,6 +3,15 @@ import body from "./body.html";
 import { Component } from "../../core/controllers/component";
 import { Traits, Vars } from "../../core/controllers";
 
+@Vars({
+    weight: "normal",
+    color: "black",
+    size: 20,
+    font: "Arial",
+    decoration: "none",
+    capitalize: "none",
+    body: "Text.."
+})
 @Traits([{
     type: "text",
     label: "Body",
@@ -52,15 +61,6 @@ import { Traits, Vars } from "../../core/controllers";
     valueTrue: "uppercase",
     valueFalse: "none",
 }])
-@Vars({
-    weight: "normal",
-    color: "black",
-    size: 20,
-    font: "Arial",
-    decoration: "none",
-    capitalize: "none",
-    body: "Text.."
-})
 class Text extends Component {
     constructor() {
         super("Text", body);
