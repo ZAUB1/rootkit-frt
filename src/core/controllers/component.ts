@@ -3,17 +3,7 @@ import { EventEmitter } from "events";
 import Router from "../router";
 import Controller from "./index";
 import { parseStyle } from "../style";
-
-function genRandId(length: number) {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-
-    for (let i = 0; i < length; i++)
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-
-    return result;
-}
+import { genRandId } from "../etc/rand";
 
 export class ComponentInstance {
     public id: string;
@@ -23,7 +13,6 @@ export class ComponentInstance {
 
     protected vars: any = {};
     private style: any = {};
-    private traits: any = {};
     private baseContent: string;
 
     public DOMElem: HTMLDivElement;
@@ -83,6 +72,12 @@ export class ComponentInstance {
         this.appened = false;
     };
 
+    public getVar(key: string) {
+        if (!this.vars[key])
+            return false;
+        return this.vars[key];
+    };
+
     public setVar(key: string, value: any) {
         if (!this.vars[key])
             return;
@@ -105,14 +100,13 @@ export class ComponentInstance {
         return this.getChilds(key)[0];
     }
 
-    public constructor(label: string, content: string, element: any, { style, traits = [], vars = [], id }: any) {
+    public constructor(label: string, content: string, element: any, { style, vars = [], id }: any) {
         this.label = label;
         this.content = content;
         this.baseContent = content as string;
         this.vars = JSON.parse(JSON.stringify(vars));
         this.attributes = this.vars;
         this.style = style;
-        this.traits = traits;
         this.DOMElem = element;
         this.id = id;
         this.rebuildContent();
@@ -130,25 +124,16 @@ export class Component {
     public attributes: any;
     private vars: any = {};
     private style: any = {};
-    private traits: any = {};
 
-    public constructor(label: string, content: string, { style, traits = [], category = "Default", vars = {}, hideFromStack = false }: any = {}) {
+    public constructor(label: string, content: string, { style, category = "Default", vars = {}, hideFromStack = false }: any = {}) {
         //super();
         this.id = label;
         this.label = label;
         this.category = category;
         this.attributes = vars;
         this.style = style;
-        this.traits = traits;
         this.vars = vars;
         this.content = content;
-
-        traits = traits.map((trait: any) => {
-            return {
-                changeProp: 1,
-                ...trait
-            }
-        });
 
         (!hideFromStack) ? Controller.components[this.label] = this : void 0;
     };
@@ -157,7 +142,8 @@ export class Component {
         const randId = genRandId(5);
         const el = document.createElement("div");
         el.setAttribute("id", randId);
-        const compInstance = new ComponentInstance(this.label, this.content, el, { style: this.style, traits: this.traits, vars: this.vars });
+        el.setAttribute("component-instance", "true");
+        const compInstance = new ComponentInstance(this.label, this.content, el, { style: this.style, vars: this.vars });
         Controller.componentsInstances[randId] = compInstance;
         return compInstance;
     };

@@ -1,0 +1,64 @@
+<div>
+<form>
+  <div class="in">
+    <span>Male</span>
+    <input type="radio" name="gender">
+    <label for="gender" class="rad_k">
+    </label>
+  </div>
+  <div class="in">
+    <span>Female</span>
+    <input type="radio" name="gender">
+    <label for="gender" class="rad_k">
+    </label>
+  </div>
+</form>
+</div>  
+
+<style>
+
+.in
+{
+  position: relative;
+  width: 200px;
+  display: flex;
+  flex-direction: row;
+  float: left;
+  margin: 30px;
+}
+.in span
+{
+  position: absolute;
+  left: 35px;
+  top: 4px;
+}
+.rad_k
+{
+  position: absolute;
+  left: 5px;
+  z-index: 1;
+  width: 22px;
+  height: 22px;
+  border-radius: 100%;
+  background-color: #003399;
+}
+.in input[type="radio"]
+{
+  position: absolute;
+  z-index: 2;
+  left: 4px;
+  top: 1px;
+  opacity: 0;
+}
+.in input[type="radio"]:checked ~ .rad_k:before
+{
+  content: "\2714";
+  color: #fff;
+  position: absolute;
+  left: 4.5px;
+}
+
+</style>
+
+
+

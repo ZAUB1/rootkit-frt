@@ -4,8 +4,9 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "module": "commonjs",
-    "target": "es2019",
+    "target": "ES6",
     "allowJs": true,
-    "jsx": "react-native"
+    "jsx": "react-native",
+    "experimentalDecorators": true
   }
 }

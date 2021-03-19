@@ -1,4 +1,4 @@
-$menu-width: 200px;
+$menu-width: 250px;
 $navbar-height: 50px;
 
 editor-main {
@@ -9,22 +9,73 @@ editor-main {
 };
 
 nav {
+    z-index: 2;
     position: absolute;
     top: 0px;
-    width: calc(100% - #{$menu-width});
+    width: 100%;
     height: $navbar-height;
-    left: $menu-width;
-    box-shadow: 1px 1px 12px #aaa;
+    background-color: #30364c;
+
+    nav-container {
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: 0px 20px;
+
+        nav-connect {
+            width: 100px;
+            height: 30px;
+            border: 1px solid white;
+            border-radius: 50px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+
+            nav-picture {
+                width: 20px;
+                height: 20px;
+                background-color: white;
+                margin-right: 5px;
+                border-radius: 50%;
+            }
+        }
+    }
+
+    span {
+        color: white;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 20px;
+    }
 }
 
 editor-sidemenu {
     position: absolute;
     left: 0px;
-    top: 0px;
-    height: 100vh;
+    top: $navbar-height;
+    height: calc(100vh - #{$navbar-height});
+    overflow-y: hidden;
     min-width: $menu-width;
-    box-shadow: 1px 1px 12px #aaa;
-    background-color: white;
+    background-color: rgb(242, 242, 242);
+
+    category-buttons {
+        display: flex;
+        justify-content: stretch;
+        height: 50px;
+
+        span {
+            width: 100%;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-right: 1px solid rgba(0, 0, 0, .1);
+        }
+    }
 
     header {
         display: flex;
@@ -35,57 +86,61 @@ editor-sidemenu {
 
     .title {
         display: flex;
-        justify-content: center;
         align-items: center;
+        margin: 0 10px;
         height: 40px;
         width: 100%;
-        background: black;
+        color: rgb(39, 39, 39);
     }
 
     span {
-        color: white;
         font-weight: bold;
-        text-transform: uppercase;
     }
 
-    components {
+    editor-components {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
 
-        div {
+        compbtn-div {
+            user-select: none;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-evenly;
             border-radius: 5px;
-            min-height: 30px;
-            min-width: 150px;
-            background-color: lightgrey;
-            margin: 5px;
+            height: 40px;
+            width: 200px;
+            border: 1px solid rgba(0,0,0,.1);
+            margin: 7px 10px;
+            transition: all .1s ease-in-out;
 
-        }
-
-        div i {
-            text-align: start;
-            
+            &:hover {
+                background-color: rgb(232, 232, 232);
+            }
         }
     }
 
-    button {
-        margin: 5px;
-        width: 150px;
-    }
+
 };
 
-editor-traitmenu {
+editor-traitcontainer {
     position: absolute;
-    right: 0px;
-    top: 0px;
     height: 100vh;
-    min-width: 200px;
-    border-left: 1px solid #efefef;
-    background-color: white;
+    right: 0px;
+    min-width: 300px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+editor-traitmenu {
+    height: 80%;
+    margin-top: 5%;
+    width: 250px;
+    background-color: rgb(242, 242, 242);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)!important;
     display: none;
 
     header {
