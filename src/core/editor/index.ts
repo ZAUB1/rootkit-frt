@@ -38,9 +38,13 @@ export default class Editor {
         this.lastHover = hoverElement;
     };
 
-    private displayComponents() {
+    private displayComponents(child: number = 0) {
         const compMenu = this.editorComp.getFirstChild("editor-components");
         if (!compMenu)
+            return;
+        compMenu.innerHTML = null;
+        // @TODO categories
+        if (child != 0)
             return;
         compMenu.innerHTML = `
             ${(() => {
@@ -61,6 +65,16 @@ export default class Editor {
                 return compsButtons;
             })()}
         `;
+    };
+
+    public clickCompMenuHandler(el: HTMLElement, menu: number) {
+        const compMenu = this.editorComp.getFirstChild("category-buttons");
+        if (!compMenu)
+            return;
+        for (const child of compMenu.children)
+            child.style.backgroundColor = null;
+        el.style.backgroundColor = "rgb(242, 242, 242)";
+        this.displayComponents(menu);
     };
 
     private displayElementTools() {
@@ -281,6 +295,8 @@ export default class Editor {
         window.editor.traitKeyHandler = (event: KeyboardEvent, traitName: string) => { this.traitKeyHandler(event, traitName) };
         window.editor.traitChangeHandler = (event: KeyboardEvent, traitName: string) => { this.traitChangeHandler(event, traitName) };
         window.editor.traitCheckHandler = (event: KeyboardEvent, traitName: string, array: any) => { this.traitCheckHandler(event, traitName, array) };
+
+        window.editor.clickCompMenuHandler = (el: HTMLElement, menu: number) => { this.clickCompMenuHandler(el, menu) };
 
         this.selecterComp = (new Component("EditorSelector", selectorBody, { hideFromStack: true })).create();
         this.editorComp = (new Component("EditorMain", body, { hideFromStack: true })).create();

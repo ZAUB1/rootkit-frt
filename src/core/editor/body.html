@@ -16,20 +16,20 @@
 </nav>
 
 <editor-sidemenu>
-    <div class="category-buttons">
-        <span style="background-color: rgb(242, 242, 242);">
+    <category-buttons>
+        <span style="background-color: rgb(242, 242, 242);" onclick="editor.clickCompMenuHandler(this, 0)">
             <i class="fas fa-box"></i>
         </span>
-        <span>
+        <span onclick="editor.clickCompMenuHandler(this, 1)">
             <i class="fas fa-cubes"></i>
         </span>
-        <span>
+        <span onclick="editor.clickCompMenuHandler(this, 2)">
             <i class="fas fa-database"></i>
         </span>
-        <span>
+        <span onclick="editor.clickCompMenuHandler(this, 3)">
             <i class="fas fa-star"></i>
         </span>
-    </div>
+    </category-buttons>
     <header>
         <div class="title">
             <span>Composants</span>
