@@ -1,5 +1,14 @@
 import body from "./body.html";
 
 import { Component } from "../../core/controllers/component";
+import { Category, Icon } from "../../core/controllers";
 
-export default new Component("CardFlip", body, {});
+@Category("Interacts")
+@Icon("fas fa-square")
+class CardFlip extends Component {
+    constructor() {
+        super("Card Flip", body, { });
+    }
+}
+
+export default new CardFlip;

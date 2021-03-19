@@ -44,22 +44,22 @@ export default class Editor {
             return;
         compMenu.innerHTML = null;
         // @TODO categories
-        if (child != 0)
+        if (child < 0)
             return;
         compMenu.innerHTML = `
             ${(() => {
                 let compsButtons = "";
-                for (const comp of Object.keys(Controller.components))
+                for (const comp of Controller.componentsCategories[child])
                     compsButtons += `
                         <compbtn-div
                             editor
                             draggable="true"
-                            ondragstart="editor.startDrag(event, '${comp}')"
+                            ondragstart="editor.startDrag(event, '${comp.label}')"
                             ondragend="editor.stopDrag(event)"
                         >
-                            <i editor class="${Controller.componentIcons[comp] || "fas fa-pen"}" style="margin-left: 15px"></i>
+                            <i editor class="${Controller.componentIcons[comp.label] || "fas fa-pen"}" style="margin-left: 15px"></i>
                             <div editor style="flex-grow: 1">
-                                <span editor style="margin-left: 10px">${comp}</span>
+                                <span editor style="margin-left: 10px">${comp.label}</span>
                             </div>
                         </compbtn-div>
                     `

@@ -3,8 +3,11 @@ import { Component, ComponentInstance } from "./component";
 const _Controller = new (class Controller {
     public components: { [id: string]: Component } = {};
     public componentsInstances: { [id: string]: ComponentInstance } = {};
+
     public componentTraits: { [id: string]: Trait[] } = {};
     public componentIcons: { [id: string]: string } = {};
+
+    public componentsCategories: Component[][] = [ [], [], [], [] ];
 
     public getComponent(id: string): Component {
         if (!id || !this.components[id])
@@ -63,6 +66,28 @@ export function Icon(icon: string = "fas fa-pen") {
             constructor(..._: any[]) {
                 super();
                 _Controller.componentIcons[(this as any).label] = icon;
+            }
+        }
+        return nclass;
+    }
+}
+
+export function Category(category: string = "Containers") {
+    return function <T extends { new(...args: any[]): {} }>(constructor: T) {
+        const nclass: any = class extends constructor {
+            constructor(..._: any[]) {
+                super();
+                switch (category) {
+                    case "Containers":
+                        _Controller.componentsCategories[0].push(this as any);
+                        break;
+                    case "Interacts":
+                        _Controller.componentsCategories[1].push(this as any);
+                        break;
+                    case "ApiLinked":
+                        _Controller.componentsCategories[2].push(this as any);
+                        break;
+                }
             }
         }
         return nclass;

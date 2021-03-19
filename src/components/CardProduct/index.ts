@@ -1,5 +1,14 @@
 import body from "./body.html";
 
 import { Component } from "../../core/controllers/component";
+import { Category, Icon } from "../../core/controllers";
 
-export default new Component("CardProduct", body, {});
+@Category("Interacts")
+@Icon("fas fa-square")
+class CardProduct extends Component {
+    constructor() {
+        super("Card Product", body, { });
+    }
+}
+
+export default new CardProduct;

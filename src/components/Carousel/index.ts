@@ -1,5 +1,14 @@
 import body from "./body.html";
 
 import { Component } from "../../core/controllers/component";
+import { Category, Icon } from "../../core/controllers";
 
-export default new Component("Carousel", body, {});
+@Category("Interacts")
+@Icon("fas fa-images")
+class Carousel extends Component {
+    constructor() {
+        super("Carousel", body, { });
+    }
+}
+
+export default new Carousel;
