@@ -16,6 +16,8 @@ import { Component, ComponentInstance } from "../controllers/component";
 
 let currentInstance: any;
 
+const CATEGORIES = [ "Containers", "Interacts", "Api Linked", "Favorites" ];
+
 export default class Editor {
     public lastHover: HTMLElement;
     public selectedElem: HTMLElement;
@@ -70,11 +72,13 @@ export default class Editor {
 
     public clickCompMenuHandler(el: HTMLElement, menu: number) {
         const compMenu = this.editorComp.getFirstChild("category-buttons");
+        const compTitle = document.getElementById("component-title-menu");
         if (!compMenu)
             return;
         for (const child of compMenu.children)
             child.style.backgroundColor = null;
         el.style.backgroundColor = "rgb(242, 242, 242)";
+        compTitle.innerHTML = CATEGORIES[menu];
         this.displayComponents(menu);
     };
 
@@ -91,7 +95,7 @@ export default class Editor {
 
     private closeElementTools() {
         (this.selecterComp.appened) ? this.selecterComp.remove() : void 0;
-        this.selectedElem.style.outline = null;
+        this.selectedElem ? this.selectedElem.style.outline = null : void 0;
     };
 
     private displayTraitsMenu() {
@@ -300,7 +304,7 @@ export default class Editor {
         window.editor.traitChangeHandler = (event: KeyboardEvent, traitName: string) => { this.traitChangeHandler(event, traitName) };
         window.editor.traitCheckHandler = (event: KeyboardEvent, traitName: string, array: any) => { this.traitCheckHandler(event, traitName, array) };
 
-        window.editor.clickCompMenuHandler = (el: HTMLElement, menu: number) => { this.clickCompMenuHandler(el, menu) };
+        window.editor.clickCompMenuHandler = (el: HTMLElement, menu: number) => { el && this.clickCompMenuHandler(el, menu) };
 
         this.selecterComp = (new Component("EditorSelector", selectorBody, { hideFromStack: true })).create();
         this.editorComp = (new Component("EditorMain", body, { hideFromStack: true })).create();
