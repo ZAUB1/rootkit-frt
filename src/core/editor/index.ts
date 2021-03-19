@@ -103,7 +103,7 @@ export default class Editor {
             <span editor>Component type: ${this.selectedComp.label}</span>
             ${(() => {
                 let traitElems = "";
-                for (const trait of this.selectedComp?.traits) {
+                for (const trait of Controller.componentTraits[this.selectedComp.label] as any[]) {
                     const traitId = genRandId(10);
                     switch (trait.type) {
                         case "text":

@@ -13,7 +13,6 @@ export class ComponentInstance {
 
     protected vars: any = {};
     private style: any = {};
-    public traits: any = {};
     private baseContent: string;
 
     public DOMElem: HTMLDivElement;
@@ -101,14 +100,13 @@ export class ComponentInstance {
         return this.getChilds(key)[0];
     }
 
-    public constructor(label: string, content: string, element: any, { style, traits = [], vars = [], id }: any) {
+    public constructor(label: string, content: string, element: any, { style, vars = [], id }: any) {
         this.label = label;
         this.content = content;
         this.baseContent = content as string;
         this.vars = JSON.parse(JSON.stringify(vars));
         this.attributes = this.vars;
         this.style = style;
-        this.traits = traits;
         this.DOMElem = element;
         this.id = id;
         this.rebuildContent();
@@ -126,25 +124,16 @@ export class Component {
     public attributes: any;
     private vars: any = {};
     private style: any = {};
-    private traits: any = {};
 
-    public constructor(label: string, content: string, { style, traits = [], category = "Default", vars = {}, hideFromStack = false }: any = {}) {
+    public constructor(label: string, content: string, { style, category = "Default", vars = {}, hideFromStack = false }: any = {}) {
         //super();
         this.id = label;
         this.label = label;
         this.category = category;
         this.attributes = vars;
         this.style = style;
-        this.traits = traits;
         this.vars = vars;
         this.content = content;
-
-        traits = traits.map((trait: any) => {
-            return {
-                changeProp: 1,
-                ...trait
-            }
-        });
 
         (!hideFromStack) ? Controller.components[this.label] = this : void 0;
     };
@@ -154,7 +143,7 @@ export class Component {
         const el = document.createElement("div");
         el.setAttribute("id", randId);
         el.setAttribute("component-instance", "true");
-        const compInstance = new ComponentInstance(this.label, this.content, el, { style: this.style, traits: this.traits, vars: this.vars });
+        const compInstance = new ComponentInstance(this.label, this.content, el, { style: this.style, vars: this.vars });
         Controller.componentsInstances[randId] = compInstance;
         return compInstance;
     };
