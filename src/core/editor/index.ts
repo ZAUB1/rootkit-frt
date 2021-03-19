@@ -47,16 +47,16 @@ export default class Editor {
                 let compsButtons = "";
                 for (const comp of Object.keys(Controller.components))
                     compsButtons += `
-                        <div
+                        <compbtn-div
                             draggable="true"
                             ondragstart="editor.startDrag(event, '${comp}')"
                             ondragend="editor.stopDrag(event)"
                         >
                             <i class="fas fa-pen" style="margin-left: 15px"></i>
                             <div style="flex-grow: 1">
-                                ${comp}
+                                <span style="margin-left: 10px">${comp}</span>
                             </div>
-                        </div>
+                        </compbtn-div>
                     `
                 return compsButtons;
             })()}
