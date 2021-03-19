@@ -2,25 +2,15 @@ import body from "./body.html";
 import style from "./style";
 
 import { Component } from "../../core/controllers/component";
+import { Vars } from "../../core/controllers";
 
-export default new Component(
-    "Button",
-    body,
-    {
-        style,
-        vars: {
-            body: "Text...",
-            fontColor: "rgba(0, 0, 0, .87)",
-            backColor: "#d7d7d7"
-        },
-        traits: [{
-            type: "text",
-            name: "body",
-            label: "Content"
-        }, {
-            type: "color",
-            name: "fontColor",
-            label: "Font color"
-        }]
+@Vars({
+    body: "Text..."
+})
+class Button extends Component {
+    constructor() {
+        super("Button", body, { style });
     }
-);
+}
+
+export default new Button;
