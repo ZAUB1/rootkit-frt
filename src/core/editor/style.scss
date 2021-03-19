@@ -21,7 +21,27 @@ nav {
         display: flex;
         flex-direction: row;
         align-items: center;
-        margin: 0px 10px;
+        margin: 0px 20px;
+
+        nav-connect {
+            width: 100px;
+            height: 30px;
+            border: 1px solid white;
+            border-radius: 50px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+
+            nav-picture {
+                width: 20px;
+                height: 20px;
+                background-color: white;
+                margin-right: 5px;
+                border-radius: 50%;
+            }
+        }
     }
 
     span {
