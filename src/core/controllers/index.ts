@@ -4,6 +4,7 @@ const _Controller = new (class Controller {
     public components: { [id: string]: Component } = {};
     public componentsInstances: { [id: string]: ComponentInstance } = {};
     public componentTraits: { [id: string]: Trait[] } = {};
+    public componentIcons: { [id: string]: string } = {};
 
     public getComponent(id: string): Component {
         if (!id || !this.components[id])
@@ -50,6 +51,18 @@ export function Vars(vars: { [key: string]: any } = {}) {
             constructor(..._: any[]) {
                 super();
                 (this as any).vars = vars;
+            }
+        }
+        return nclass;
+    }
+}
+
+export function Icon(icon: string = "fas fa-pen") {
+    return function <T extends { new(...args: any[]): {} }>(constructor: T) {
+        const nclass: any = class extends constructor {
+            constructor(..._: any[]) {
+                super();
+                _Controller.componentIcons[(this as any).label] = icon;
             }
         }
         return nclass;

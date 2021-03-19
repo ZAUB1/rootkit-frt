@@ -57,7 +57,7 @@ export default class Editor {
                             ondragstart="editor.startDrag(event, '${comp}')"
                             ondragend="editor.stopDrag(event)"
                         >
-                            <i editor class="fas fa-pen" style="margin-left: 15px"></i>
+                            <i editor class="${Controller.componentIcons[comp] || "fas fa-pen"}" style="margin-left: 15px"></i>
                             <div editor style="flex-grow: 1">
                                 <span editor style="margin-left: 10px">${comp}</span>
                             </div>

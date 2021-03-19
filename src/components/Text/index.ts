@@ -1,7 +1,7 @@
 import body from "./body.html";
 
 import { Component } from "../../core/controllers/component";
-import { Traits, Vars } from "../../core/controllers";
+import { Icon, Traits, Vars } from "../../core/controllers";
 
 @Vars({
     weight: "normal",
@@ -61,6 +61,7 @@ import { Traits, Vars } from "../../core/controllers";
     valueTrue: "uppercase",
     valueFalse: "none",
 }])
+@Icon("fas fa-font")
 class Text extends Component {
     constructor() {
         super("Text", body);
