@@ -33,8 +33,26 @@ interface Trait {
 }
 
 export function Traits(traits: Trait[] = []) {
-    return function (constructor: Function) {
-        _Controller.componentTraits[constructor.name] = traits;
+    return function <T extends { new(...args: any[]): {} }>(constructor: T) {
+        const nclass: any = class extends constructor {
+            constructor(..._: any[]) {
+                super();
+                _Controller.componentTraits[(this as any).label] = traits;
+            }
+        }
+        return nclass;
+    }
+}
+
+export function Vars(vars: { [key: string]: any } = {}) {
+    return function <T extends { new(...args: any[]): {} }>(constructor: T) {
+        const nclass: any = class extends constructor {
+            constructor(..._: any[]) {
+                super();
+                (this as any).vars = vars;
+            }
+        }
+        return nclass;
     }
 }
 

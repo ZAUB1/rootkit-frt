@@ -95,6 +95,7 @@ export default class Editor {
     };
 
     private displayTraitsMenu() {
+        const traits = Controller.componentTraits[this.selectedComp.label];
         const sideMenu = document.getElementsByTagName("editor-sidemenu")[0] as HTMLElement;
         const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
         const traitsBody = document.getElementById("component-traits");
@@ -102,8 +103,10 @@ export default class Editor {
             <span editor>Component ID: #${(this.selectedElem.parentNode as HTMLElement).id}</span>
             <span editor>Component type: ${this.selectedComp.label}</span>
             ${(() => {
+                if (!traits)
+                    return "";
                 let traitElems = "";
-                for (const trait of Controller.componentTraits[this.selectedComp.label] as any[]) {
+                for (const trait of traits as any[]) {
                     const traitId = genRandId(10);
                     switch (trait.type) {
                         case "text":
