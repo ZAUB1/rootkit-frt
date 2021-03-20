@@ -14,6 +14,9 @@ import { genRandId } from "../etc/rand";
 import Controller from "../../core/controllers";
 import { Component, ComponentInstance } from "../controllers/component";
 
+import EditorDrag from "./run/drag";
+import EditorTraits from "./ui/traits";
+
 let currentInstance: any;
 
 const CATEGORIES = [ "Containers", "Interacts", "Api Linked", "Favorites" ];
@@ -21,11 +24,16 @@ const CATEGORIES = [ "Containers", "Interacts", "Api Linked", "Favorites" ];
 export default class Editor {
     public lastHover: HTMLElement;
     public selectedElem: HTMLElement;
+
     public editorComp: ComponentInstance;
     public selectedComp: ComponentInstance;
     public selecterComp: ComponentInstance;
+
     public dragHoverElem: HTMLElement = Router.getElem();
     public currentDragComp: string;
+
+    private editorDrag: EditorDrag;
+    private editorTraits: EditorTraits;
 
     private elementHoverHandler(ev: MouseEvent) {
         const hoverElement = document.elementFromPoint(ev.x, ev.y) as HTMLElement;
@@ -93,139 +101,16 @@ export default class Editor {
         this.selectedElem.style.outline = "2px solid #51c2d5";
     };
 
-    private closeElementTools() {
+    public closeElementTools() {
         (this.selecterComp.appened) ? this.selecterComp.remove() : void 0;
         this.selectedElem ? this.selectedElem.style.outline = null : void 0;
     };
-
-    private displayTraitsMenu() {
-        const traits = Controller.componentTraits[this.selectedComp.label];
-        const sideMenu = document.getElementsByTagName("editor-sidemenu")[0] as HTMLElement;
-        const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
-        const traitsBody = document.getElementById("component-traits");
-        traitsBody.innerHTML = `
-            <span editor>Component ID: #${(this.selectedElem.parentNode as HTMLElement).id}</span>
-            <span editor>Component type: ${this.selectedComp.label}</span>
-            ${(() => {
-                if (!traits)
-                    return "";
-                let traitElems = "";
-                for (const trait of traits as any[]) {
-                    const traitId = genRandId(10);
-                    switch (trait.type) {
-                        case "text":
-                            traitElems += `
-                                <label editor for="${traitId}">${trait.label}</label>
-                                <input editor id="${traitId}" type='text' onkeydown='editor.traitKeyHandler(event, "${trait.name}")' value="${this.selectedComp.getVar(trait.name)}">
-                            `;
-                            break;
-                        case "number":
-                            traitElems += `
-                                <label editor for="${traitId}">${trait.label}</label>
-                                <input editor id="${traitId}" type='number' onkeydown='editor.traitKeyHandler(event, "${trait.name}")' onchange='editor.traitChangeHandler(event, "${trait.name}")' value="${this.selectedComp.getVar(trait.name)}">
-                            `;
-                            break;
-                        case "checkbox":
-                            traitElems += `
-                                <label editor for="${traitId}">${trait.label}</label>
-                                <input editor id="${traitId}" type='checkbox' onclick='editor.traitCheckHandler(event, "${trait.name}", ["${trait.valueTrue}", "${trait.valueFalse}"])' value="${this.selectedComp.getVar(trait.name)}">
-                            `;
-                            break;
-                        case "color":
-                            traitElems += `
-                                <label editor for="${traitId}">${trait.label}</label>
-                                <input editor id="${traitId}" type='color' oninput='editor.traitChangeHandler(event, "${trait.name}")'>
-                            `;
-                            break;
-                        case "select":
-                            traitElems += `
-                                <label editor for="${traitId}">${trait.label}</label>
-                                <select editor id="${traitId}" onchange='editor.traitChangeHandler(event, "${trait.name}")' value="${this.selectedComp.getVar(trait.name)}">>
-                                    ${(() => {
-                                        let selectOptions = "";
-                                        for (const option of trait.options)
-                                            selectOptions += `<option editor value="${option.id}">${option.name}</option>`;
-                                        return selectOptions;
-                                    })()}
-                                </select>
-                            `;
-                            break;
-                    }
-                }
-                return traitElems;
-            })()}
-        `;
-        sideMenu.style.display = null;
-        traitsMenu.style.display = "block";
-    };
-
-    private hideTraitsMenu() {
-        const sideMenu = document.getElementsByTagName("editor-sidemenu")[0] as HTMLElement;
-        const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
-        sideMenu.style.display = "block";
-        traitsMenu.style.display = null;
-    };
-
-    private traitKeyHandler(event: KeyboardEvent, traitName: string) {
-        if (event.key != "Enter")
-            return;
-        const el = event.target as any;
-        if (!el)
-            return;
-        this.selectedComp.setVar(traitName, el.value);
-    };
-
-    private traitChangeHandler(event: any, traitName: string) {
-        const el = event.target as any;
-        if (!el)
-            return;
-        this.selectedComp.setVar(traitName, el.value);
-    };
-
-    private traitCheckHandler(event: any, traitName: string, [ traitTrue, traitFalse ]: any) {
-        const el = event.target as any;
-        if (!el)
-            return;
-        this.selectedComp.setVar(traitName, el.checked ? traitTrue : traitFalse);
-    }
 
     private closeElemMenus() {
         if (!this.selecterComp)
             return;
         this.closeElementTools();
-        this.hideTraitsMenu();
-    };
-
-    private startDrag(event: DragEvent, compType: string) {
-        this.currentDragComp = compType;
-    };
-
-    private stopDrag(event: DragEvent) {
-        const comp = Controller.getComponent(this.currentDragComp).create();
-        this.setDraggable(comp.DOMElem);
-        comp.childrens.map((child: HTMLElement) => {
-            if (child.attributes.getNamedItem("editor-container")) {
-                child.ondrop = () => { window.editor.setDragOut(child) };
-                child.ondragover = () => { window.editor.setDragElem(child) };
-                child.ondragleave = () => { window.editor.setDragOut(child) };
-                child.style.border = "1px dotted black";
-                child.parentElement.style.border = "1px dotted black";
-            }
-        });
-        comp.appendTo(this.dragHoverElem);
-    };
-
-    private setDragElem(el: HTMLElement) {
-        this.dragHoverElem = el;
-        el.style.backgroundColor = "black";
-    };
-
-    private setDragOut(el: HTMLElement) {
-        el.style.backgroundColor = null;
-        // Ugly solution but works for now
-        setTimeout(() => {
-            this.dragHoverElem = this.editorComp.getFirstChild("editor-main");
-        }, 1000);
+        this.editorTraits.hideTraitsMenu();
     };
 
     private createComponent(name: string = "Text") {
@@ -236,16 +121,6 @@ export default class Editor {
         if (!this.selectedComp)
             return; // @TODO Error case
         this.selectedComp.remove();
-    };
-
-    private setDraggable(el: HTMLElement) {
-        el.draggable = true;
-        el.ondragstart = (event) => this.startDrag(event, this.selectedComp.label);
-        el.ondragend = (event) => {
-            console.log("eend;")
-            this.selectedComp.moveTo(this.dragHoverElem);
-            this.closeElementTools();
-        };
     };
 
     private getParentMovable(el: Element): Element {
@@ -267,7 +142,7 @@ export default class Editor {
         const parentCompElem = this.getParentMovable(this.selectedElem);
         this.selectedComp = Controller.getComponentInstance(parentCompElem.id);
 
-        this.displayTraitsMenu();
+        this.editorTraits.displayTraitsMenu();
         this.displayElementTools();
     };
 
@@ -286,6 +161,9 @@ export default class Editor {
     };
 
     public constructor() {
+        this.editorDrag = new EditorDrag(this);
+        this.editorTraits = new EditorTraits(this);
+
         window.addEventListener("mousemove", ev => this.elementHoverHandler(ev));
         window.addEventListener("mousedown", ev => this.elementClickHandler(ev));
 
@@ -294,15 +172,15 @@ export default class Editor {
         window.editor.createComponent = () => { this.createComponent() };
 
         // Drag & Drop declarations
-        window.editor.startDrag = (event: DragEvent, compType: string) => { /* event.preventDefault(); */ this.startDrag(event, compType) };
-        window.editor.stopDrag = (event: DragEvent) => { /* event.preventDefault();  */this.stopDrag(event) };
-        window.editor.setDragElem = (el: HTMLElement) => { this.setDragElem(el) };
-        window.editor.setDragOut = (el: HTMLElement) => { this.setDragOut(el) };
+        window.editor.startDrag = (event: DragEvent, compType: string) => { /* event.preventDefault(); */ this.editorDrag.startDrag(event, compType) };
+        window.editor.stopDrag = (event: DragEvent) => { /* event.preventDefault();  */this.editorDrag.stopDrag(event) };
+        window.editor.setDragElem = (el: HTMLElement) => { this.editorDrag.setDragElem(el) };
+        window.editor.setDragOut = (el: HTMLElement) => { this.editorDrag.setDragOut(el) };
 
         // Traits methods declarations
-        window.editor.traitKeyHandler = (event: KeyboardEvent, traitName: string) => { this.traitKeyHandler(event, traitName) };
-        window.editor.traitChangeHandler = (event: KeyboardEvent, traitName: string) => { this.traitChangeHandler(event, traitName) };
-        window.editor.traitCheckHandler = (event: KeyboardEvent, traitName: string, array: any) => { this.traitCheckHandler(event, traitName, array) };
+        window.editor.traitKeyHandler = (event: KeyboardEvent, traitName: string) => { this.editorTraits.traitKeyHandler(event, traitName) };
+        window.editor.traitChangeHandler = (event: KeyboardEvent, traitName: string) => { this.editorTraits.traitChangeHandler(event, traitName) };
+        window.editor.traitCheckHandler = (event: KeyboardEvent, traitName: string, array: any) => { this.editorTraits.traitCheckHandler(event, traitName, array) };
 
         window.editor.clickCompMenuHandler = (el: HTMLElement, menu: number) => { el && this.clickCompMenuHandler(el, menu) };
 

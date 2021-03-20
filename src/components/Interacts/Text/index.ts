@@ -67,6 +67,6 @@ class Text extends Component {
     constructor() {
         super("Text", body);
     }
-}
+};
 
 export default new Text;

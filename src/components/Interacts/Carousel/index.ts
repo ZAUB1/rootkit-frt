@@ -9,6 +9,6 @@ class Carousel extends Component {
     constructor() {
         super("Carousel", body, { });
     }
-}
+};
 
 export default new Carousel;

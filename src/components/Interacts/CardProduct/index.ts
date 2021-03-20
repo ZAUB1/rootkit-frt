@@ -9,6 +9,6 @@ class CardProduct extends Component {
     constructor() {
         super("Card Product", body, { });
     }
-}
+};
 
 export default new CardProduct;

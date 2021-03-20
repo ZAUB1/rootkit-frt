@@ -18,6 +18,6 @@ class Button extends Component {
     constructor() {
         super("Button", body, { style });
     }
-}
+};
 
 export default new Button;

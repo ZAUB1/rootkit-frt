@@ -9,6 +9,6 @@ class CardFlip extends Component {
     constructor() {
         super("Card Flip", body, { });
     }
-}
+};
 
 export default new CardFlip;

@@ -9,6 +9,6 @@ class CardProfile extends Component {
     constructor() {
         super("Card Profile", body, { });
     }
-}
+};
 
 export default new CardProfile;
