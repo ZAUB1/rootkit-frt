@@ -138,9 +138,9 @@ editor-traitmenu {
     height: 80%;
     margin-top: 5%;
     width: 250px;
-    background-color: rgb(242, 242, 242);
+    background-color: rgb(247, 247, 247);
     border-radius: 10px;
-    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)!important;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.1),0 4px 5px 0 rgba(0,0,0,.08), 0 1px 10px 0 rgba(0,0,0,.06)!important;
     display: none;
 
     header {
@@ -156,5 +156,29 @@ editor-traitmenu {
         align-items: center;
         justify-content: center;
         margin: 10px;
+
+        label {
+            margin-left: 5%;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            align-self: flex-start;
+        }
+
+        select,
+        input {
+            width: 90%;
+            border-radius: 5px;
+            border:none;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+            padding: 5px 7.5px;
+            border: 1px solid #30364c;
+            background: none;
+        }
+
+        input[type="checkbox"] {
+            margin-left: -83%;
+        }
     }
 };

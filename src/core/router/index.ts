@@ -38,6 +38,7 @@ export default new class Router {
         if (!route)
             return this.showError("Page not found");
         this.currentRoute = route;
+        window.document.title = `Puzzle - ${route.name}`;
         this.setComponent(route.componentLoad ? route.componentLoad() : route.component);
     };
 
