@@ -1,4 +1,4 @@
-# PUZZLE
+# PUZZLE DOC
 ## Custom framework and editor
 
 > This documentation is for internal use only
