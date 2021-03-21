@@ -6,7 +6,8 @@
   "scripts": {
     "start": "npm run build:dev",
     "serve": "webpack-dev-server --env dev --mode none",
-    "build:prod": "webpack --env prod --mode production"
+    "build:prod": "webpack --env prod --mode production",
+    "doc": "docsify serve doc"
   },
   "author": "ZAUB1",
   "devDependencies": {
@@ -38,5 +39,8 @@
     "normalize.css": "^8.0.1",
     "raw-loader": "^4.0.2",
     "svg-url-loader": "^7.1.1"
+  },
+  "optionalDependencies": {
+    "docsify-cli": "^4.4.3"
   }
 }
