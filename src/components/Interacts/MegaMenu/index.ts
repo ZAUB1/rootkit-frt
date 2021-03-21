@@ -3,4 +3,12 @@ import body from "./body.html";
 import { Component } from "../../../core/controllers/component";
 import { Category, Icon, Vars } from "../../../core/controllers";
 
-export default new Component("MegaMenu", body, {});
+@Category("Interacts")
+@Icon("fas fa-square")
+class MegaMenu extends Component {
+    constructor() {
+        super("MegaMenu", body, { });
+    }
+};
+
+export default new MegaMenu;
