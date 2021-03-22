@@ -63,6 +63,7 @@ export class ComponentInstance extends EventEmitter {
                     continue;
                 compInstance.vars[childVal.name] = childVal.value;
             }
+            compInstance.parent = this;
             compInstance.rebuild();
             compInstance.appendTo(child as HTMLElement);
             return this.spawnSubComps(compInstance.DOMElem);
