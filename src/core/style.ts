@@ -31,6 +31,9 @@ export const parseStyle = (styleSheet: any) => {
         if (_class.includes("_")) {
             const splitted = _class.split("_");
             switch (splitted[0]) {
+                case "":
+                    style += `${splitted[1]}{`
+                    break;
                 case "media":
                     style += `@media(${splitted[1].replace(/[A-Z]/g, match => `-${match.toLowerCase()}`)}:${splitted[2]}){`
                     break;
