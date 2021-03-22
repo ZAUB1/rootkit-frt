@@ -1,4 +1,4 @@
-import EventEmitter from "../etc/events";
+import EventEmitter, { COMP_EVENTS } from "../etc/events";
 
 import Router from "../router";
 import Controller from "./index";
@@ -10,6 +10,7 @@ export class ComponentInstance extends EventEmitter {
     public label: string;
     public attributes: any;
     public content: string;
+    public model: string;
 
     protected vars: any = {};
     private style: any = {};
@@ -56,6 +57,7 @@ export class ComponentInstance extends EventEmitter {
             const nodeName = child.nodeName.toLowerCase();
             const comp: Component = Controller.components[`${nodeName.charAt(0).toUpperCase()}${nodeName.slice(1, nodeName.length)}`];
             const compInstance = comp.create();
+            compInstance.model = child.attributes.getNamedItem("model")?.value;
             const keys = Object.keys(compInstance.vars);
             for (const key of keys) {
                 const childVal = child.attributes.getNamedItem(key);
@@ -63,6 +65,11 @@ export class ComponentInstance extends EventEmitter {
                     continue;
                 compInstance.vars[childVal.name] = childVal.value;
             }
+            /* for (const compEvent of COMP_EVENTS) {
+                const childVal = child.attributes.getNamedItem(compEvent);
+                if (!childVal)
+                    continue;
+            } */
             compInstance.parent = this;
             compInstance.rebuild();
             compInstance.appendTo(child as HTMLElement);
@@ -97,6 +104,7 @@ export class ComponentInstance extends EventEmitter {
     public append() {
         this.originContainer.appendChild(this.DOMElem);
         this.appened = true;
+        this.origin.appendHandler && this.origin.appendHandler(this);
     };
 
     public appendTo(comp: ComponentInstance): void
@@ -179,6 +187,7 @@ export class Component {
     private vars: any = {};
     private style: any = {};
     public hideFromStack: boolean = false;
+    public appendHandler: Function;
 
     public constructor(label: string, content: string, { style, category = "Default", vars = {}, hideFromStack = false }: any = {}) {
         //super();
@@ -208,5 +217,12 @@ export class Component {
         const com = this.create();
         com.append();
         return com;
+    };
+
+    public getByModel(model: string): ComponentInstance {
+        for (const comp of Object.values(Controller.componentsInstances)) {
+            if (comp?.model == model)
+                return comp;
+        }
     };
 };

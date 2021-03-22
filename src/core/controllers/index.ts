@@ -121,4 +121,17 @@ export function Click(cb: Function) {
     }
 }
 
+export function Appened(cb: Function) {
+    return function <T extends { new(...args: any[]): {} }>(constructor: T) {
+        const nclass: any = class extends constructor {
+            constructor(..._: any[]) {
+                super();
+                console.log((this as any).appendHandler);
+                (this as any).appendHandler = cb;
+            }
+        }
+        return nclass;
+    }
+}
+
 export default _Controller;
