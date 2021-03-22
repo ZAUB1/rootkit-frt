@@ -31,12 +31,22 @@ export class ComponentInstance {
         });
     }
 
+    private replaceCssByVar(str: string) {
+        return str.replace(/\{ (.*?) \}/g, (sub: string, ...args: any[]): any => {
+            const save = sub.toString();
+            sub = sub.split("{")[1].split("}")[0].replace(/\s/g, "");
+            if (this.vars[sub])
+                return this.vars[sub];
+            return save;
+        });
+    }
+
     public rebuildContent() {
         // <([^>]+)>((?:(?!</\1).)*)</\1> : Match every tags
 
         // Parse style from inner body
         const style = (this.content.match(/<style>(.|\n)*?<\/style>/)) ? this.content.match(/<style>(.|\n)*?<\/style>/)[0]?.split("<style>")[1]?.split("</style>")[0] : void 0;
-        this.content = (this.style) ? `<style>${(style || "") + parseStyle(this.style)}</style>${this.baseContent}` : this.baseContent;
+        this.content = (this.style) ? `<style>${(style || "") + this.replaceCssByVar(parseStyle(this.style))}</style>${this.baseContent}` : this.baseContent;
         this.content = this.replaceStrByVar(this.content);
         this.DOMElem.innerHTML = this.content;
     };
