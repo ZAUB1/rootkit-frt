@@ -1,5 +1,6 @@
 export default {
     buttonsContainer: {
+        all: "initial",
         position: "relative",
         display: "inline-flex",
         outline: 0,
@@ -12,8 +13,6 @@ export default {
         cursor: "pointer",
         userSelect: "none",
         textDecoration: "none",
-        //letterSpacing: ".0892857143em",
-        //textIndent: ".0892857143em",
         textTransform: "{ uppercase }",
         fontWeight: "500",
         transitionDuration: ".28s",

@@ -21,6 +21,9 @@ export class ComponentInstance {
 
     public appened: boolean = false;
 
+    public origin: Component;
+    public parent: ComponentInstance;
+
     private replaceStrByVar(str: string) {
         return str.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
             const save = sub.toString();
@@ -41,9 +44,28 @@ export class ComponentInstance {
         });
     }
 
-    public rebuildContent() {
-        // <([^>]+)>((?:(?!</\1).)*)</\1> : Match every tags
+    private spawnSubComps(str: string) {
+        if (this.origin.hideFromStack)
+            return;
+        const tagNames = Object.keys(Controller.components).map(tag => tag.toLowerCase());
+        for (const child of this.childrens as HTMLElement[]) {
+            const tagName = child.tagName.toLowerCase();
+            if (!tagNames.includes(tagName))
+                continue;
+            const comp: Component = Controller.components[`${tagName.charAt(0).toUpperCase()}${tagName.slice(1, tagName.length)}`];
+            const compInstance = comp.create();
+            Object.values(child.attributes).filter((attr: Attr) => {
+                if (!compInstance.vars[attr.name])
+                    return;
+                compInstance.setVar(attr.name, attr.value);
+            });
+            compInstance.parent = this;
+            compInstance.appendTo(child);
+            console.log(compInstance)
+        }
+    };
 
+    public rebuildContent() {
         // Parse style from inner body
         const style = (this.content.match(/<style>(.|\n)*?<\/style>/)) ? this.content.match(/<style>(.|\n)*?<\/style>/)[0]?.split("<style>")[1]?.split("</style>")[0] : void 0;
         this.content = (this.style) ? `<style>${(style || "") + this.replaceCssByVar(parseStyle(this.style))}</style>${this.baseContent}` : this.baseContent;
@@ -77,7 +99,9 @@ export class ComponentInstance {
         this.appendTo(container);
     };
 
-    public remove() {
+    public remove(): void {
+        if (this.parent)
+            return this.parent.remove();
         this.originContainer.removeChild(this.DOMElem);
         this.appened = false;
     };
@@ -110,7 +134,7 @@ export class ComponentInstance {
         return this.getChilds(key)[0];
     }
 
-    public constructor(label: string, content: string, element: any, { style, vars = [], id }: any) {
+    public constructor(label: string, content: string, element: any, { style, vars = [], id, origin }: any) {
         this.label = label;
         this.content = content;
         this.baseContent = content as string;
@@ -119,8 +143,10 @@ export class ComponentInstance {
         this.style = style;
         this.DOMElem = element;
         this.id = id;
+        this.origin = origin;
         this.rebuildContent();
         this.parseChildren(this.DOMElem);
+        this.spawnSubComps(this.content);
 
         console.log("Component instance spawned:", this.label);
     };
@@ -134,6 +160,7 @@ export class Component {
     public attributes: any;
     private vars: any = {};
     private style: any = {};
+    public hideFromStack: boolean = false;
 
     public constructor(label: string, content: string, { style, category = "Default", vars = {}, hideFromStack = false }: any = {}) {
         //super();
@@ -146,6 +173,7 @@ export class Component {
         this.content = content;
 
         (!hideFromStack) ? Controller.components[this.label] = this : void 0;
+        hideFromStack = this.hideFromStack;
     };
 
     public create(): ComponentInstance {
@@ -153,7 +181,7 @@ export class Component {
         const el = document.createElement("div");
         el.setAttribute("id", randId);
         el.setAttribute("component-instance", "true");
-        const compInstance = new ComponentInstance(this.label, this.content, el, { style: this.style, vars: this.vars });
+        const compInstance = new ComponentInstance(this.label, this.content, el, { style: this.style, vars: this.vars, origin: this });
         Controller.componentsInstances[randId] = compInstance;
         return compInstance;
     };
