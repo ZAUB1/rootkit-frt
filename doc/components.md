@@ -116,9 +116,15 @@ In this example spawning a Text subcomponent, and using the { body } var of the 
 ```
 
 ## Event handlers
+### Events list
+```
+@appened
+@click
+```
+### Handling
 There are multiple ways of handling component events<br/>
 In this section we assume to listen to the click event
-### Decorators
+#### Decorators
 ```javascript
 import { Component } from "&/core/controllers/component";
 import { Click } from "&/core/controllers";
@@ -130,7 +136,7 @@ class MyComponent extends Component {
     ...
 };
 ```
-### EventEmitter
+#### EventEmitter
 ```javascript
 const text = Text.create(); // ComponentInstance
 text.on("click", (...) => {
