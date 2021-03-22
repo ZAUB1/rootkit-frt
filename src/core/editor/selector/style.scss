@@ -1,19 +1,4 @@
 editor-pick {
     display: flex;
     position: absolute;
-    border-radius: 5px;
-    background-color: black;
-
-    editor-div {
-        margin: 5px;
-        user-select: none;
-    }
-
-    editor-div button {
-        background-color: black;
-        color: #fff;
-        border: none;
-        outline: none;
-    }
-
 };

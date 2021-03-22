@@ -5,7 +5,11 @@ import { Component } from "../../../core/controllers/component";
 import { Category, Icon, Vars, Traits } from "../../../core/controllers";
 
 @Vars({
-    body: "Text..."
+    body: "Text...",
+    fontColor: "black",
+    uppercase: "none",
+    backgroundColor: "#d7d7d7",
+    borderRadius: "0px"
 })
 @Icon("fas fa-hockey-puck")
 @Category("Interacts")
@@ -13,6 +17,26 @@ import { Category, Icon, Vars, Traits } from "../../../core/controllers";
     type: "text",
     name: "body",
     label: "Contenu",
+}, {
+    type: "color",
+    name: "fontColor",
+    label: "Couleur du texte"
+}, {
+    type: "color",
+    name: "backgroundColor",
+    label: "Couleur du fond"
+}, {
+    type: "checkbox",
+    name: "uppercase",
+    label: "Majuscules",
+    valueTrue: "uppercase",
+    valueFalse: "none"
+}, {
+    type: "checkbox",
+    name: "borderRadius",
+    label: "Bords arondis",
+    valueTrue: "5px",
+    valueFalse: "0px"
 }])
 class Button extends Component {
     constructor() {

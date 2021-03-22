@@ -105,6 +105,39 @@ Note that its content should stay empty as its meant to be filled by the user
 
 - ``draggable`` is also being interpreted by the editor
 
+### Subcomponents
+You can invoke an already loaded component into one and set its vars<br/>
+In this example spawning a Text subcomponent, and using the { body } var of the current component to init the sub<br/>
+> Components can be daisy chained thanks to this algorithm
+```html
+<div>
+    <Text body="{ body }"/>
+</div>
+```
+
+## Event handlers
+There are multiple ways of handling component events<br/>
+In this section we assume to listen to the click event
+### Decorators
+```javascript
+import { Component } from "&/core/controllers/component";
+import { Click } from "&/core/controllers";
+
+@Click((componentInstance: ComponentInstance, ...): void => {
+    // Code goes here
+})
+class MyComponent extends Component {
+    ...
+};
+```
+### EventEmitter
+```javascript
+const text = Text.create(); // ComponentInstance
+text.on("click", (...) => {
+    // Code goes here
+});
+```
+
 ## Use with viewer (or any other file)
 ### Example
 ```javascript

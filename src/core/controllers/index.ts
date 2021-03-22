@@ -8,6 +8,7 @@ const _Controller = new (class Controller {
     public componentIcons: { [id: string]: string } = {};
 
     public componentsCategories: Component[][] = [ [], [], [], [] ];
+    public componentHandlers: { [id: string]: any } = {};
 
     public getComponent(id: string): Component {
         if (!id || !this.components[id])
@@ -20,6 +21,18 @@ const _Controller = new (class Controller {
             return undefined;
         return this.componentsInstances[id];
     };
+
+    public constructor() {
+        // Garbage collector
+        setInterval(() => {
+            /* Object.values(this.componentsInstances).filter(instance => {
+                if (instance.append)
+                    return;
+                instance.remove();
+                console.warn("Garbage collector deleted:", instance.label);
+            }); */
+        }, 3000);
+    }
 });
 
 interface Trait {
@@ -88,6 +101,20 @@ export function Category(category: string = "Containers") {
                         _Controller.componentsCategories[2].push(this as any);
                         break;
                 }
+            }
+        }
+        return nclass;
+    }
+}
+
+export function Click(cb: Function) {
+    return function <T extends { new(...args: any[]): {} }>(constructor: T) {
+        const nclass: any = class extends constructor {
+            constructor(..._: any[]) {
+                super();
+                if (!_Controller.componentHandlers[(this as any).label])
+                    _Controller.componentHandlers[(this as any).label] = {}
+                _Controller.componentHandlers[(this as any).label].click = cb;
             }
         }
         return nclass;
