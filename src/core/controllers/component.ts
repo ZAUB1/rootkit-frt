@@ -64,7 +64,7 @@ export class ComponentInstance extends EventEmitter {
                 compInstance.vars[childVal.name] = childVal.value;
             }
             compInstance.rebuild();
-            compInstance.appendTo(el);
+            compInstance.appendTo(child as HTMLElement);
             return this.spawnSubComps(compInstance.DOMElem);
         }
     };
@@ -145,6 +145,11 @@ export class ComponentInstance extends EventEmitter {
         return this.getChilds(key)[0];
     }
 
+    private emitEventListener(event: string, ..._: any) {
+        this.emit(event, ..._);
+        Controller?.componentHandlers && Controller?.componentHandlers[this.label] ? Controller.componentHandlers[this.label][event](this, ..._) : void 0;
+    }
+
     public constructor(label: string, content: string, element: any, { style, vars = [], id, origin }: any) {
         super();
         this.label = label;
@@ -158,7 +163,7 @@ export class ComponentInstance extends EventEmitter {
         this.origin = origin;
         this.rebuildContent();
 
-        this.DOMElem.addEventListener("click", (ev) => { this.emit("click", ev) });
+        this.DOMElem.addEventListener("click", (ev) => { this.emitEventListener("click", ev) });
 
         console.log("Component instance spawned:", this.label);
     };
