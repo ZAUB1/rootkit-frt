@@ -23,6 +23,25 @@ nav {
         align-items: center;
         margin: 0px 20px;
 
+        nav-button {
+            width: 120px;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-around;
+            margin-right: 50px;
+
+            button {
+                background: transparent;
+                color: #fff;
+                border: none;
+                outline: none;
+                font-size: large;
+                cursor: pointer;
+
+            }
+
+        }
+
         nav-connect {
             width: 100px;
             height: 30px;
