@@ -1,11 +1,11 @@
-import { EventEmitter } from "events";
+import EventEmitter from "../etc/events";
 
 import Router from "../router";
 import Controller from "./index";
 import { parseStyle } from "../style";
 import { genRandId } from "../etc/rand";
 
-export class ComponentInstance {
+export class ComponentInstance extends EventEmitter {
     public id: string;
     public label: string;
     public attributes: any;
@@ -44,33 +44,44 @@ export class ComponentInstance {
         });
     }
 
-    private spawnSubComps(str: string) {
-        if (this.origin.hideFromStack)
-            return;
+    private spawnSubComps(el: HTMLElement): void {
+        /* if (this.origin.hideFromStack)
+            return; */
         const tagNames = Object.keys(Controller.components).map(tag => tag.toLowerCase());
-        for (const child of this.childrens as HTMLElement[]) {
-            const tagName = child.tagName.toLowerCase();
-            if (!tagNames.includes(tagName))
+        for (const child of el.children) {
+            if (!tagNames.includes(child.nodeName.toLowerCase())) {
+                this.spawnSubComps(child as HTMLElement);
                 continue;
-            const comp: Component = Controller.components[`${tagName.charAt(0).toUpperCase()}${tagName.slice(1, tagName.length)}`];
+            }
+            const nodeName = child.nodeName.toLowerCase();
+            const comp: Component = Controller.components[`${nodeName.charAt(0).toUpperCase()}${nodeName.slice(1, nodeName.length)}`];
             const compInstance = comp.create();
-            Object.values(child.attributes).filter((attr: Attr) => {
-                if (!compInstance.vars[attr.name])
-                    return;
-                compInstance.setVar(attr.name, attr.value);
-            });
-            compInstance.parent = this;
-            compInstance.appendTo(child);
-            console.log(compInstance)
+            const keys = Object.keys(compInstance.vars);
+            for (const key of keys) {
+                const childVal = child.attributes.getNamedItem(key);
+                if (!childVal)
+                    continue;
+                compInstance.vars[childVal.name] = childVal.value;
+            }
+            compInstance.rebuild();
+            compInstance.appendTo(el);
+            return this.spawnSubComps(compInstance.DOMElem);
         }
     };
 
-    public rebuildContent() {
-        // Parse style from inner body
+    public rebuild() {
         const style = (this.content.match(/<style>(.|\n)*?<\/style>/)) ? this.content.match(/<style>(.|\n)*?<\/style>/)[0]?.split("<style>")[1]?.split("</style>")[0] : void 0;
         this.content = (this.style) ? `<style>${(style || "") + this.replaceCssByVar(parseStyle(this.style))}</style>${this.baseContent}` : this.baseContent;
         this.content = this.replaceStrByVar(this.content);
         this.DOMElem.innerHTML = this.content;
+
+        this.parseChildren(this.DOMElem);
+    };
+
+    public rebuildContent() {
+        // Parse style from inner body
+        this.rebuild();
+        this.spawnSubComps(this.DOMElem);
     };
 
     private parseChildren(elem: any) {
@@ -135,6 +146,7 @@ export class ComponentInstance {
     }
 
     public constructor(label: string, content: string, element: any, { style, vars = [], id, origin }: any) {
+        super();
         this.label = label;
         this.content = content;
         this.baseContent = content as string;
@@ -145,8 +157,8 @@ export class ComponentInstance {
         this.id = id;
         this.origin = origin;
         this.rebuildContent();
-        this.parseChildren(this.DOMElem);
-        this.spawnSubComps(this.content);
+
+        this.DOMElem.addEventListener("click", (ev) => { this.emit("click", ev) });
 
         console.log("Component instance spawned:", this.label);
     };
@@ -171,9 +183,9 @@ export class Component {
         this.style = style;
         this.vars = vars;
         this.content = content;
+        this.hideFromStack = hideFromStack;
 
         (!hideFromStack) ? Controller.components[this.label] = this : void 0;
-        hideFromStack = this.hideFromStack;
     };
 
     public create(): ComponentInstance {
@@ -182,7 +194,7 @@ export class Component {
         el.setAttribute("id", randId);
         el.setAttribute("component-instance", "true");
         const compInstance = new ComponentInstance(this.label, this.content, el, { style: this.style, vars: this.vars, origin: this });
-        Controller.componentsInstances[randId] = compInstance;
+        (!this.hideFromStack) ? Controller.componentsInstances[randId] = compInstance : void 0;
         return compInstance;
     };
 

@@ -8,4 +8,4 @@
 ### Aubin Luneau
 ### Marc Richet
 
-[Get Started](#puzzle-doc)
+[↓](#puzzle-doc)

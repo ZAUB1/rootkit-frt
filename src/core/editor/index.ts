@@ -168,7 +168,6 @@ export default class Editor {
         window.addEventListener("mousedown", ev => this.elementClickHandler(ev));
 
         window.editor = {};
-        window.editor.destroySelectedElem = () => { this.destroySelectedElem(); this.closeElementTools() };
         window.editor.createComponent = () => { this.createComponent() };
 
         // Drag & Drop declarations
@@ -191,5 +190,7 @@ export default class Editor {
         this.flagChildsAsEditor(this.editorComp.DOMElem);
         this.dragHoverElem = this.editorComp.getFirstChild("editor-main");
         currentInstance = this;
+
+        this.selecterComp.on("click", () => { this.destroySelectedElem(); this.closeElementTools() });
     };
 };

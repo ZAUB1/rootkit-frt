@@ -20,6 +20,18 @@ const _Controller = new (class Controller {
             return undefined;
         return this.componentsInstances[id];
     };
+
+    public constructor() {
+        // Garbage collector
+        setInterval(() => {
+            /* Object.values(this.componentsInstances).filter(instance => {
+                if (instance.append)
+                    return;
+                instance.remove();
+                console.warn("Garbage collector deleted:", instance.label);
+            }); */
+        }, 3000);
+    }
 });
 
 interface Trait {
