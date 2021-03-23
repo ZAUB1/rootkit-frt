@@ -1,7 +1,7 @@
 import body from "./body.html";
 
 import { Component } from "../../../core/controllers/component";
-import { Category, Icon, Vars } from "../../../core/controllers";
+import { Category, Icon } from "../../../core/controllers/decorators/editor";
 
 @Category("Interacts")
 @Icon("fas fa-square")

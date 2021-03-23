@@ -1,7 +1,10 @@
 import body from "./body.html";
 
 import { Component, ComponentInstance } from "../../../core/controllers/component";
-import { Appened, Category, Icon, ModelEventHandler, Traits, Vars } from "../../../core/controllers";
+
+import { Vars } from "../../../core/controllers/decorators/component";
+import { ModelEventHandler } from "../../../core/controllers/decorators/model";
+import { Traits, Category, Icon } from "../../../core/controllers/decorators/editor";
 
 import Notification from "../../Overlays/Notification";
 

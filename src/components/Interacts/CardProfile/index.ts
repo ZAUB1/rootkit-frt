@@ -1,7 +1,8 @@
 import body from "./body.html";
 
 import { Component } from "../../../core/controllers/component";
-import { Category, Icon, Traits, Vars } from "../../../core/controllers";
+import { Vars } from "../../../core/controllers/decorators/component";
+import { Category, Icon, Traits } from "../../../core/controllers/decorators/editor";
 
 @Vars({
     fullname: "Lara Win",

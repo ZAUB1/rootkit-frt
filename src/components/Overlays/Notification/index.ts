@@ -1,8 +1,8 @@
 import body from "./body.html";
 import style from "./style";
 
+import { Vars, Appened } from "../../../core/controllers/decorators/component";
 import { Component, ComponentInstance } from "../../../core/controllers/component";
-import { Category, Icon, Vars, Traits, Appened } from "../../../core/controllers";
 
 @Vars({
     body: "Test notification"

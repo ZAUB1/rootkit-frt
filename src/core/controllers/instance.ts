@@ -5,6 +5,8 @@ import EventEmitter, { COMP_EVENTS } from "../etc/events";
 
 import { Component } from "./component";
 
+const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
+
 export class ComponentInstance extends EventEmitter {
     public id: string;
     public label: string;
@@ -164,7 +166,10 @@ export class ComponentInstance extends EventEmitter {
 
     private emitEventListener(event: string, ..._: any) {
         this.emit(event, ..._);
-        Controller?.componentHandlers && Controller?.componentHandlers[this.label] ? Controller.componentHandlers[this.label][event](this, ..._) : void 0;
+        Controller?.componentHandlers
+        && Controller?.componentHandlers[this.label]
+        && Controller.componentHandlers[this.label][event] 
+            ? Controller.componentHandlers[this.label][event](this, ..._) : void 0;
     }
 
     public constructor(label: string, content: string, element: any, { style, vars = [], id, origin }: any) {
@@ -180,7 +185,8 @@ export class ComponentInstance extends EventEmitter {
         this.origin = origin;
         this.rebuildContent();
 
-        this.DOMElem.addEventListener("click", (ev) => { this.emitEventListener("click", ev) });
+        for (const eventName of DOM_EVENTS)
+            this.DOMElem.addEventListener(eventName, (ev) => { this.emitEventListener(eventName, ev) });
 
         console.log("Component instance spawned:", this.label);
     };

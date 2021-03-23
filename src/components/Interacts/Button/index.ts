@@ -2,7 +2,8 @@ import body from "./body.html";
 import style from "./style";
 
 import { Component, ComponentInstance } from "../../../core/controllers/component";
-import { Category, Icon, Vars, Traits, Click } from "../../../core/controllers";
+import { Vars, Click } from "../../../core/controllers/decorators/component";
+import { Icon, Category, Traits } from "../../../core/controllers/decorators/editor";
 
 @Vars({
     body: "Text...",
