@@ -1,7 +1,7 @@
 import body from "./body.html";
 
 import { Component, ComponentInstance } from "../../../core/controllers/component";
-import { Appened, Category, Icon, Traits, Vars } from "../../../core/controllers";
+import { Appened, Category, Icon, ModelEventHandler, Traits, Vars } from "../../../core/controllers";
 
 import Notification from "../../Overlays/Notification";
 
@@ -25,12 +25,10 @@ import Notification from "../../Overlays/Notification";
 }])
 @Category("Interacts")
 @Icon("fas fa-square")
-@Appened((comp: ComponentInstance) => {
-    comp.getCompByModel("test").on("click", () => {
-        const notif = Notification.create();
-        notif.setVar("body", "You bought this");
-        notif.append();
-    });
+@ModelEventHandler("test", "click", () => {
+    const notif = Notification.create();
+    notif.setVar("body", "You bought this");
+    notif.append();
 })
 class CardProduct extends Component {
     constructor() {

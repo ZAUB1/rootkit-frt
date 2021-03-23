@@ -126,8 +126,21 @@ export function Appened(cb: Function) {
         const nclass: any = class extends constructor {
             constructor(..._: any[]) {
                 super();
-                console.log((this as any).appendHandler);
                 (this as any).appendHandler = cb;
+            }
+        }
+        return nclass;
+    }
+}
+
+export function ModelEventHandler(model: string, event: string, cb: Function) {
+    return function <T extends { new(...args: any[]): {} }>(constructor: T) {
+        const nclass: any = class extends constructor {
+            constructor(..._: any[]) {
+                super();
+                (this as any).on("instance::created", (_this: ComponentInstance) => {
+                    _this.getCompByModel(model)?.on(event, cb);
+                });
             }
         }
         return nclass;
