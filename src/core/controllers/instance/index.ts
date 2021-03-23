@@ -1,9 +1,9 @@
-import Router from "../router";
-import Controller from "./index";
-import { parseStyle } from "../style";
-import EventEmitter, { COMP_EVENTS } from "../etc/events";
+import Router from "../../router";
+import Controller from "../index";
+import { parseStyle } from "../../style";
+import EventEmitter, { COMP_EVENTS } from "../../etc/events";
 
-import { Component } from "./component";
+import { Component } from "../component";
 
 const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
 
@@ -49,19 +49,24 @@ export class ComponentInstance extends EventEmitter {
     }
 
     private spawnSubComps(el: HTMLElement): void {
-        /* if (this.origin.hideFromStack)
-            return; */
         const tagNames = Object.keys(Controller.components).map(tag => tag.toLowerCase());
         for (const child of el.children) {
+            // Is tag a component ?
             if (!tagNames.includes(child.nodeName.toLowerCase())) {
                 this.spawnSubComps(child as HTMLElement);
                 continue;
             }
+
+            // Create component
             const nodeName = child.nodeName.toLowerCase();
             const comp: Component = Controller.components[`${nodeName.charAt(0).toUpperCase()}${nodeName.slice(1, nodeName.length)}`];
             const compInstance = comp.create();
+
+            // Look for model
             compInstance.model = child.attributes.getNamedItem("model")?.value;
             compInstance.model ? this.models[compInstance.model] = compInstance : void 0;
+
+            // Look for default vars
             const keys = Object.keys(compInstance.vars);
             for (const key of keys) {
                 const childVal = child.attributes.getNamedItem(key);
@@ -69,11 +74,8 @@ export class ComponentInstance extends EventEmitter {
                     continue;
                 compInstance.vars[childVal.name] = childVal.value;
             }
-            /* for (const compEvent of COMP_EVENTS) {
-                const childVal = child.attributes.getNamedItem(compEvent);
-                if (!childVal)
-                    continue;
-            } */
+
+            // Saving parent
             compInstance.parent = this;
             compInstance.rebuild();
             compInstance.appendTo(child as HTMLElement);
