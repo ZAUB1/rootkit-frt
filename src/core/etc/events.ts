@@ -1,3 +1,5 @@
+export const COMP_EVENTS: string[] = [ "@click" ];
+
 export default class EventEmitter {
     private events: Map<string, Function[]> = new Map();
 

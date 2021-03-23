@@ -2,11 +2,8 @@ export default {
     buttonsContainer: {
         all: "initial",
         position: "relative",
-        display: "inline-flex",
         outline: 0,
         height: "36px",
-        minWidth: "64px",
-        padding: "0 16px",
         backgroundColor: "{ backgroundColor }",
         borderRadius: "{ borderRadius }",
         color: "{ fontColor }",
@@ -21,6 +18,9 @@ export default {
         whitespace: "nowrap",
         justifyContent: "center",
         alignItems: "center",
+        display: "flex",
+        flex: "1 0 auto",
+        minWidth: "100% !important",
         hover: {
             backgroundColor: "#c7c7c7"
         },

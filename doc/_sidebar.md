@@ -4,3 +4,4 @@
 * [Components](components.md)
 * [Editor](editor.md)
 * [Viewer](viewer.md)
+* [Overlays](overlays.md)
