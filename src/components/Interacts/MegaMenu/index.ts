@@ -7,7 +7,7 @@ import { Category, Icon, Vars } from "../../../core/controllers";
 @Icon("fas fa-square")
 class MegaMenu extends Component {
     constructor() {
-        super("MegaMenu", body, { });
+        super("Mega Menu", body, { });
     }
 };
 
