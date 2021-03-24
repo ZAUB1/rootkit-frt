@@ -1,10 +1,11 @@
 import Controller from "./index";
 import { genRandId } from "../etc/rand";
+import EventEmitter from "../etc/events";
 
 import { ComponentInstance } from "./instance";
 export { ComponentInstance } from "./instance";
 
-export class Component {
+export class Component extends EventEmitter {
     public id: string;
     public label: string;
     public category: string;
@@ -16,7 +17,7 @@ export class Component {
     public appendHandler: Function;
 
     public constructor(label: string, content: string, { style, category = "Default", vars = {}, hideFromStack = false }: any = {}) {
-        //super();
+        super();
         this.id = label;
         this.label = label;
         this.category = category;
@@ -36,6 +37,7 @@ export class Component {
         el.setAttribute("component-instance", "true");
         const compInstance = new ComponentInstance(this.label, this.content, el, { style: this.style, vars: this.vars, origin: this });
         (!this.hideFromStack) ? Controller.componentsInstances[randId] = compInstance : void 0;
+        this.emit("instance::created", compInstance);
         return compInstance;
     };
 

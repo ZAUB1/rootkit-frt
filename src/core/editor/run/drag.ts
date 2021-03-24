@@ -12,8 +12,7 @@ export default class EditorDrag {
         el.draggable = true;
         el.ondragstart = (event) => this.startDrag(event, this._editor.selectedComp.label);
         el.ondragend = (event) => {
-            console.log("eend;")
-            this._editor.selectedComp.moveTo(this._editor.dragHoverElem);
+            (this._editor.selectedComp.parent ? this._editor.selectedComp.parent : this._editor.selectedComp).moveTo(this._editor.dragHoverElem);
             this._editor.closeElementTools();
         };
     };

@@ -1,7 +1,8 @@
 import body from "./body.html";
 
 import { Component } from "../../../core/controllers/component";
-import { Category, Icon, Vars, Traits } from "../../../core/controllers";
+import { Vars } from "../../../core/controllers/decorators/component";
+import { Traits, Category, Icon } from "../../../core/controllers/decorators/editor";
 
 @Vars({
     weight: "normal",

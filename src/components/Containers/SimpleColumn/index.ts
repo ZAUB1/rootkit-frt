@@ -2,7 +2,7 @@ import body from "./body.html";
 import style from "./style";
 
 import { Component } from "../../../core/controllers/component";
-import { Category } from "../../../core/controllers";
+import { Category } from "../../../core/controllers/decorators/editor";
 
 @Category("Containers")
 class SimpleColumn extends Component {

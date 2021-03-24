@@ -1,9 +1,11 @@
-import Router from "../router";
-import Controller from "./index";
-import { parseStyle } from "../style";
-import EventEmitter, { COMP_EVENTS } from "../etc/events";
+import Router from "../../router";
+import Controller from "../index";
+import { parseStyle } from "../../style";
+import EventEmitter, { COMP_EVENTS } from "../../etc/events";
 
-import { Component } from "./component";
+import { Component } from "../component";
+
+const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
 
 export class ComponentInstance extends EventEmitter {
     public id: string;
@@ -24,6 +26,7 @@ export class ComponentInstance extends EventEmitter {
 
     public origin: Component;
     public parent: ComponentInstance;
+    private models: { [id: string]: ComponentInstance } = {};
 
     private replaceStrByVar(str: string) {
         return str.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
@@ -46,18 +49,24 @@ export class ComponentInstance extends EventEmitter {
     }
 
     private spawnSubComps(el: HTMLElement): void {
-        /* if (this.origin.hideFromStack)
-            return; */
         const tagNames = Object.keys(Controller.components).map(tag => tag.toLowerCase());
         for (const child of el.children) {
+            // Is tag a component ?
             if (!tagNames.includes(child.nodeName.toLowerCase())) {
                 this.spawnSubComps(child as HTMLElement);
                 continue;
             }
+
+            // Create component
             const nodeName = child.nodeName.toLowerCase();
             const comp: Component = Controller.components[`${nodeName.charAt(0).toUpperCase()}${nodeName.slice(1, nodeName.length)}`];
             const compInstance = comp.create();
+
+            // Look for model
             compInstance.model = child.attributes.getNamedItem("model")?.value;
+            compInstance.model ? this.models[compInstance.model] = compInstance : void 0;
+
+            // Look for default vars
             const keys = Object.keys(compInstance.vars);
             for (const key of keys) {
                 const childVal = child.attributes.getNamedItem(key);
@@ -65,11 +74,8 @@ export class ComponentInstance extends EventEmitter {
                     continue;
                 compInstance.vars[childVal.name] = childVal.value;
             }
-            /* for (const compEvent of COMP_EVENTS) {
-                const childVal = child.attributes.getNamedItem(compEvent);
-                if (!childVal)
-                    continue;
-            } */
+
+            // Saving parent
             compInstance.parent = this;
             compInstance.rebuild();
             compInstance.appendTo(child as HTMLElement);
@@ -150,13 +156,22 @@ export class ComponentInstance extends EventEmitter {
         return childs;
     };
 
+    public getCompByModel(model: string): ComponentInstance {
+        if (!model)
+            return undefined;
+        return this.models[model];
+    }
+
     public getFirstChild(key: string) {
         return this.getChilds(key)[0];
     }
 
     private emitEventListener(event: string, ..._: any) {
         this.emit(event, ..._);
-        Controller?.componentHandlers && Controller?.componentHandlers[this.label] ? Controller.componentHandlers[this.label][event](this, ..._) : void 0;
+        Controller?.componentHandlers
+        && Controller?.componentHandlers[this.label]
+        && Controller.componentHandlers[this.label][event] 
+            ? Controller.componentHandlers[this.label][event](this, ..._) : void 0;
     }
 
     public constructor(label: string, content: string, element: any, { style, vars = [], id, origin }: any) {
@@ -172,7 +187,8 @@ export class ComponentInstance extends EventEmitter {
         this.origin = origin;
         this.rebuildContent();
 
-        this.DOMElem.addEventListener("click", (ev) => { this.emitEventListener("click", ev) });
+        for (const eventName of DOM_EVENTS)
+            this.DOMElem.addEventListener(eventName, (ev) => { this.emitEventListener(eventName, ev) });
 
         console.log("Component instance spawned:", this.label);
     };

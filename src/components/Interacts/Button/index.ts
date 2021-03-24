@@ -2,8 +2,8 @@ import body from "./body.html";
 import style from "./style";
 
 import { Component, ComponentInstance } from "../../../core/controllers/component";
-import { Category, Icon, Vars, Traits, Click } from "../../../core/controllers";
-import Notification from "../../Overlays/Notification";
+import { Vars, Click } from "../../../core/controllers/decorators/component";
+import { Icon, Category, Traits } from "../../../core/controllers/decorators/editor";
 
 @Vars({
     body: "Text...",
@@ -40,9 +40,6 @@ import Notification from "../../Overlays/Notification";
     valueFalse: "0px"
 }])
 @Click((_this: ComponentInstance) => {
-    const notif = Notification.create();
-    notif.setVar("body", `Test click handler !! (Comp ID: ${_this.DOMElem.id})`);
-    notif.append();
 })
 class Button extends Component {
     constructor() {

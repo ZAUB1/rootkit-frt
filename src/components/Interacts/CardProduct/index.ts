@@ -1,7 +1,12 @@
 import body from "./body.html";
 
-import { Component } from "../../../core/controllers/component";
-import { Category, Icon, Traits, Vars } from "../../../core/controllers";
+import { Component, ComponentInstance } from "../../../core/controllers/component";
+
+import { Vars } from "../../../core/controllers/decorators/component";
+import { ModelEventHandler } from "../../../core/controllers/decorators/model";
+import { Traits, Category, Icon } from "../../../core/controllers/decorators/editor";
+
+import Notification from "../../Overlays/Notification";
 
 @Vars({
     title: "Card title",
@@ -23,6 +28,11 @@ import { Category, Icon, Traits, Vars } from "../../../core/controllers";
 }])
 @Category("Interacts")
 @Icon("fas fa-square")
+@ModelEventHandler("test", "click", () => {
+    const notif = Notification.create();
+    notif.setVar("body", "You bought this");
+    notif.append();
+})
 class CardProduct extends Component {
     constructor() {
         super("Card Product", body, { });
