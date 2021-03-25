@@ -17,3 +17,4 @@ import "./Interacts/RadioButton";
 import "./Interacts/MegaMenu";
 import "./Interacts/Modal";
 import "./Interacts/Thumbnail";
+import "./Interacts/Navbar";
