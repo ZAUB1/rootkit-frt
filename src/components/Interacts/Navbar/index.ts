@@ -1,10 +1,16 @@
-import content from "./body.html";
-import style from "./style";
+import body from "./body.html";
+// import style from "./style";
+
 
 import { Component } from "../../../core/controllers/component";
+import { Category, Icon } from "../../../core/controllers/decorators/editor";
+@Category("Interacts")
+@Icon("fas fa-square")
+class Navbar extends Component {
+    constructor() {
+        super("Navbar", body, { });
+    }
+};
 
-export default new Component(
-    "Navbar", // Name
-    content, // Contenu html
-    { style, category: "Requirements" } // Attributs de notre framwork (style, traits, ...)
-);
+export default new Navbar;
+
