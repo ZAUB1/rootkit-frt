@@ -4,6 +4,7 @@ import { parseStyle } from "../../style";
 import EventEmitter, { COMP_EVENTS } from "../../etc/events";
 
 import { Component } from "../component";
+import { parseHTML } from "../../compilers/html";
 
 const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
 
@@ -50,7 +51,7 @@ export class ComponentInstance extends EventEmitter {
 
     private spawnSubComps(el: HTMLElement): void {
         const tagNames = Object.keys(Controller.components).map(tag => tag.toLowerCase());
-        for (const child of el.children) {
+        for (const child of el.children as any) {
             // Is tag a component ?
             if (!tagNames.includes(child.nodeName.toLowerCase())) {
                 this.spawnSubComps(child as HTMLElement);
@@ -84,6 +85,7 @@ export class ComponentInstance extends EventEmitter {
     };
 
     public rebuild() {
+        parseHTML(this, this.content);
         const style = (this.content.match(/<style>(.|\n)*?<\/style>/)) ? this.content.match(/<style>(.|\n)*?<\/style>/)[0]?.split("<style>")[1]?.split("</style>")[0] : void 0;
         this.content = (this.style) ? `<style>${(style || "") + this.replaceCssByVar(parseStyle(this.style))}</style>${this.baseContent}` : this.baseContent;
         this.content = this.replaceStrByVar(this.content);
