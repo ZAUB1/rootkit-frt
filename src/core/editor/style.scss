@@ -157,8 +157,10 @@ editor-traitcontainer {
 }
 
 editor-traitmenu {
+    position: absolute;
     height: 80%;
-    margin-top: 5%;
+    top: 10%;
+    right: 3%;
     width: 250px;
     background-color: rgb(247, 247, 247);
     border-radius: 10px;
