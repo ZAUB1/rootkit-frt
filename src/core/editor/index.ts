@@ -160,7 +160,7 @@ export default class Editor {
         el.setAttribute("editor", "true");
         if (!el.children.length)
             return;
-        for (const child of el.children)
+        for (const child of el.children as any)
             this.flagChildsAsEditor(child as HTMLElement);
     };
 
