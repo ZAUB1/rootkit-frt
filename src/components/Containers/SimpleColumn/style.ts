@@ -4,14 +4,15 @@ export default {
         justifyContent: "center",
         alignItems: "stretch",
         flexWrap: "nowrap",
-        padding: "10px"
+        padding: "0px"
     },
     columnCell: {
-        minWidth: "100px",
         minHeight: "75px",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        flexGrow: 1,
+        flexBasis: "100%"
     },
     media_maxWidth_768px: {
         columnRow: {
