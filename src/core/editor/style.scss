@@ -82,6 +82,7 @@ editor-sidemenu {
     overflow-y: hidden;
     min-width: $menu-width;
     background-color: rgb(242, 242, 242);
+    overflow-y: auto;
 
     category-buttons {
         display: flex;

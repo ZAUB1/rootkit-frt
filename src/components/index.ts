@@ -18,3 +18,8 @@ import "./Interacts/MegaMenu";
 import "./Interacts/Modal";
 import "./Interacts/Thumbnail";
 import "./Interacts/Navbar";
+import "./Interacts/NavbarHeader";
+import "./Interacts/PillNavigation";
+import "./Interacts/ImageTransText";
+import "./Interacts/Searchbar";
+
