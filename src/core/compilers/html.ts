@@ -25,7 +25,8 @@ export const parseHTML = (context: ComponentInstance, content: string) => {
         });
 
         if (line.includes("<") && !line.includes("</")) {
-            console.log("beg:", line.split("<")[1].split(">")[0].trim())
+            const comp = isLineAComp(line);
+            console.log("beg:", line.split("<")[1].split(">")[0].trim(), isLineAComp(line));
         }
         if (line.includes("</")) {
             console.log("end:", line.split("</")[1].split(">")[0].trim())

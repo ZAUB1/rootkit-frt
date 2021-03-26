@@ -69,6 +69,8 @@ export default class EditorTraits {
         `;
         sideMenu.style.display = null;
         traitsMenu.style.display = "block";
+
+        traitsMenu.addEventListener("mousedown", this.traitMenuClickHandler);
     };
 
     public hideTraitsMenu() {
@@ -99,5 +101,29 @@ export default class EditorTraits {
         if (!el)
             return;
         this._editor.selectedComp.setVar(traitName, el.checked ? traitTrue : traitFalse);
-    }
+    };
+
+    public traitMenuClickHandler(event: MouseEvent) {
+        if ((event.target as HTMLElement).nodeName != "EDITOR-TRAITMENU")
+            return;
+        const target = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
+        event.preventDefault();
+
+        const mouseMove = (event: MouseEvent) => {
+            let { top, left }: any = target.getBoundingClientRect();
+            target.style.left = `${left + event.movementX}px`;
+            target.style.top = `${top + event.movementY}px`;
+        };
+
+        const mouseUp = (event: MouseEvent) => {
+            console.log("up");
+            document.body.style.cursor = null;
+            window.removeEventListener("mousemove", mouseMove);
+            window.removeEventListener("mousedown", mouseUp);
+        };
+
+        window.addEventListener("mousemove", mouseMove);
+        window.addEventListener("mouseup", mouseUp);
+        document.body.style.cursor = "move";
+    };
 }

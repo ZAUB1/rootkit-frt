@@ -16,6 +16,7 @@ import { Component, ComponentInstance } from "../controllers/component";
 
 import EditorDrag from "./run/drag";
 import EditorTraits from "./ui/traits";
+import EditorResizer from "./ui/resizers";
 
 let currentInstance: any;
 
@@ -34,6 +35,7 @@ export default class Editor {
 
     private editorDrag: EditorDrag;
     private editorTraits: EditorTraits;
+    private editorResizer: EditorResizer;
 
     private elementHoverHandler(ev: MouseEvent) {
         const hoverElement = document.elementFromPoint(ev.x, ev.y) as HTMLElement;
@@ -111,6 +113,7 @@ export default class Editor {
             return;
         this.closeElementTools();
         this.editorTraits.hideTraitsMenu();
+        this.editorResizer.hideResizers();
     };
 
     private createComponent(name: string = "Text") {
@@ -123,7 +126,7 @@ export default class Editor {
         this.selectedComp.remove();
     };
 
-    private getParentMovable(el: Element): Element {
+    public getParentMovable(el: Element): Element {
         if (!el.attributes.getNamedItem("component-instance"))
             return this.getParentMovable(el.parentElement);
         return el;
@@ -144,6 +147,7 @@ export default class Editor {
 
         this.editorTraits.displayTraitsMenu();
         this.displayElementTools();
+        this.editorResizer.displayResizers();
     };
 
     public static getInstance(): Editor {
@@ -156,13 +160,14 @@ export default class Editor {
         el.setAttribute("editor", "true");
         if (!el.children.length)
             return;
-        for (const child of el.children)
+        for (const child of el.children as any)
             this.flagChildsAsEditor(child as HTMLElement);
     };
 
     public constructor() {
         this.editorDrag = new EditorDrag(this);
         this.editorTraits = new EditorTraits(this);
+        this.editorResizer = new EditorResizer(this);
 
         window.addEventListener("mousemove", ev => this.elementHoverHandler(ev));
         window.addEventListener("mousedown", ev => this.elementClickHandler(ev));
