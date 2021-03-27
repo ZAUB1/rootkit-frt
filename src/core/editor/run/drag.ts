@@ -37,6 +37,8 @@ export default class EditorDrag {
     };
 
     public setDragElem(el: HTMLElement) {
+        if (el.children.length)
+            return;
         this._editor.dragHoverElem = el;
         el.style.backgroundColor = "black";
     };
