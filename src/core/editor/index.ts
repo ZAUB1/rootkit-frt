@@ -124,6 +124,7 @@ export default class Editor {
         if (!this.selectedComp)
             return; // @TODO Error case
         this.selectedComp.remove();
+        this.editorResizer.hideResizers();
     };
 
     public getParentMovable(el: Element): Element {
