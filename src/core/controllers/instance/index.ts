@@ -85,10 +85,12 @@ export class ComponentInstance extends EventEmitter {
     };
 
     public rebuild() {
-        parseHTML(this, this.content);
-        const style = (this.content.match(/<style>(.|\n)*?<\/style>/)) ? this.content.match(/<style>(.|\n)*?<\/style>/)[0]?.split("<style>")[1]?.split("</style>")[0] : void 0;
-        this.content = (this.style) ? `<style>${(style || "") + this.replaceCssByVar(parseStyle(this.style))}</style>${this.baseContent}` : this.baseContent;
-        this.content = this.replaceStrByVar(this.content);
+        let style = (this.content.match(/<style>(.|\n)*?<\/style>/)) ? this.content.match(/<style>(.|\n)*?<\/style>/)[0]?.split("<style>")[1]?.split("</style>")[0] : void 0;
+        style = (this.style) ? `<style>${this.replaceCssByVar(parseStyle(this.style))}</style>` : void 0;
+        style = (style || "").replace(/(\.([a-zA-Z_-]{1}[\w-_]+))/g, (sub: string, ..._): any => {
+            return `#${this.DOMElem.id} ${sub}`;
+        });
+        this.content = (style || "") + this.replaceStrByVar(this.baseContent);
         this.DOMElem.innerHTML = this.content;
 
         this.parseChildren(this.DOMElem);

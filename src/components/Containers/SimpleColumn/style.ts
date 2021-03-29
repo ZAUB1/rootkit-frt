@@ -1,10 +1,10 @@
 export default {
     columnRow: {
+        height: "auto",
         display: "flex",
+        alignItems: "center",
         justifyContent: "center",
-        alignItems: "stretch",
-        flexWrap: "nowrap",
-        padding: "0px"
+        flexWrap: "nowrap"
     },
     columnCell: {
         minHeight: "75px",

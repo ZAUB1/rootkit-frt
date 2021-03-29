@@ -34,6 +34,7 @@ export class Component extends EventEmitter {
         const randId = genRandId(5);
         const el = document.createElement("div");
         el.setAttribute("id", randId);
+        el.setAttribute(`data-${randId}`, "true");
         el.setAttribute("component-instance", "true");
         const compInstance = new ComponentInstance(this.label, this.content, el, { style: this.style, vars: this.vars, origin: this });
         (!this.hideFromStack) ? Controller.componentsInstances[randId] = compInstance : void 0;

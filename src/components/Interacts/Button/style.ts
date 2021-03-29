@@ -25,4 +25,7 @@ export default {
             backgroundColor: "#c7c7c7"
         },
     },
+    testProp: {
+        
+    }
 }
