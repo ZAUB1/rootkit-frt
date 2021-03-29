@@ -26,7 +26,7 @@ export function Click(cb: Function) {
     }
 };
 
-export function Appened(cb: Function) {
+export function Rendered(cb: Function) {
     return function <T extends { new(...args: any[]): {} }>(constructor: T) {
         const nclass: any = class extends constructor {
             constructor(..._: any[]) {
