@@ -179,7 +179,7 @@ export class ComponentInstance extends EventEmitter {
             ? Controller.componentHandlers[this.label][event](this, ..._) : void 0;
     }
 
-    public constructor(label: string, content: string, element: any, { style, vars = [], id, origin }: any) {
+    public constructor(label: string, content: string, element: any, { style, vars = [], origin }: any) {
         super();
         this.label = label;
         this.content = content;
@@ -188,7 +188,7 @@ export class ComponentInstance extends EventEmitter {
         this.attributes = this.vars;
         this.style = style;
         this.DOMElem = element;
-        this.id = id;
+        this.id = this.DOMElem.id;
         this.origin = origin;
         this.rebuildContent();
 

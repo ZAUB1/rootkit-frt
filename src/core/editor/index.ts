@@ -217,8 +217,9 @@ export default class Editor {
 
         window.editor.dump = () => {
             console.log(this.spawnedComponents.map(comp => {
-                const { label, vars, parent } = comp;
+                const { id, label, vars, parent } = comp;
                 return {
+                    id,
                     label,
                     vars,
                     parent

@@ -23,6 +23,8 @@ export default class EditorDrag {
 
     public stopDrag(event: DragEvent) {
         const comp = Controller.getComponent(this._editor.currentDragComp).create();
+        const parent = Controller.componentsInstances[this._editor.dragHoverElem.parentElement.parentElement.id];
+        (parent) ? comp.parent = parent : void 0;
         this._editor.spawnedComponents.push(comp);
         this.setDraggable(comp.DOMElem);
         comp.childrens.map((child: HTMLElement) => {
