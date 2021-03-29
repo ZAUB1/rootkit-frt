@@ -125,6 +125,7 @@ export default class Editor {
             return; // @TODO Error case
         this.selectedComp.remove();
         this.editorResizer.hideResizers();
+        this.editorTraits.hideTraitsMenu();
     };
 
     public getParentMovable(el: Element): Element {

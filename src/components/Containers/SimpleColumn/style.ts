@@ -4,7 +4,9 @@ export default {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        flexWrap: "nowrap"
+        flexWrap: "nowrap",
+        border: "{ border }",
+        borderRadius: "{ borderRadius }"
     },
     columnCell: {
         margin: "10px",
@@ -12,7 +14,9 @@ export default {
         minWidth: "75px",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        border: "{ border }",
+        borderRadius: "{ borderRadius }"
     },
     media_maxWidth_768px: {
         columnRow: {

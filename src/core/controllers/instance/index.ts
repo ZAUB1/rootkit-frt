@@ -195,7 +195,5 @@ export class ComponentInstance extends EventEmitter {
 
         for (const eventName of DOM_EVENTS)
             this.DOMElem.addEventListener(eventName, (ev) => { this.emitEventListener(eventName, ev) });
-
-        console.log("Component instance spawned:", this.label);
     };
 };

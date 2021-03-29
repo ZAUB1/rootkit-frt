@@ -7,8 +7,6 @@ import { Icon, Category, Traits } from "../../../core/controllers/decorators/edi
 
 @Vars({
     body: "Text...",
-    fontColor: "black",
-    uppercase: "none",
     backgroundColor: "#d7d7d7",
     borderRadius: "0px"
 })
@@ -20,18 +18,8 @@ import { Icon, Category, Traits } from "../../../core/controllers/decorators/edi
     label: "Contenu",
 }, {
     type: "color",
-    name: "fontColor",
-    label: "Couleur du texte"
-}, {
-    type: "color",
     name: "backgroundColor",
     label: "Couleur du fond"
-}, {
-    type: "checkbox",
-    name: "uppercase",
-    label: "Majuscules",
-    valueTrue: "uppercase",
-    valueFalse: "none"
 }, {
     type: "checkbox",
     name: "borderRadius",
