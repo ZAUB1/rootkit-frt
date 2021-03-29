@@ -16,7 +16,7 @@ export default {
         alignItems: "center",
         justifyContent: "center",
         border: "{ border }",
-        borderRadius: "{ borderRadius }"
+        borderRadius: "50%"
     },
     media_maxWidth_768px: {
         columnRow: {

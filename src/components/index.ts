@@ -1,3 +1,4 @@
+import "./Containers/Circle";
 import "./Containers/SimpleColumn";
 import "./Containers/DoubleColumn";
 import "./Containers/TripleColumn";
