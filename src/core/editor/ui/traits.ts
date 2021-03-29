@@ -9,6 +9,7 @@ export default class EditorTraits {
         this._editor = _editor;
     }
 
+    // Gen traits menu UI from comp traits
     public displayTraitsMenu() {
         const traits = Controller.componentTraits[this._editor.selectedComp.label];
         const sideMenu = document.getElementsByTagName("editor-sidemenu")[0] as HTMLElement;
@@ -70,6 +71,7 @@ export default class EditorTraits {
         sideMenu.style.display = null;
         traitsMenu.style.display = "block";
 
+        // Handler for menu moving
         traitsMenu.addEventListener("mousedown", this.traitMenuClickHandler);
     };
 
@@ -80,6 +82,7 @@ export default class EditorTraits {
         traitsMenu.style.display = null;
     };
 
+    // Key change
     public traitKeyHandler(event: KeyboardEvent, traitName: string) {
         if (event.key != "Enter")
             return;
@@ -89,6 +92,7 @@ export default class EditorTraits {
         this._editor.selectedComp.setVar(traitName, el.value);
     };
 
+    // Normal change
     public traitChangeHandler(event: any, traitName: string) {
         const el = event.target as any;
         if (!el)
@@ -96,6 +100,7 @@ export default class EditorTraits {
         this._editor.selectedComp.setVar(traitName, el.value);
     };
 
+    // Checkbox
     public traitCheckHandler(event: any, traitName: string, [ traitTrue, traitFalse ]: any) {
         const el = event.target as any;
         if (!el)
@@ -103,6 +108,7 @@ export default class EditorTraits {
         this._editor.selectedComp.setVar(traitName, el.checked ? traitTrue : traitFalse);
     };
 
+    // Move handler
     public traitMenuClickHandler(event: MouseEvent) {
         if ((event.target as HTMLElement).nodeName != "EDITOR-TRAITMENU")
             return;

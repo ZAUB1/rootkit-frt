@@ -6,22 +6,25 @@ import { ComponentInstance } from "./instance";
 export { ComponentInstance } from "./instance";
 
 export class Component extends EventEmitter {
-    public id: string;
+    // Component name
     public label: string;
+    // Category
     public category: string;
+    // HTML original content (not parsed)
     public content: string;
-    public attributes: any;
+    // Original vars
     private vars: any = {};
+    // Original style
     private style: any = {};
+    // Should this not be pushed with the other instances
     public hideFromStack: boolean = false;
+    // Append handler
     public appendHandler: Function;
 
     public constructor(label: string, content: string, { style, category = "Default", vars = {}, hideFromStack = false }: any = {}) {
         super();
-        this.id = label;
         this.label = label;
         this.category = category;
-        this.attributes = vars;
         this.style = style;
         this.vars = vars;
         this.content = content;
@@ -30,6 +33,7 @@ export class Component extends EventEmitter {
         (!hideFromStack) ? Controller.components[this.label] = this : void 0;
     };
 
+    // Generate ComponentInstance from Component
     public create(): ComponentInstance {
         const randId = genRandId(5);
         const el = document.createElement("div");
@@ -42,12 +46,14 @@ export class Component extends EventEmitter {
         return compInstance;
     };
 
+    // Generate and add to main UI
     public createAndAppend(): ComponentInstance {
         const com = this.create();
         com.append();
         return com;
     };
 
+    // Retreive comp class by its model
     public getByModel(model: string): ComponentInstance {
         for (const comp of Object.values(Controller.componentsInstances)) {
             if (comp?.model == model)

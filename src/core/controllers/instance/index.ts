@@ -4,7 +4,6 @@ import { parseStyle } from "../../style";
 import EventEmitter, { COMP_EVENTS } from "../../etc/events";
 
 import { Component } from "../component";
-import { parseHTML } from "../../compilers/html";
 
 const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
 
@@ -15,7 +14,7 @@ export class ComponentInstance extends EventEmitter {
     public content: string;
     public model: string;
 
-    protected vars: any = {};
+    public vars: any = {};
     private style: any = {};
     private baseContent: string;
 

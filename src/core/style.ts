@@ -24,6 +24,7 @@ export const styleString = (style: any, className: string): any => {
     return vals;
 }
 
+// Turn JS Object in css minified stylesheet
 export const parseStyle = (styleSheet: any) => {
     let style = "";
     const classes = Object.keys(styleSheet);

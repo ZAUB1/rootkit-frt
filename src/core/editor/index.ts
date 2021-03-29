@@ -23,20 +23,34 @@ let currentInstance: any;
 const CATEGORIES = [ "Containers", "Interacts", "Api Linked", "Favorites" ];
 
 export default class Editor {
+    // Last element the user had its cursor on
     public lastHover: HTMLElement;
+    // Current clicked element
     public selectedElem: HTMLElement;
 
+    // Editor UI component
     public editorComp: ComponentInstance;
-    public selectedComp: ComponentInstance;
+    // Selector menu UI component
     public selecterComp: ComponentInstance;
+    // Current clicked component instance
+    public selectedComp: ComponentInstance;
 
+    // Store for dragging
     public dragHoverElem: HTMLElement = Router.getElem();
+    // What type of component the user is dragging
     public currentDragComp: string;
 
+    // Editor dragger instance
     private editorDrag: EditorDrag;
+    // Editor traits instance
     private editorTraits: EditorTraits;
+    // Editor resizers instance
     private editorResizer: EditorResizer;
 
+    // Hold the spawned components from the editor from t(0)
+    public spawnedComponents: ComponentInstance[] = [];
+
+    // mouseover handler
     private elementHoverHandler(ev: MouseEvent) {
         const hoverElement = document.elementFromPoint(ev.x, ev.y) as HTMLElement;
         (this.lastHover) ? this.lastHover.style.outline = null : void 0;
@@ -50,6 +64,7 @@ export default class Editor {
         this.lastHover = hoverElement;
     };
 
+    // Generate component drawer
     private displayComponents(child: number = 0) {
         const compMenu = this.editorComp.getFirstChild("editor-components");
         if (!compMenu)
@@ -80,6 +95,7 @@ export default class Editor {
         `;
     };
 
+    // Components UI menu click handler
     public clickCompMenuHandler(el: HTMLElement, menu: number) {
         const compMenu = this.editorComp.getFirstChild("category-buttons");
         const compTitle = document.getElementById("component-title-menu");
@@ -92,6 +108,7 @@ export default class Editor {
         this.displayComponents(menu);
     };
 
+    // Display global elements UI tools
     private displayElementTools() {
         (this.selecterComp.appened) ? this.selecterComp.remove() : void 0;
         const rect = this.getParentMovable(this.selectedElem).getBoundingClientRect();
@@ -108,6 +125,7 @@ export default class Editor {
         this.selectedElem ? this.selectedElem.style.outline = null : void 0;
     };
 
+    // Closes all component UI
     private closeElemMenus() {
         if (!this.selecterComp)
             return;
@@ -116,10 +134,12 @@ export default class Editor {
         this.editorResizer.hideResizers();
     };
 
+    // @DEPRECATED
     private createComponent(name: string = "Text") {
         return Controller.getComponent(name).createAndAppend();
     };
 
+    // Handler delete button
     private destroySelectedElem() {
         if (!this.selectedComp)
             return; // @TODO Error case
@@ -128,12 +148,14 @@ export default class Editor {
         this.editorTraits.hideTraitsMenu();
     };
 
+    // Recursive to first the first 'real' component from any child
     public getParentMovable(el: Element): Element {
         if (!el.attributes.getNamedItem("component-instance"))
             return this.getParentMovable(el.parentElement);
         return el;
     };
 
+    // onclick handler
     private elementClickHandler(ev: MouseEvent) {
         const hoverElement = document.elementFromPoint(ev.x, ev.y) as HTMLElement;
         if (hoverElement.nodeName.toLocaleLowerCase() == "body")
@@ -153,9 +175,10 @@ export default class Editor {
     };
 
     public static getInstance(): Editor {
-        return currentInstance;
+        return currentInstance; // == this
     };
 
+    // Recursive to flag all childs as uneditable
     private flagChildsAsEditor(el: HTMLElement) {
         if (!el)
             return;
@@ -171,9 +194,11 @@ export default class Editor {
         this.editorTraits = new EditorTraits(this);
         this.editorResizer = new EditorResizer(this);
 
+        // Main tools handlers
         window.addEventListener("mousemove", ev => this.elementHoverHandler(ev));
         window.addEventListener("mousedown", ev => this.elementClickHandler(ev));
 
+        // HTML window wrappers
         window.editor = {};
         window.editor.createComponent = () => { this.createComponent() };
 
@@ -190,9 +215,24 @@ export default class Editor {
 
         window.editor.clickCompMenuHandler = (el: HTMLElement, menu: number) => { el && this.clickCompMenuHandler(el, menu) };
 
+        window.editor.dump = () => {
+            console.log(this.spawnedComponents.map(comp => {
+                const { label, vars, parent } = comp;
+                return {
+                    label,
+                    vars,
+                    parent
+                }
+            }));
+        }
+
+        // Start editor sub comps
         this.selecterComp = (new Component("EditorSelector", selectorBody, { hideFromStack: true })).create();
         this.editorComp = (new Component("EditorMain", body, { hideFromStack: true })).create();
+
+        // Avoid editor detection
         this.flagChildsAsEditor(this.selecterComp.DOMElem);
+        // Draw UI
         this.displayComponents();
         this.flagChildsAsEditor(this.editorComp.DOMElem);
         this.dragHoverElem = this.editorComp.getFirstChild("editor-main");

@@ -3,13 +3,16 @@ import Router from "../../router";
 
 export default class EditorResizer {
     private _editor: Editor;
+    // Which resizer is being clicked
     private resizingIndex: number;
+    // Tuple containing the resizers elements
     private DOMElems: [HTMLElement, HTMLElement];
 
     public constructor(_editor: Editor) {
         this._editor = _editor;
     };
 
+    // Gen UI
     public displayResizers() {
         if (this.DOMElems?.length)
             this.hideResizers();
@@ -46,6 +49,7 @@ export default class EditorResizer {
             window.removeEventListener("mouseup", mouseStop);
         };
 
+        // Handle move
         this.DOMElems.map((elem, i) => {
             elem.addEventListener("mousedown", event => {
                 this.resizingIndex = i;
