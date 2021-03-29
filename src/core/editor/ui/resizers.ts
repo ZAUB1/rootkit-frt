@@ -57,6 +57,6 @@ export default class EditorResizer {
     };
 
     public hideResizers() {
-        this.DOMElems.map(elem => elem.remove());
+        this.DOMElems?.map(elem => elem.remove());
     };
 };
