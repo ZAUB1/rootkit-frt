@@ -11,7 +11,7 @@ export default class Viewer {
 
     // Load any comp in the viewer
     public loadCompInside(comp: ComponentInstance) {
-        comp.appendTo(this.viewerComp);
+        comp.renderTo(this.viewerComp);
     };
 
     // Create comp in the viewer

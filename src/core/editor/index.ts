@@ -116,7 +116,7 @@ export default class Editor {
         el.style.left = `${rect.x + 2}px`;
         el.style.top = `${rect.bottom + 3}px`;
         this.selecterComp = this.selecterComp;
-        this.selecterComp.appendTo(Router.getElem());
+        this.selecterComp.renderTo(Router.getElem());
         this.selectedElem.style.outline = "2px solid #51c2d5";
     };
 
@@ -136,7 +136,7 @@ export default class Editor {
 
     // @DEPRECATED
     private createComponent(name: string = "Text") {
-        return Controller.getComponent(name).createAndAppend();
+        return Controller.getComponent(name).createAndRender();
     };
 
     // Handler delete button

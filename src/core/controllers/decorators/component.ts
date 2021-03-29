@@ -31,7 +31,7 @@ export function Appened(cb: Function) {
         const nclass: any = class extends constructor {
             constructor(..._: any[]) {
                 super();
-                (this as any).appendHandler = cb;
+                (this as any).renderHandler = cb;
             }
         }
         return nclass;

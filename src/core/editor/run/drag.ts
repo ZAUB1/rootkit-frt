@@ -34,7 +34,7 @@ export default class EditorDrag {
                 child.parentElement.style.border = "1px dotted black";
             }
         });
-        comp.appendTo(this._editor.dragHoverElem);
+        comp.renderTo(this._editor.dragHoverElem);
     };
 
     public setDragElem(el: HTMLElement) {

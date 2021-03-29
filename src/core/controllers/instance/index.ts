@@ -78,7 +78,7 @@ export class ComponentInstance extends EventEmitter {
             // Saving parent
             compInstance.parent = this;
             compInstance.rebuild();
-            compInstance.appendTo(child as HTMLElement);
+            compInstance.renderTo(child as HTMLElement);
             return this.spawnSubComps(compInstance.DOMElem);
         }
     };
@@ -112,22 +112,22 @@ export class ComponentInstance extends EventEmitter {
         }
     };
 
-    public append() {
+    public render() {
         this.originContainer.appendChild(this.DOMElem);
         this.appened = true;
-        this.origin.appendHandler && this.origin.appendHandler(this);
+        this.origin.renderHandler && this.origin.renderHandler(this);
     };
 
-    public appendTo(comp: ComponentInstance): void
-    public appendTo(container: HTMLElement): void
-    public appendTo(elem: ComponentInstance | HTMLElement): void {
+    public renderTo(comp: ComponentInstance): void
+    public renderTo(container: HTMLElement): void
+    public renderTo(elem: ComponentInstance | HTMLElement): void {
         this.originContainer = (elem instanceof ComponentInstance) ? elem.DOMElem : elem;
-        this.append();
+        this.render();
     };
 
     public moveTo(container: HTMLElement) {
         this.remove();
-        this.appendTo(container);
+        this.renderTo(container);
     };
 
     public remove(): void {

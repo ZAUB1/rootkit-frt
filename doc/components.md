@@ -47,7 +47,7 @@ class MyComponent extends Component {
 ```
 
 ## Component body
-Component body is optional, although an empty component should only append in very specific cases
+Component body is optional, although an empty component should only render in very specific cases
 ### Linking
 ```javascript
 import { Component } from "&/core/controllers/component";
@@ -173,10 +173,10 @@ class ComponentInstance {
     public appened: boolean = false;
 
     public rebuildContent();
-    public append();
-    public appendTo(comp: ComponentInstance): void;
-    public appendTo(container: HTMLElement): void;
-    public appendTo(elem: ComponentInstance | HTMLElement): void;
+    public render();
+    public renderTo(comp: ComponentInstance): void;
+    public renderTo(container: HTMLElement): void;
+    public renderTo(elem: ComponentInstance | HTMLElement): void;
     public moveTo(container: HTMLElement);
     public remove();
     public getVar(key: string);

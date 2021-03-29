@@ -18,8 +18,8 @@ export class Component extends EventEmitter {
     private style: any = {};
     // Should this not be pushed with the other instances
     public hideFromStack: boolean = false;
-    // Append handler
-    public appendHandler: Function;
+    // render handler
+    public renderHandler: Function;
 
     public constructor(label: string, content: string, { style, category = "Default", vars = {}, hideFromStack = false }: any = {}) {
         super();
@@ -47,9 +47,9 @@ export class Component extends EventEmitter {
     };
 
     // Generate and add to main UI
-    public createAndAppend(): ComponentInstance {
+    public createAndRender(): ComponentInstance {
         const com = this.create();
-        com.append();
+        com.render();
         return com;
     };
 

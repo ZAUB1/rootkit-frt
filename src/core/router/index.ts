@@ -36,7 +36,7 @@ export default new class Router {
     private setComponent(comp: ComponentInstance) {
         if (!comp)
             return this.showError("Component not found");
-        comp.appendTo(this.DOMElem);
+        comp.renderTo(this.DOMElem);
     };
 
     // Navigate to route

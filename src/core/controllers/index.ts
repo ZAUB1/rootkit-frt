@@ -32,7 +32,7 @@ const _Controller = new (class Controller {
         // Garbage collector
         setInterval(() => {
             /* Object.values(this.componentsInstances).filter(instance => {
-                if (instance.append)
+                if (instance.render)
                     return;
                 instance.remove();
                 console.warn("Garbage collector deleted:", instance.label);

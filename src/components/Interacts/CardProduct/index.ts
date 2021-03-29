@@ -31,7 +31,7 @@ import Notification from "../../Overlays/Notification";
 @ModelEventHandler("test", "click", () => {
     const notif = Notification.create();
     notif.setVar("body", "You bought this");
-    notif.append();
+    notif.render();
 })
 class CardProduct extends Component {
     constructor() {
