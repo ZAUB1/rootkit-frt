@@ -5,7 +5,7 @@ import body from "./body.html";
 import { Component } from "../../../core/controllers/component";
 import { Category, Icon } from "../../../core/controllers/decorators/editor";
 @Category("Interacts")
-@Icon("fas fa-compass")
+@Icon("fas fa-compass", "lightgreen")
 class Navbar extends Component {
     constructor() {
         super("Navbar", body, { });

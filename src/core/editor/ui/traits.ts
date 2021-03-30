@@ -28,39 +28,49 @@ export default class EditorTraits {
                     switch (trait.type) {
                         case "text":
                             traitElems += `
-                                <label editor for="${traitId}">${trait.label}</label>
-                                <input editor id="${traitId}" type='text' onkeydown='editor.traitKeyHandler(event, "${trait.name}")' value="${this._editor.selectedComp.getVar(trait.name)}">
+                                <trait>
+                                    <label editor for="${traitId}">${trait.label}</label>
+                                    <input editor id="${traitId}" type='text' onkeydown='editor.traitKeyHandler(event, "${trait.name}")' value="${this._editor.selectedComp.getVar(trait.name)}">
+                                </trait>
                             `;
                             break;
                         case "number":
                             traitElems += `
-                                <label editor for="${traitId}">${trait.label}</label>
-                                <input editor id="${traitId}" type='number' onkeydown='editor.traitKeyHandler(event, "${trait.name}")' onchange='editor.traitChangeHandler(event, "${trait.name}")' value="${this._editor.selectedComp.getVar(trait.name)}">
+                                <trait>
+                                    <label editor for="${traitId}">${trait.label}</label>
+                                    <input editor id="${traitId}" type='number' onkeydown='editor.traitKeyHandler(event, "${trait.name}")' onchange='editor.traitChangeHandler(event, "${trait.name}")' value="${this._editor.selectedComp.getVar(trait.name)}">
+                                </trait>
                             `;
                             break;
                         case "checkbox":
                             traitElems += `
-                                <label editor for="${traitId}">${trait.label}</label>
-                                <input editor id="${traitId}" type='checkbox' onclick='editor.traitCheckHandler(event, "${trait.name}", ["${trait.valueTrue}", "${trait.valueFalse}"])' value="${this._editor.selectedComp.getVar(trait.name)}">
+                                <trait>
+                                    <label editor for="${traitId}">${trait.label}</label>
+                                    <input editor id="${traitId}" type='checkbox' onclick='editor.traitCheckHandler(event, "${trait.name}", ["${trait.valueTrue}", "${trait.valueFalse}"])' value="${this._editor.selectedComp.getVar(trait.name)}">
+                                </trait>
                             `;
                             break;
                         case "color":
                             traitElems += `
-                                <label editor for="${traitId}">${trait.label}</label>
-                                <input editor id="${traitId}" type='color' oninput='editor.traitChangeHandler(event, "${trait.name}")'>
+                                <trait>
+                                    <label editor for="${traitId}">${trait.label}</label>
+                                    <input editor id="${traitId}" type='color' oninput='editor.traitChangeHandler(event, "${trait.name}")'>
+                                </trait>
                             `;
                             break;
                         case "select":
                             traitElems += `
-                                <label editor for="${traitId}">${trait.label}</label>
-                                <select editor id="${traitId}" onchange='editor.traitChangeHandler(event, "${trait.name}")' value="${this._editor.selectedComp.getVar(trait.name)}">>
-                                    ${(() => {
-                                        let selectOptions = "";
-                                        for (const option of trait.options)
-                                            selectOptions += `<option editor value="${option.id}">${option.name}</option>`;
-                                        return selectOptions;
-                                    })()}
-                                </select>
+                                <trait>
+                                    <label editor for="${traitId}">${trait.label}</label>
+                                    <select editor id="${traitId}" onchange='editor.traitChangeHandler(event, "${trait.name}")' value="${this._editor.selectedComp.getVar(trait.name)}">>
+                                        ${(() => {
+                                            let selectOptions = "";
+                                            for (const option of trait.options)
+                                                selectOptions += `<option editor value="${option.id}">${option.name}</option>`;
+                                            return selectOptions;
+                                        })()}
+                                    </select>
+                                </trait>
                             `;
                             break;
                     }
@@ -114,6 +124,7 @@ export default class EditorTraits {
             return;
         const target = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
         event.preventDefault();
+        target.style.boxShadow = "rgba(99, 99, 99, 0.6) 0px 2px 10px 0px";
 
         const mouseMove = (event: MouseEvent) => {
             let { top, left }: any = target.getBoundingClientRect();
@@ -122,8 +133,8 @@ export default class EditorTraits {
         };
 
         const mouseUp = (event: MouseEvent) => {
-            console.log("up");
             document.body.style.cursor = null;
+            target.style.boxShadow = null;
             window.removeEventListener("mousemove", mouseMove);
             window.removeEventListener("mousedown", mouseUp);
         };
