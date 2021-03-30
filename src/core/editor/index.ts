@@ -89,7 +89,7 @@ export default class Editor {
                             ondragend="editor.stopDrag(event)"
                         >
                             <div editor style="display: flex; flex-direction: column; margin: 5px 5px">
-                                <i editor style="font-size: 20px; margin-bottom: 10px; color: ${(comp as any).iconColor ? (comp as any).iconColor : "black"}" class="${Controller.componentIcons[comp.label] || "fas fa-pen"}"></i>
+                                <i editor style="font-size: 20px; margin-bottom: 10px; color: ${(comp as any).iconColor ? (comp as any).iconColor : "black"}" class="${(Controller.components[comp.label] as any).icon || "fas fa-pen"}"></i>
                                 <span editor>${comp.label}</span>
                             </div>
                         </compbtn-div>
