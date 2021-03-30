@@ -19,7 +19,7 @@ export function Traits(traits: Trait[] = []) {
         const nclass: any = class extends constructor {
             constructor(..._: any[]) {
                 super();
-                Controller.componentTraits[(this as any).label] = traits;
+                (this as any).traits = traits;
             }
         }
         return nclass;
@@ -31,7 +31,7 @@ export function Icon(icon: string = "fas fa-pen", color: string = "black") {
         const nclass: any = class extends constructor {
             constructor(..._: any[]) {
                 super();
-                Controller.componentIcons[(this as any).label] = icon;
+                (this as any).icon = icon;
                 (this as any).iconColor = color;
             }
         }

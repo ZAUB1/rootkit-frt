@@ -7,10 +7,6 @@ const _Controller = new (class Controller {
     // All component instances created since t(0) stored by id / value
     public componentsInstances: { [id: string]: ComponentInstance } = {};
 
-    // All traits stored by CompName / value
-    public componentTraits: { [id: string]: Trait[] } = {};
-    public componentIcons: { [id: string]: string } = {};
-
     // Component editors cateogiers
     public componentsCategories: Component[][] = [ [], [], [], [] ];
     // Event handler (stored by original brower event name)

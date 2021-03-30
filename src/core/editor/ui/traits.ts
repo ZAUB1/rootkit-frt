@@ -11,7 +11,7 @@ export default class EditorTraits {
 
     // Gen traits menu UI from comp traits
     public displayTraitsMenu() {
-        const traits = Controller.componentTraits[this._editor.selectedComp.label];
+        const traits = (Controller.components[this._editor.selectedComp.label] as any).traits;
         const sideMenu = document.getElementsByTagName("editor-sidemenu")[0] as HTMLElement;
         const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
         const traitsBody = document.getElementById("component-traits");
