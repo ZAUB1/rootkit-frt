@@ -5,7 +5,7 @@ import { Component } from "../../../core/controllers/component";
 import { Category, Icon } from "../../../core/controllers/decorators/editor";
 
 @Category("Interacts")
-@Icon("fas fa-square")
+@Icon("fas fa-caret-down")
 class Dropdown extends Component {
     constructor() {
         super("Dropdown", body, { });

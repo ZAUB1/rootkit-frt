@@ -4,7 +4,7 @@ import { Component } from "../../../core/controllers/component";
 import { Category, Icon } from "../../../core/controllers/decorators/editor";
 
 @Category("Interacts")
-@Icon("fas fa-square")
+@Icon("fas fa-exchange-alt")
 class CardFlip extends Component {
     constructor() {
         super("Card Flip", body, { });

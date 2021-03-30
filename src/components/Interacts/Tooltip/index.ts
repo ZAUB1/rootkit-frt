@@ -4,7 +4,7 @@ import { Component } from "../../../core/controllers/component";
 import { Category, Icon } from "../../../core/controllers/decorators/editor";
 
 @Category("Interacts")
-@Icon("fas fa-square")
+@Icon("fas fa-exclamation")
 class Tooltip extends Component {
     constructor() {
         super("Tooltip", body, { });
