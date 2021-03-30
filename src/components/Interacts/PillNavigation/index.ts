@@ -23,15 +23,15 @@ import { Vars } from "../../../core/controllers/decorators/component";
 }, {
     type: "text",
     name: "link2",
-    label: "Liens",
+    label: "Lien",
 }, {
     type: "text",
     name: "link3",
-    label: "Liens",
+    label: "Lien",
 }, {
     type: "text",
     name: "link4",
-    label: "Liens",
+    label: "Lien",
 }, {
     type: "color",
     name: "backgroundColor",
