@@ -62,7 +62,7 @@ import { Traits, Category, Icon } from "../../../core/controllers/decorators/edi
     valueTrue: "uppercase",
     valueFalse: "none",
 }])
-@Icon("fas fa-font")
+@Icon("fas fa-font", "#29caff")
 @Category("Interacts")
 class Text extends Component {
     constructor() {

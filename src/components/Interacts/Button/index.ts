@@ -10,7 +10,7 @@ import { Icon, Category, Traits } from "../../../core/controllers/decorators/edi
     backgroundColor: "#d7d7d7",
     borderRadius: "0px"
 })
-@Icon("fas fa-hockey-puck")
+@Icon("fas fa-hockey-puck", "crimson")
 @Category("Interacts")
 @Traits([{
     type: "text",

@@ -197,15 +197,13 @@ editor-traitmenu {
         margin: 10px;
 
         label {
-            margin-left: 5%;
-            margin-top: 10px;
-            margin-bottom: 5px;
-            align-self: flex-start;
+            margin-right: 15px;
+            width: 25%;
         }
 
         select,
         input {
-            width: 90%;
+            width: 70%;
             border-radius: 5px;
             border:none;
             -webkit-box-shadow: none;
@@ -217,8 +215,14 @@ editor-traitmenu {
         }
 
         input[type="checkbox"] {
-            margin-left: -83%;
         }
+    }
+
+    trait {
+        display: flex;
+        align-items: center;
+        width: 90%;
+        margin: 5px 0px;
     }
 };
 

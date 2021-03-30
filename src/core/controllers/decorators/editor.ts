@@ -26,12 +26,13 @@ export function Traits(traits: Trait[] = []) {
     }
 };
 
-export function Icon(icon: string = "fas fa-pen") {
+export function Icon(icon: string = "fas fa-pen", color: string = "black") {
     return function <T extends { new(...args: any[]): {} }>(constructor: T) {
         const nclass: any = class extends constructor {
             constructor(..._: any[]) {
                 super();
                 Controller.componentIcons[(this as any).label] = icon;
+                (this as any).iconColor = color;
             }
         }
         return nclass;
