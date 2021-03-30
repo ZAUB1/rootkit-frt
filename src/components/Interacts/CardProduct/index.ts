@@ -27,7 +27,7 @@ import Notification from "../../Overlays/Notification";
     name: "desc"
 }])
 @Category("Interacts")
-@Icon("fas fa-square")
+@Icon("fab fa-elementor")
 @ModelEventHandler("test", "click", () => {
     const notif = Notification.create();
     notif.setVar("body", "You bought this");

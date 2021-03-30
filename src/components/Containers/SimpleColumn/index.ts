@@ -2,7 +2,7 @@ import body from "./body.html";
 import style from "./style";
 
 import { Component } from "../../../core/controllers/component";
-import { Trait } from "../../../core/controllers/decorators/editor";
+import { Icon, Trait } from "../../../core/controllers/decorators/editor";
 import { Vars } from "../../../core/controllers/decorators/component";
 import { Category, Traits } from "../../../core/controllers/decorators/editor";
 
@@ -28,6 +28,7 @@ export const traits: Array<Trait> = [{
 @Category("Containers")
 @Vars(vars)
 @Traits(traits)
+@Icon("fas fa-dice-one")
 class SimpleColumn extends Component {
     constructor() {
         super("Simple Column", body, { style });

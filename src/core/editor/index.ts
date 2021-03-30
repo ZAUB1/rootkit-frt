@@ -70,13 +70,17 @@ export default class Editor {
         if (!compMenu)
             return;
         compMenu.innerHTML = null;
-        // @TODO categories
         if (child < 0)
             return;
         compMenu.innerHTML = `
             ${(() => {
                 let compsButtons = "";
-                for (const comp of Controller.componentsCategories[child])
+                let count = 0;
+                for (const comp of Controller.componentsCategories[child]) {
+                    if (count % 2 == 0) {
+                        count != 0 ? compsButtons += "</div>" : void 0;
+                        compsButtons += "<div editor style='display: flex; width: 100%; justify-content: stretch;'>"
+                    }
                     compsButtons += `
                         <compbtn-div
                             editor
@@ -84,12 +88,14 @@ export default class Editor {
                             ondragstart="editor.startDrag(event, '${comp.label}')"
                             ondragend="editor.stopDrag(event)"
                         >
-                            <i editor class="${Controller.componentIcons[comp.label] || "fas fa-pen"}" style="margin-left: 15px"></i>
-                            <div editor style="flex-grow: 1">
-                                <span editor style="margin-left: 10px">${comp.label}</span>
+                            <div editor style="display: flex; flex-direction: column; margin: 5px 5px">
+                                <i editor style="font-size: 20px; margin-bottom: 10px" class="${Controller.componentIcons[comp.label] || "fas fa-pen"}"></i>
+                                <span editor>${comp.label}</span>
                             </div>
                         </compbtn-div>
-                    `
+                    `;
+                    count += 1;
+                }
                 return compsButtons;
             })()}
         `;
@@ -101,9 +107,12 @@ export default class Editor {
         const compTitle = document.getElementById("component-title-menu");
         if (!compMenu)
             return;
-        for (const child of compMenu.children)
+        for (const child of compMenu.children) {
             child.style.backgroundColor = null;
-        el.style.backgroundColor = "rgb(242, 242, 242)";
+            child.style.borderBottom = "3px solid transparent";
+        }
+        el.style.backgroundColor = "#f7f6f9";
+        el.style.borderBottom = "3px solid crimson";
         compTitle.innerHTML = CATEGORIES[menu];
         this.displayComponents(menu);
     };
@@ -148,7 +157,7 @@ export default class Editor {
         this.editorTraits.hideTraitsMenu();
     };
 
-    // Recursive to first the first 'real' component from any child
+    // Recursive to find the first 'real' component from any child
     public getParentMovable(el: Element): Element {
         if (!el.attributes.getNamedItem("component-instance"))
             return this.getParentMovable(el.parentElement);
@@ -222,7 +231,7 @@ export default class Editor {
                     id,
                     label,
                     vars,
-                    parent
+                    parent: parent?.id
                 }
             }));
         }

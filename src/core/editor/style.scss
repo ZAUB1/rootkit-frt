@@ -1,6 +1,9 @@
 $menu-width: 250px;
 $navbar-height: 50px;
 
+// #30364c
+$main-color: crimson;
+
 editor-main {
     position: absolute;
     width: calc(100% - #{$menu-width});
@@ -16,7 +19,10 @@ nav {
     top: 0px;
     width: 100%;
     height: $navbar-height;
-    background-color: #30364c;
+    background: #ED213A;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #93291E, #ED213A);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #93291E, #ED213A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
     nav-container {
         height: 100%;
@@ -81,13 +87,15 @@ editor-sidemenu {
     height: calc(100vh - #{$navbar-height});
     overflow-y: hidden;
     min-width: $menu-width;
-    background-color: rgb(242, 242, 242);
+    /* border-right: 1px solid rgba(0, 0, 0, .1); */
     overflow-y: auto;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
     category-buttons {
         display: flex;
         justify-content: stretch;
         height: 50px;
+        box-sizing: border-box;
 
         span {
             width: 100%;
@@ -96,7 +104,7 @@ editor-sidemenu {
             align-items: center;
             justify-content: center;
             background-color: white;
-            border-right: 1px solid rgba(0, 0, 0, .1);
+            border-bottom: 3px solid transparent;
         }
     }
 
@@ -131,12 +139,17 @@ editor-sidemenu {
             display: flex;
             align-items: center;
             justify-content: space-evenly;
-            border-radius: 5px;
-            height: 40px;
-            width: 200px;
-            border: 1px solid rgba(0,0,0,.1);
-            margin: 7px 10px;
+            /* border: 1px solid rgba(0,0,0,.1); */
+            outline: 1px solid rgba(0,0,0,.1);
+            width: 100%;
+            height: 75px;
+            /* box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px; */
+            background-color: #fafafa;
             transition: all .1s ease-in-out;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            font-weight: 400;
+            text-align: center;
 
             &:hover {
                 background-color: rgb(232, 232, 232);
@@ -163,9 +176,9 @@ editor-traitmenu {
     top: 10%;
     right: 3%;
     width: 250px;
-    background-color: rgb(247, 247, 247);
+    background-color: white;
     border-radius: 10px;
-    box-shadow: 0 2px 4px -1px rgba(0,0,0,.1),0 4px 5px 0 rgba(0,0,0,.08), 0 1px 10px 0 rgba(0,0,0,.06)!important;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     display: none;
 
     header {
