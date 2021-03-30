@@ -114,6 +114,7 @@ export default class EditorTraits {
             return;
         const target = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
         event.preventDefault();
+        target.style.boxShadow = "rgba(99, 99, 99, 0.6) 0px 2px 10px 0px";
 
         const mouseMove = (event: MouseEvent) => {
             let { top, left }: any = target.getBoundingClientRect();
@@ -122,8 +123,8 @@ export default class EditorTraits {
         };
 
         const mouseUp = (event: MouseEvent) => {
-            console.log("up");
             document.body.style.cursor = null;
+            target.style.boxShadow = null;
             window.removeEventListener("mousemove", mouseMove);
             window.removeEventListener("mousedown", mouseUp);
         };
