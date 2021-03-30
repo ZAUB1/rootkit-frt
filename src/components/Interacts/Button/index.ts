@@ -23,7 +23,7 @@ import { Icon, Category, Traits } from "../../../core/controllers/decorators/edi
 }, {
     type: "checkbox",
     name: "borderRadius",
-    label: "Bords arondis",
+    label: "Bords arrondis",
     valueTrue: "5px",
     valueFalse: "0px"
 }])
