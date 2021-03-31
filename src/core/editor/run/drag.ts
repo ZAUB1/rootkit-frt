@@ -13,7 +13,7 @@ export default class EditorDrag {
         el.ondragstart = (event) => this.startDrag(event, this._editor.selectedComp.label);
         el.ondragend = (event) => {
             (this._editor.selectedComp.parent ? this._editor.selectedComp.parent : this._editor.selectedComp).moveTo(this._editor.dragHoverElem);
-            this._editor.closeElementTools();
+            this._editor.editorTools.close();
         };
     };
 
@@ -23,6 +23,7 @@ export default class EditorDrag {
 
     public stopDrag(event: DragEvent) {
         const comp = Controller.getComponent(this._editor.currentDragComp).create();
+        comp.parentOriginId = this._editor.dragHoverElem.id;
         const parent = Controller.componentsInstances[this._editor.dragHoverElem.parentElement.parentElement.id];
         (parent) ? comp.parent = parent : void 0;
         this._editor.spawnedComponents.push(comp);

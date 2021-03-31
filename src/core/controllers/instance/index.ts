@@ -26,6 +26,7 @@ export class ComponentInstance extends EventEmitter {
 
     public origin: Component;
     public parent: ComponentInstance;
+    public parentOriginId: string;
     private models: { [id: string]: ComponentInstance } = {};
 
     private replaceStrByVar(str: string) {
@@ -77,6 +78,7 @@ export class ComponentInstance extends EventEmitter {
 
             // Saving parent
             compInstance.parent = this;
+            compInstance.parentOriginId = this.id;
             compInstance.rebuild();
             compInstance.renderTo(child as HTMLElement);
             return this.spawnSubComps(compInstance.DOMElem);

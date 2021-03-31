@@ -7,7 +7,6 @@ import style from "./style.scss";
 
 import "./selector/style.scss";
 import body from "./body.html";
-import selectorBody from "./selector/body.html";
 
 import Router from "../router";
 import { genRandId } from "../etc/rand";
@@ -17,10 +16,12 @@ import { Component, ComponentInstance } from "../controllers/component";
 import EditorDrag from "./run/drag";
 import EditorTraits from "./ui/traits";
 import EditorResizer from "./ui/resizers";
+import EditorLayers from "./ui/layers";
+import EditorTools from "./ui/tools";
 
 let currentInstance: any;
 
-const CATEGORIES = [ "Containers", "Interacts", "Api Linked", "Favorites" ];
+const CATEGORIES = [ "Containers", "Interacts", "Api Linked", "Layers" ];
 
 export default class Editor {
     // Last element the user had its cursor on
@@ -30,8 +31,6 @@ export default class Editor {
 
     // Editor UI component
     public editorComp: ComponentInstance;
-    // Selector menu UI component
-    public selecterComp: ComponentInstance;
     // Current clicked component instance
     public selectedComp: ComponentInstance;
 
@@ -46,9 +45,15 @@ export default class Editor {
     private editorTraits: EditorTraits;
     // Editor resizers instance
     private editorResizer: EditorResizer;
+    // Editor Layers instance
+    private editorLayers: EditorLayers;
+    // Editor tools instance
+    public editorTools: EditorTools;
 
     // Hold the spawned components from the editor from t(0)
     public spawnedComponents: ComponentInstance[] = [];
+
+    public currentDrawer: number = 0;
 
     // mouseover handler
     private elementHoverHandler(ev: MouseEvent) {
@@ -72,6 +77,10 @@ export default class Editor {
         compMenu.innerHTML = null;
         if (child < 0)
             return;
+        // Layer menu
+        this.currentDrawer = child;
+        if (child == 3)
+            return this.editorLayers.gen();
         compMenu.innerHTML = `
             ${(() => {
                 let compsButtons = "";
@@ -101,7 +110,7 @@ export default class Editor {
         `;
     };
 
-    // Components UI menu click handler
+    // Components UI menu click handler @DRAWER
     public clickCompMenuHandler(el: HTMLElement, menu: number) {
         const compMenu = this.editorComp.getFirstChild("category-buttons");
         const compTitle = document.getElementById("component-title-menu");
@@ -117,28 +126,11 @@ export default class Editor {
         this.displayComponents(menu);
     };
 
-    // Display global elements UI tools
-    private displayElementTools() {
-        (this.selecterComp.appened) ? this.selecterComp.remove() : void 0;
-        const rect = this.getParentMovable(this.selectedElem).getBoundingClientRect();
-        const el = this.selecterComp.getFirstChild("editor-pick");
-        el.style.left = `${rect.x + 2}px`;
-        el.style.top = `${rect.bottom + 3}px`;
-        this.selecterComp = this.selecterComp;
-        this.selecterComp.renderTo(Router.getElem());
-        this.selectedElem.style.outline = "2px solid #51c2d5";
-    };
-
-    public closeElementTools() {
-        (this.selecterComp.appened) ? this.selecterComp.remove() : void 0;
-        this.selectedElem ? this.selectedElem.style.outline = null : void 0;
-    };
-
     // Closes all component UI
     private closeElemMenus() {
-        if (!this.selecterComp)
+        if (!this.editorTools.selecterComp)
             return;
-        this.closeElementTools();
+        this.editorTools.close();
         this.editorTraits.hideTraitsMenu();
         this.editorResizer.hideResizers();
     };
@@ -149,12 +141,22 @@ export default class Editor {
     };
 
     // Handler delete button
-    private destroySelectedElem() {
+    public destroySelectedElem() {
         if (!this.selectedComp)
             return; // @TODO Error case
         this.selectedComp.remove();
         this.editorResizer.hideResizers();
         this.editorTraits.hideTraitsMenu();
+    };
+
+    private destroyElemById(id: string) {
+        const comp = Controller.getComponentInstance(id);
+        if (!comp)
+            return; // @TODO Error case
+        comp.remove();
+        this.editorResizer.hideResizers();
+        this.editorTraits.hideTraitsMenu();
+        this.editorLayers.gen();
     };
 
     // Recursive to find the first 'real' component from any child
@@ -179,7 +181,7 @@ export default class Editor {
         this.selectedComp = Controller.getComponentInstance(parentCompElem.id);
 
         this.editorTraits.displayTraitsMenu();
-        this.displayElementTools();
+        this.editorTools.display();
         this.editorResizer.displayResizers();
     };
 
@@ -188,7 +190,7 @@ export default class Editor {
     };
 
     // Recursive to flag all childs as uneditable
-    private flagChildsAsEditor(el: HTMLElement) {
+    public flagChildsAsEditor(el: HTMLElement) {
         if (!el)
             return;
         el.setAttribute("editor", "true");
@@ -199,17 +201,22 @@ export default class Editor {
     };
 
     public constructor() {
+        // Global access point
+        window.editor = {};
+
         this.editorDrag = new EditorDrag(this);
         this.editorTraits = new EditorTraits(this);
         this.editorResizer = new EditorResizer(this);
+        this.editorLayers = new EditorLayers(this);
+        this.editorTools = new EditorTools(this);
 
         // Main tools handlers
         window.addEventListener("mousemove", ev => this.elementHoverHandler(ev));
         window.addEventListener("mousedown", ev => this.elementClickHandler(ev));
 
         // HTML window wrappers
-        window.editor = {};
         window.editor.createComponent = () => { this.createComponent() };
+        window.editor.destroyElemById = (id: string) => { this.destroyElemById(id) };
 
         // Drag & Drop declarations
         window.editor.startDrag = (event: DragEvent, compType: string) => { /* event.preventDefault(); */ this.editorDrag.startDrag(event, compType) };
@@ -237,17 +244,13 @@ export default class Editor {
         }
 
         // Start editor sub comps
-        this.selecterComp = (new Component("EditorSelector", selectorBody, { hideFromStack: true })).create();
         this.editorComp = (new Component("EditorMain", body, { hideFromStack: true })).create();
 
         // Avoid editor detection
-        this.flagChildsAsEditor(this.selecterComp.DOMElem);
         // Draw UI
         this.displayComponents();
         this.flagChildsAsEditor(this.editorComp.DOMElem);
         this.dragHoverElem = this.editorComp.getFirstChild("editor-main");
         currentInstance = this;
-
-        this.selecterComp.on("click", () => { this.destroySelectedElem(); this.closeElementTools() });
     };
 };
