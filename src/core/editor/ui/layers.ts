@@ -16,7 +16,7 @@ export default class EditorLayers {
 
     public gen() {
         const compMenu = this._editor.editorComp.getFirstChild("editor-components");
-        if (!compMenu || this._editor.currentDrawer != 3)
+        if (!compMenu || this._editor.editorDrawer.currentDrawer != 3)
             return;
         let count = 0;
         let res = "<layers>"

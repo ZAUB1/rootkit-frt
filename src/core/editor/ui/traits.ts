@@ -7,6 +7,11 @@ export default class EditorTraits {
 
     constructor(_editor: Editor) {
         this._editor = _editor;
+
+        // Traits methods declarations
+        window.editor.traitKeyHandler = (event: KeyboardEvent, traitName: string) => { this.traitKeyHandler(event, traitName) };
+        window.editor.traitChangeHandler = (event: KeyboardEvent, traitName: string) => { this.traitChangeHandler(event, traitName) };
+        window.editor.traitCheckHandler = (event: KeyboardEvent, traitName: string, array: any) => { this.traitCheckHandler(event, traitName, array) };
     }
 
     // Gen traits menu UI from comp traits
@@ -93,7 +98,7 @@ export default class EditorTraits {
     };
 
     // Key change
-    public traitKeyHandler(event: KeyboardEvent, traitName: string) {
+    private traitKeyHandler(event: KeyboardEvent, traitName: string) {
         if (event.key != "Enter")
             return;
         const el = event.target as any;
@@ -103,7 +108,7 @@ export default class EditorTraits {
     };
 
     // Normal change
-    public traitChangeHandler(event: any, traitName: string) {
+    private traitChangeHandler(event: any, traitName: string) {
         const el = event.target as any;
         if (!el)
             return;
@@ -111,7 +116,7 @@ export default class EditorTraits {
     };
 
     // Checkbox
-    public traitCheckHandler(event: any, traitName: string, [ traitTrue, traitFalse ]: any) {
+    private traitCheckHandler(event: any, traitName: string, [ traitTrue, traitFalse ]: any) {
         const el = event.target as any;
         if (!el)
             return;

@@ -3,16 +3,15 @@ declare global {
 };
 
 import "./style.scss";
-import style from "./style.scss";
 
 import "./selector/style.scss";
 import body from "./body.html";
 
 import Router from "../router";
-import { genRandId } from "../etc/rand";
 import Controller from "../../core/controllers";
 import { Component, ComponentInstance } from "../controllers/component";
 
+import EditorDrawer from "./ui/drawer";
 import EditorDrag from "./run/drag";
 import EditorTraits from "./ui/traits";
 import EditorResizer from "./ui/resizers";
@@ -21,7 +20,7 @@ import EditorTools from "./ui/tools";
 
 let currentInstance: any;
 
-const CATEGORIES = [ "Containers", "Interacts", "Api Linked", "Layers" ];
+export const CATEGORIES = [ "Containers", "Interacts", "Api Linked", "Layers" ];
 
 export default class Editor {
     // Last element the user had its cursor on
@@ -40,20 +39,20 @@ export default class Editor {
     public currentDragComp: string;
 
     // Editor dragger instance
+    public editorDrawer: EditorDrawer;
+    // Editor dragger instance
     private editorDrag: EditorDrag;
     // Editor traits instance
     private editorTraits: EditorTraits;
     // Editor resizers instance
     private editorResizer: EditorResizer;
     // Editor Layers instance
-    private editorLayers: EditorLayers;
+    public editorLayers: EditorLayers;
     // Editor tools instance
     public editorTools: EditorTools;
 
     // Hold the spawned components from the editor from t(0)
     public spawnedComponents: ComponentInstance[] = [];
-
-    public currentDrawer: number = 0;
 
     // mouseover handler
     private elementHoverHandler(ev: MouseEvent) {
@@ -67,63 +66,6 @@ export default class Editor {
             return;
         hoverElement.style.outline = "2px solid #ec4646";
         this.lastHover = hoverElement;
-    };
-
-    // Generate component drawer
-    private displayComponents(child: number = 0) {
-        const compMenu = this.editorComp.getFirstChild("editor-components");
-        if (!compMenu)
-            return;
-        compMenu.innerHTML = null;
-        if (child < 0)
-            return;
-        // Layer menu
-        this.currentDrawer = child;
-        if (child == 3)
-            return this.editorLayers.gen();
-        compMenu.innerHTML = `
-            ${(() => {
-                let compsButtons = "";
-                let count = 0;
-                for (const comp of Controller.componentsCategories[child]) {
-                    if (count % 2 == 0) {
-                        count != 0 ? compsButtons += "</div>" : void 0;
-                        compsButtons += "<div editor style='display: flex; width: 100%; justify-content: stretch;'>"
-                    }
-                    compsButtons += `
-                        <compbtn-div
-                            editor
-                            draggable="true"
-                            ondragstart="editor.startDrag(event, '${comp.label}')"
-                            ondragend="editor.stopDrag(event)"
-                        >
-                            <div editor style="display: flex; flex-direction: column; margin: 5px 5px">
-                                <i editor style="font-size: 20px; margin-bottom: 10px; color: ${(comp as any).iconColor ? (comp as any).iconColor : "black"}" class="${(Controller.components[comp.label] as any).icon || "fas fa-pen"}"></i>
-                                <span editor>${comp.label}</span>
-                            </div>
-                        </compbtn-div>
-                    `;
-                    count += 1;
-                }
-                return compsButtons;
-            })()}
-        `;
-    };
-
-    // Components UI menu click handler @DRAWER
-    public clickCompMenuHandler(el: HTMLElement, menu: number) {
-        const compMenu = this.editorComp.getFirstChild("category-buttons");
-        const compTitle = document.getElementById("component-title-menu");
-        if (!compMenu)
-            return;
-        for (const child of compMenu.children) {
-            child.style.backgroundColor = null;
-            child.style.borderBottom = "3px solid transparent";
-        }
-        el.style.backgroundColor = "#f7f6f9";
-        el.style.borderBottom = "3px solid crimson";
-        compTitle.innerHTML = CATEGORIES[menu];
-        this.displayComponents(menu);
     };
 
     // Closes all component UI
@@ -204,6 +146,8 @@ export default class Editor {
         // Global access point
         window.editor = {};
 
+        // Workers
+        this.editorDrawer = new EditorDrawer(this);
         this.editorDrag = new EditorDrag(this);
         this.editorTraits = new EditorTraits(this);
         this.editorResizer = new EditorResizer(this);
@@ -217,19 +161,6 @@ export default class Editor {
         // HTML window wrappers
         window.editor.createComponent = () => { this.createComponent() };
         window.editor.destroyElemById = (id: string) => { this.destroyElemById(id) };
-
-        // Drag & Drop declarations
-        window.editor.startDrag = (event: DragEvent, compType: string) => { /* event.preventDefault(); */ this.editorDrag.startDrag(event, compType) };
-        window.editor.stopDrag = (event: DragEvent) => { /* event.preventDefault();  */this.editorDrag.stopDrag(event) };
-        window.editor.setDragElem = (el: HTMLElement) => { this.editorDrag.setDragElem(el) };
-        window.editor.setDragOut = (el: HTMLElement) => { this.editorDrag.setDragOut(el) };
-
-        // Traits methods declarations
-        window.editor.traitKeyHandler = (event: KeyboardEvent, traitName: string) => { this.editorTraits.traitKeyHandler(event, traitName) };
-        window.editor.traitChangeHandler = (event: KeyboardEvent, traitName: string) => { this.editorTraits.traitChangeHandler(event, traitName) };
-        window.editor.traitCheckHandler = (event: KeyboardEvent, traitName: string, array: any) => { this.editorTraits.traitCheckHandler(event, traitName, array) };
-
-        window.editor.clickCompMenuHandler = (el: HTMLElement, menu: number) => { el && this.clickCompMenuHandler(el, menu) };
 
         window.editor.dump = () => {
             console.log(this.spawnedComponents.map(comp => {
@@ -248,7 +179,7 @@ export default class Editor {
 
         // Avoid editor detection
         // Draw UI
-        this.displayComponents();
+        this.editorDrawer.gen();
         this.flagChildsAsEditor(this.editorComp.DOMElem);
         this.dragHoverElem = this.editorComp.getFirstChild("editor-main");
         currentInstance = this;
