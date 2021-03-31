@@ -6,6 +6,12 @@ export default class EditorDrag {
 
     constructor(_editor: Editor) {
         this._editor = _editor;
+
+        // Drag & Drop declarations
+        window.editor.startDrag = (event: DragEvent, compType: string) => { /* event.preventDefault(); */ this.startDrag(event, compType) };
+        window.editor.stopDrag = (event: DragEvent) => { /* event.preventDefault();  */this.stopDrag(event) };
+        window.editor.setDragElem = (el: HTMLElement) => { this.setDragElem(el) };
+        window.editor.setDragOut = (el: HTMLElement) => { this.setDragOut(el) };
     }
 
     public setDraggable(el: HTMLElement) {
