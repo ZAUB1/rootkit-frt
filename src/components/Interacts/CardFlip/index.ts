@@ -1,6 +1,6 @@
 import body from "./body.html";
 
-import { Component, ComponentInstance } from "../../../core/controllers/component";
+import { Component } from "../../../core/controllers/component";
 
 import { Vars } from "../../../core/controllers/decorators/component";
 import { Traits, Category, Icon } from "../../../core/controllers/decorators/editor";
