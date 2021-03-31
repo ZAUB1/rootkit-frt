@@ -9,10 +9,13 @@ import { Vars } from "../../../core/controllers/decorators/component";
     body: "Text",
     backgroundColor: "#d7d7d7",
     borderRadius: "0px",
-    link1: "Lien 1",
-    link2: "Lien 2",
-    link3: "Lien 3",
-    link4: "Lien 4",
+    link1: "lien 1",
+    link2: "lien 2",
+    link3: "lien 3",
+    link4: "lien 4",
+
+
+
 })
 @Icon("fas fa-square")
 @Category("Interacts")
@@ -36,12 +39,6 @@ import { Vars } from "../../../core/controllers/decorators/component";
     type: "color",
     name: "backgroundColor",
     label: "Couleur de fond"
-}, {
-    type: "checkbox",
-    name: "borderRadius",
-    label: "Bords arrondis",
-    valueTrue: "5px",
-    valueFalse: "0px"
 }])
 class PillNavigation extends Component {
     constructor() {

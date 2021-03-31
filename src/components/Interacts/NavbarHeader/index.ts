@@ -7,10 +7,12 @@ import { Vars } from "../../../core/controllers/decorators/component";
 
 @Vars({
     body: "Text",
-    backgroundColor: "#d7d7d7",
+    backgroundColor: "red",
     borderRadius: "0px",
     logo: "Logo",
-    link: "Liens"
+    link1: "Lien 1",
+    link2: "Lien 2",
+    link3: "Lien 3",
 })
 @Icon("fas fa-square")
 @Category("Interacts")
@@ -20,18 +22,20 @@ import { Vars } from "../../../core/controllers/decorators/component";
     label: "Logo",
 }, {
     type: "text",
-    name: "link",
-    label: "Liens",
+    name: "link1",
+    label: "Lien",
+}, {
+    type: "text",
+    name: "link2",
+    label: "Lien",
+}, {
+    type: "text",
+    name: "link3",
+    label: "Lien",
 }, {
     type: "color",
     name: "backgroundColor",
     label: "Couleur de fond"
-}, {
-    type: "checkbox",
-    name: "borderRadius",
-    label: "Bords arrondis",
-    valueTrue: "5px",
-    valueFalse: "0px"
 }])
 class NavbarHeader extends Component {
     constructor() {
