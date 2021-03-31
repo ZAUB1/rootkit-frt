@@ -4,6 +4,7 @@ import { Component, ComponentInstance } from "../../../core/controllers/componen
 
 import { Vars } from "../../../core/controllers/decorators/component";
 import { Traits, Category, Icon } from "../../../core/controllers/decorators/editor";
+import { ModelEventHandler } from "../../../core/controllers/decorators/model";
 
 @Vars({
     fullname: "fullname",
@@ -23,7 +24,6 @@ import { Traits, Category, Icon } from "../../../core/controllers/decorators/edi
     label: "Description",
     name: "desc"
 }])
-
 @Icon("fas fa-exchange-alt", "#37bc9b")
 @Category("Interacts")
 class CardFlip extends Component {
