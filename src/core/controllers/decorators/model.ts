@@ -1,7 +1,7 @@
 import Controller from "../";
 import { ComponentInstance } from "../instance";
 
-export function ModelEventHandler(model: string, event: string, cb: Function) {
+export function ModelEventHandler(model: string, event: string, cb: (_this: ComponentInstance, comp: ComponentInstance | HTMLElement) => void) {
     return function <T extends { new(...args: any[]): {} }>(constructor: T) {
         const nclass: any = class extends constructor {
             constructor(..._: any[]) {
@@ -10,7 +10,7 @@ export function ModelEventHandler(model: string, event: string, cb: Function) {
                     let comp = _this.getCompByModel(model);
                     ("classList" in comp) ?
                         (comp as HTMLElement).addEventListener(event, () => cb(_this, comp)) :
-                        (comp as ComponentInstance)?.on(event, () => { cb(comp) });
+                        (comp as ComponentInstance)?.on(event, () => { cb(_this, comp) });
                 });
             }
         }
