@@ -9,8 +9,8 @@ export function ModelEventHandler(model: string, event: string, cb: (_this: Comp
                 (this as any).on("instance::created", (_this: ComponentInstance) => {
                     let comp = _this.getCompByModel(model);
                     ("classList" in comp) ?
-                        (comp as HTMLElement).addEventListener(event, () => cb(_this, comp)) :
-                        (comp as ComponentInstance)?.on(event, () => { cb(_this, comp) });
+                        (comp as HTMLElement).addEventListener(event, () => cb.call(_this, comp)) :
+                        (comp as ComponentInstance)?.on(event, () => { cb.call(_this, comp) });
                 });
             }
         }

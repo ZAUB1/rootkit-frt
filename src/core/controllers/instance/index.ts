@@ -144,15 +144,19 @@ export class ComponentInstance extends EventEmitter {
     };
 
     public getVar(key: string) {
-        if (!this.vars[key])
+        if (this.vars[key] == undefined)
             return false;
         return this.vars[key];
     };
 
-    public setVar(key: string, value: any) {
-        if (!this.vars[key])
+    public setVarNoBuild(key: string, value: any) {
+        if (this.vars[key] == undefined)
             return;
         this.vars[key] = value;
+    };
+
+    public setVar(key: string, value: any) {
+        this.setVarNoBuild(key, value);
         this.rebuildContent();
     };
 
