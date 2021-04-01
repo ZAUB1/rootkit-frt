@@ -12,11 +12,12 @@ export default class EditorLayers {
             return;
         comp.childrens[comp.childrens.length - 1].style.outline = "2px solid #ec4646";
         this.lastHoverLayer = comp.DOMElem;
+        this.gen();
     };
 
     public gen() {
         const compMenu = this._editor.editorComp.getFirstChild("editor-components");
-        if (!compMenu || this._editor.editorDrawer.currentDrawer != 3)
+        if (!compMenu)
             return;
         let count = 0;
         let res = "<layers>"

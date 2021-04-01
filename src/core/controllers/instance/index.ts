@@ -27,7 +27,7 @@ export class ComponentInstance extends EventEmitter {
     public origin: Component;
     public parent: ComponentInstance;
     public parentOriginId: string;
-    private models: { [id: string]: ComponentInstance } = {};
+    private models: { [id: string]: ComponentInstance | HTMLElement } = {};
 
     private replaceStrByVar(str: string) {
         return str.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
@@ -54,6 +54,9 @@ export class ComponentInstance extends EventEmitter {
         for (const child of el.children as any) {
             // Is tag a component ?
             if (!tagNames.includes(child.nodeName.toLowerCase())) {
+                const model = child.attributes.getNamedItem("model")?.value;
+                (model) ? this.models[model] = child as HTMLElement : void 0;
+
                 this.spawnSubComps(child as HTMLElement);
                 continue;
             }
@@ -164,7 +167,7 @@ export class ComponentInstance extends EventEmitter {
         return childs;
     };
 
-    public getCompByModel(model: string): ComponentInstance {
+    public getCompByModel(model: string): ComponentInstance | HTMLElement {
         if (!model)
             return undefined;
         return this.models[model];
