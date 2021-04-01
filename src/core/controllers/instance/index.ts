@@ -6,6 +6,7 @@ import EventEmitter, { COMP_EVENTS } from "../../etc/events";
 import { Component } from "../component";
 
 const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
+const SPE_OPERAT = [ "for", "if" ];
 
 export class ComponentInstance extends EventEmitter {
     public id: string;
@@ -52,6 +53,30 @@ export class ComponentInstance extends EventEmitter {
     private spawnSubComps(el: HTMLElement): void {
         const tagNames = Object.keys(Controller.components).map(tag => tag.toLowerCase());
         for (const child of el.children as any) {
+            // Special components for loops and conditions handling
+            const opName = child.nodeName.toLowerCase().split("nuc-")[1];
+            if (SPE_OPERAT.includes(opName)) {
+                if (opName == "for") {
+                    console.log(child.attributes)
+                    const [ite, _, array] = Object.values(child.attributes).map((val: Attr) => val.name);
+                    if (!this.vars[array])
+                        continue;
+                    let res = "";
+                    const baseContent = child.innerHTML;
+                    for (const _ite of this.vars[array]) {
+                        res += baseContent.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
+                            const save = sub.toString();
+                            sub = sub.split("{")[1].split("}")[0].replace(/\s/g, "").split(".")[1];
+                            if (_ite[sub])
+                                return _ite[sub];
+                            return save;
+                        });
+                    }
+                    child.innerHTML = res;
+                }
+                continue;
+            }
+
             // Is tag a component ?
             if (!tagNames.includes(child.nodeName.toLowerCase())) {
                 const model = child.attributes.getNamedItem("model")?.value;
