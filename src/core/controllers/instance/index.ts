@@ -79,7 +79,7 @@ export class ComponentInstance extends EventEmitter {
 
             // Is tag a component ?
             if (!tagNames.includes(child.nodeName.toLowerCase())) {
-                const model = child.attributes.getNamedItem("model")?.value;
+                const model = child.attributes.getNamedItem("nuc-model")?.value;
                 (model) ? this.models[model] = child as HTMLElement : void 0;
 
                 this.spawnSubComps(child as HTMLElement);
@@ -92,7 +92,7 @@ export class ComponentInstance extends EventEmitter {
             const compInstance = comp.create();
 
             // Look for model
-            compInstance.model = child.attributes.getNamedItem("model")?.value;
+            compInstance.model = child.attributes.getNamedItem("nuc-model")?.value;
             compInstance.model ? this.models[compInstance.model] = compInstance : void 0;
 
             // Look for default vars
