@@ -183,6 +183,7 @@ editor-traitmenu {
     transition: box-shadow .1s linear;
 
     header {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -196,12 +197,12 @@ editor-traitmenu {
         align-items: center;
         justify-content: center;
         margin: 10px;
-        font-size: 13px;
+        font-size: 13.5px;
 
         label {
             margin-right: 15px;
             width: 25%;
-            font-size: 13px;
+            font-size: 13.5px;
         }
 
         select,
