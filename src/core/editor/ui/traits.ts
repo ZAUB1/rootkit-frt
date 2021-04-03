@@ -12,6 +12,7 @@ export default class EditorTraits {
         window.editor.traitKeyHandler = (event: KeyboardEvent, traitName: string) => { this.traitKeyHandler(event, traitName) };
         window.editor.traitChangeHandler = (event: KeyboardEvent, traitName: string) => { this.traitChangeHandler(event, traitName) };
         window.editor.traitCheckHandler = (event: KeyboardEvent, traitName: string, array: any) => { this.traitCheckHandler(event, traitName, array) };
+        window.editor.closeTraitMenu = () => { this.hideTraitsMenu() };
     }
 
     // Gen traits menu UI from comp traits
