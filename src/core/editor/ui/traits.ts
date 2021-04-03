@@ -23,7 +23,7 @@ export default class EditorTraits {
         traitsBody.innerHTML = `
             <span editor>Component ID: #${(this._editor.selectedElem.parentNode as HTMLElement).id}</span>
             <span editor>Component type: ${this._editor.selectedComp.label}</span>
-            <div editor style="height: 1px; background-color: #e0e0e0; width: 90%; margin: 10px"></div>
+            <div editor style="height: 1px; background-color: #e0e0e0; width: 90%; margin: 5px 10px"></div>
             ${(() => {
                 if (!traits)
                     return "";

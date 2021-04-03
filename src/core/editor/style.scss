@@ -164,7 +164,7 @@ editor-traitcontainer {
     position: absolute;
     height: 100vh;
     right: 0px;
-    min-width: 300px;
+    min-width: 400px;
     align-items: center;
     justify-content: center;
     display: flex;
@@ -186,7 +186,8 @@ editor-traitmenu {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 50px;
+        height: 40px;
+        font-size: 15px;
     }
 
     traits {
@@ -195,10 +196,12 @@ editor-traitmenu {
         align-items: center;
         justify-content: center;
         margin: 10px;
+        font-size: 13px;
 
         label {
             margin-right: 15px;
             width: 25%;
+            font-size: 13px;
         }
 
         select,
@@ -210,8 +213,10 @@ editor-traitmenu {
             -moz-box-shadow: none;
             box-shadow: none;
             padding: 5px 7.5px;
+            margin-left: 10px;
             border: 1px solid #30364c;
             background: none;
+            font-size: 14px;
         }
 
         input[type="checkbox"] {
