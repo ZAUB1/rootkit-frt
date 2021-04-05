@@ -4,6 +4,7 @@ import { parseStyle } from "../../style";
 import EventEmitter, { COMP_EVENTS } from "../../etc/events";
 
 import { Component } from "../component";
+import { camelToSnake } from "../../etc/str";
 
 const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
 const SPE_OPERAT = [ "for", "if" ];
@@ -98,10 +99,10 @@ export class ComponentInstance extends EventEmitter {
             // Look for default vars
             const keys = Object.keys(compInstance.vars);
             for (const key of keys) {
-                const childVal = child.attributes.getNamedItem(key);
+                const childVal = child.attributes.getNamedItem(camelToSnake(key));
                 if (!childVal)
                     continue;
-                compInstance.vars[childVal.name] = childVal.value;
+                compInstance.vars[key] = childVal.value;
             }
 
             // Saving parent
