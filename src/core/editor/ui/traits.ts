@@ -1,6 +1,6 @@
 import Editor from "..";
-import Controller from "../../controllers";
-import { genRandId } from "../../etc/rand";
+import Controller from "&/core/controllers";
+import { genRandId } from "&/core/etc/rand";
 
 export default class EditorTraits {
     private _editor: Editor;

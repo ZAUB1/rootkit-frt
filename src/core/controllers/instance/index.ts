@@ -4,7 +4,7 @@ import { parseStyle } from "&/core/style";
 import EventEmitter, { COMP_EVENTS } from "&/core/etc/events";
 
 import { Component } from "../component";
-import { camelToSnake } from "../../etc/str";
+import { camelToSnake } from "&/core/etc/str";
 
 const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
 const SPE_OPERAT = [ "for", "if" ];

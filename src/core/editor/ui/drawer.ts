@@ -1,5 +1,5 @@
 import Editor, { CATEGORIES } from "..";
-import Controller from "../../../core/controllers";
+import Controller from "&/core/controllers";
 
 export default class EditorDrawer {
     private _editor: Editor;

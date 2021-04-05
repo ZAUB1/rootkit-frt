@@ -1,10 +1,9 @@
 import Editor from "..";
 import Router from "../../router";
-import Controller from "../../controllers";
 import selectorBody from "../selector/body.html";
 
-import { Component } from "../../controllers/component";
-import { ComponentInstance } from "../../controllers/instance";
+import { Component } from "&/core/controllers/component";
+import { ComponentInstance } from "&/core/controllers/instance";
 
 export default class EditorTools {
     private _editor: Editor;
