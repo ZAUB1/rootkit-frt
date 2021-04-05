@@ -23,4 +23,4 @@ import "./Interacts/NavbarHeader";
 import "./Interacts/PillNavigation";
 import "./Interacts/ImageTransText";
 import "./Interacts/Searchbar";
-
+import "./Interacts/Switch";

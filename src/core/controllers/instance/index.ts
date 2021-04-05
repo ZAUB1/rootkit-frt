@@ -110,7 +110,7 @@ export class ComponentInstance extends EventEmitter {
             compInstance.parentOriginId = this.id;
             compInstance.rebuild();
             compInstance.renderTo(child as HTMLElement);
-            return this.spawnSubComps(compInstance.DOMElem);
+            this.spawnSubComps(compInstance.DOMElem);
         }
     };
 

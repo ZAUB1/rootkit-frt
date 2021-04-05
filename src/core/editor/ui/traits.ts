@@ -22,9 +22,8 @@ export default class EditorTraits {
         const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
         const traitsBody = document.getElementById("component-traits");
         traitsBody.innerHTML = `
-            <span editor>Component ID: #${(this._editor.selectedElem.parentNode as HTMLElement).id}</span>
-            <span editor>Component type: ${this._editor.selectedComp.label}</span>
-            <div editor style="height: 1px; background-color: #e0e0e0; width: 90%; margin: 5px 10px"></div>
+            <!--<span editor>Component ID: #${(this._editor.selectedElem.parentNode as HTMLElement).id}</span>
+            <span editor>Component type: ${this._editor.selectedComp.label}</span>!-->
             ${(() => {
                 if (!traits)
                     return "";
@@ -58,7 +57,7 @@ export default class EditorTraits {
                             break;
                         case "color":
                             traitElems += `
-                                <trait>
+                                <trait style="border-radius: 100%">
                                     <label editor for="${traitId}">${trait.label}</label>
                                     <input editor id="${traitId}" type='color' oninput='editor.traitChangeHandler(event, "${trait.name}")'>
                                 </trait>
@@ -130,7 +129,7 @@ export default class EditorTraits {
             return;
         const target = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
         event.preventDefault();
-        target.style.boxShadow = "rgba(99, 99, 99, 0.6) 0px 2px 10px 0px";
+        target.style.boxShadow = "rgba(0, 0, 0, 0.20) 0px 16px 64px 0px, rgba(0, 0, 0, 0.01) 0px 0px 0px 1px";
 
         const mouseMove = (event: MouseEvent) => {
             let { top, left }: any = target.getBoundingClientRect();
