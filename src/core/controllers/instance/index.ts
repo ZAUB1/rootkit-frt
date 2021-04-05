@@ -127,6 +127,7 @@ export class ComponentInstance extends EventEmitter {
         this.DOMElem.innerHTML = this.content;
 
         this.parseChildren(this.DOMElem);
+        this.origin.buildHandler ? this.origin.buildHandler(this) : void 0;
     };
 
     public rebuildContent() {
@@ -213,6 +214,16 @@ export class ComponentInstance extends EventEmitter {
         && Controller?.componentHandlers[this.label]
         && Controller.componentHandlers[this.label][event] 
             ? Controller.componentHandlers[this.label][event](this, ..._) : void 0;
+    }
+
+    public setChildsAttrs(el: HTMLElement, prop: string, value: string) {
+        if (!el)
+            return;
+        el.setAttribute(prop, value);
+        if (!el.children.length)
+            return;
+        for (const child of el.children as any)
+            this.setChildsAttrs(child as HTMLElement, prop, value);
     }
 
     public constructor(label: string, content: string, element: any, { style, vars = [], origin }: any) {
