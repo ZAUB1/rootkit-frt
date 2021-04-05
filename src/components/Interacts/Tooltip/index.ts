@@ -13,7 +13,7 @@ import { Vars } from "../../../core/controllers/decorators/component";
     tooltip3: "tooltip",
     tooltip4: "tooltip",
 })
-@Icon("fas fa-exclamation", "#e5383b")
+@Icon("fas fa-square")
 @Category("Interacts")
 @Traits([{
     type: "text",

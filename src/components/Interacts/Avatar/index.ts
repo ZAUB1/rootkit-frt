@@ -5,10 +5,10 @@ import { Category, Icon } from "../../../core/controllers/decorators/editor";
 
 @Category("Interacts")
 @Icon("fas fa-square")
-class InputField extends Component {
+class Avatar extends Component {
     constructor() {
-        super("Input Field", body, { });
+        super("Avatar", body, { });
     }
 };
 
-export default new InputField;
+export default new Avatar;

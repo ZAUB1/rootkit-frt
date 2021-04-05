@@ -24,4 +24,5 @@ import "./Interacts/PillNavigation";
 import "./Interacts/ImageTransText";
 import "./Interacts/Searchbar";
 import "./Interacts/Input";
+import "./Interacts/Avatar";
 

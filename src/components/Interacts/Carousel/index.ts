@@ -7,7 +7,7 @@ import { ModelEventHandler } from "../../../core/controllers/decorators/model";
 import { Vars } from "../../../core/controllers/decorators/component";
 
 @Category("Interacts")
-@Icon("fas fa-images", "#99582a")
+@Icon("fas fa-square")
 @ModelEventHandler("arrowLeft", "click", function() {
     let currentSlideIndex = this.getVar("currentSlide");
     const _currentSlide = this.getCompByModel(`slide${currentSlideIndex}`) as HTMLElement;

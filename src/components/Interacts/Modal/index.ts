@@ -8,7 +8,7 @@ import { ModelEventHandler } from "../../../core/controllers/decorators/model";
 import ModalContent from "../../Overlays/ModalContent";
 
 @Category("Interacts")
-@Icon("fas fa-clone", "#4361ee")
+@Icon("fas fa-square")
 @ModelEventHandler("modalTrigger", "click", () => {
     const comp = ModalContent.create();
     comp.render();

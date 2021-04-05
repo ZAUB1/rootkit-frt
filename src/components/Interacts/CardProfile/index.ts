@@ -24,7 +24,7 @@ import { Category, Icon, Traits } from "../../../core/controllers/decorators/edi
 }])
 
 @Category("Interacts")
-@Icon("fas fa-user", "orange")
+@Icon("fas fa-square")
 class CardProfile extends Component {
     constructor() {
         super("Card Profile", body, { });

@@ -24,7 +24,7 @@ import { ModelEventHandler } from "../../../core/controllers/decorators/model";
     label: "Description",
     name: "desc"
 }])
-@Icon("fas fa-exchange-alt", "#37bc9b")
+@Icon("fas fa-square")
 @Category("Interacts")
 class CardFlip extends Component {
     constructor() {
