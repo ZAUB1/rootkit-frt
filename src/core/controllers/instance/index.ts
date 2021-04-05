@@ -1,7 +1,7 @@
-import Router from "../../router";
-import Controller from "../index";
-import { parseStyle } from "../../style";
-import EventEmitter, { COMP_EVENTS } from "../../etc/events";
+import Router from "&/core/router";
+import Controller from "&/core/controllers";
+import { parseStyle } from "&/core/style";
+import EventEmitter, { COMP_EVENTS } from "&/core/etc/events";
 
 import { Component } from "../component";
 import { camelToSnake } from "../../etc/str";
