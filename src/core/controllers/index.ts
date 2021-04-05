@@ -1,5 +1,5 @@
-import { Trait } from "./decorators/editor";
-import { Component, ComponentInstance } from "./component";
+import type { Trait } from "./decorators/editor";
+import type { Component, ComponentInstance } from "./component";
 
 const _Controller = new (class Controller {
     // Holding all components classes in key value pair

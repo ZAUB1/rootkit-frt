@@ -1,4 +1,4 @@
-import Editor from "..";
+import type Editor from "..";
 import Router from "&/core/router";
 
 export default class EditorResizer {

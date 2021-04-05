@@ -1,4 +1,4 @@
-import Editor from "..";
+import type Editor from "..";
 import Controller from "&/core/controllers";
 import { genRandId } from "&/core/etc/rand";
 

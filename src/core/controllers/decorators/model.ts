@@ -1,5 +1,5 @@
 import Controller from "../";
-import { ComponentInstance } from "../instance";
+import type { ComponentInstance } from "../instance";
 
 export function ModelEventHandler(model: string, event: string, cb: (_this: ComponentInstance, comp: ComponentInstance | HTMLElement) => void) {
     return function <T extends { new(...args: any[]): {} }>(constructor: T) {

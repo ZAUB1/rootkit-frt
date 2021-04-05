@@ -1,8 +1,10 @@
-import { Component } from "../../../controllers/component";
+import "./style.scss";
+import body from "./body.html";
+import * as Nucleus from "../../../controllers/component";
 
-class EditorPicker extends Component {
+class EditorPicker extends Nucleus.Component {
     constructor() {
-        super("EditorPicker", "", {});
+        super("EditorPicker", body, { });
     }
 };
 

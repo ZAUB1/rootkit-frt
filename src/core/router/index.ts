@@ -1,5 +1,5 @@
 import routes from "./routes";
-import { ComponentInstance } from "../controllers/component";
+import type { ComponentInstance } from "../controllers/component";
 
 export interface Route {
     name: string;
@@ -40,13 +40,13 @@ export default new class Router {
     };
 
     // Navigate to route
-    public navigate(to: string = "/") {
+    public async navigate(to: string = "/") {
         const route = this.routes.find(route => route.path == to);
         if (!route)
             return this.showError("Page not found");
         this.currentRoute = route;
         window.document.title = `Puzzle - ${route.name}`;
-        this.setComponent(route.componentLoad ? route.componentLoad() : route.component);
+        this.setComponent(route.componentLoad ? await route.componentLoad() : route.component);
     };
 
     public constructor() {

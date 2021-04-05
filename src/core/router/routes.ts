@@ -1,23 +1,17 @@
-import { Route } from ".";
-import { ComponentInstance } from "../controllers/component";
-import Editor from "../editor";
-import Viewer from "../viewer";
+import type { Route } from ".";
+import type { ComponentInstance } from "../controllers/component";
 
 const routes: Array<Route> = [{
     name: "Viewer",
     path: "/",
-    componentLoad: (): ComponentInstance => {
-        if (!Viewer.getInstance())
-            new Viewer();
-        return Viewer.getInstance().viewerComp;
+    componentLoad: async (): Promise<ComponentInstance> => {
+        return (await import("../viewer")).Instance.viewerComp;
     }
 }, {
     name: "Editor",
     path: "/editor",
-    componentLoad: (): ComponentInstance => {
-        if (!Editor.getInstance())
-            new Editor();
-        return Editor.getInstance().editorComp;
+    componentLoad: async (): Promise<ComponentInstance> => {
+        return (await import("../editor")).Instance.editorComp;
     }
 }];
 
