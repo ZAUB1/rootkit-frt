@@ -47,6 +47,8 @@ export class ComponentInstance extends EventEmitter {
     private regenEventHandlers() {
         for (const modelElem of this.modelElementsHandlers)
             this.elementEventHandler(modelElem.model, modelElem.event, modelElem.cb);
+        for (const eventName of DOM_EVENTS)
+            this.DOMElem.addEventListener(eventName, (ev) => { this.emitEventListener(eventName, ev) });
     };
 
     private replaceStrByVar(str: string) {
@@ -257,8 +259,5 @@ export class ComponentInstance extends EventEmitter {
         this.id = this.DOMElem.id;
         this.origin = origin;
         this.rebuildContent();
-
-        for (const eventName of DOM_EVENTS)
-            this.DOMElem.addEventListener(eventName, (ev) => { this.emitEventListener(eventName, ev) });
     };
 };
