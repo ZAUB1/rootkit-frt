@@ -1,6 +1,6 @@
 import Controller from "./index";
-import { genRandId } from "../etc/rand";
-import EventEmitter from "../etc/events";
+import { genRandId } from "&/core/etc/rand";
+import EventEmitter from "&/core/etc/events";
 
 import { ComponentInstance } from "./instance";
 export { ComponentInstance } from "./instance";

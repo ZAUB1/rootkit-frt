@@ -8,7 +8,7 @@ import { Icon, Category, Traits } from "../../../core/controllers/decorators/edi
 @Vars({
     body: "Text...",
     backgroundColor: "#d7d7d7",
-    borderRadius: "0px"
+    borderRadius: "5px"
 })
 @Icon("fas fa-square")
 @Category("Interacts")

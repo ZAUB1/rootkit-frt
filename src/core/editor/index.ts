@@ -8,7 +8,7 @@ import "./selector/style.scss";
 import body from "./body.html";
 
 import Router from "../router";
-import Controller from "../../core/controllers";
+import Controller from "&/core/controllers";
 import { Component, ComponentInstance } from "../controllers/component";
 
 import EditorDrawer from "./ui/drawer";

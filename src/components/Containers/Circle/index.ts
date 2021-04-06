@@ -1,10 +1,10 @@
 import body from "./body.html";
 import style from "./style";
 
-import { Component } from "../../../core/controllers/component";
-import { Icon, Trait } from "../../../core/controllers/decorators/editor";
-import { Vars } from "../../../core/controllers/decorators/component";
-import { Category, Traits } from "../../../core/controllers/decorators/editor";
+import { Component } from "&/core/controllers/component";
+import { Icon, Trait } from "&/core/controllers/decorators/editor";
+import { Vars } from "&/core/controllers/decorators/component";
+import { Category, Traits } from "&/core/controllers/decorators/editor";
 
 export const vars: { [key: string]: any } = {
     border: "none",

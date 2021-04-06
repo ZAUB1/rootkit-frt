@@ -1,5 +1,5 @@
 import Editor from "..";
-import Router from "../../router";
+import Router from "&/core/router";
 
 export default class EditorResizer {
     private _editor: Editor;

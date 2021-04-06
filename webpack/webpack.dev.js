@@ -16,7 +16,10 @@ module.exports = {
         main: './' + src_Path + '/index.ts'
     },
     resolve: {
-        extensions: ['.ts', '.js', '.tsx', ".html", ".scss"]
+        extensions: ['.ts', '.js', '.tsx', ".html", ".scss"],
+        alias: {
+            "&": path.resolve("./src")
+        }
     },
     output: {
         path: path.resolve(__dirname, prod_Path),

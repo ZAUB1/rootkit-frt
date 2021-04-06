@@ -1,10 +1,10 @@
-import Router from "../../router";
-import Controller from "../index";
-import { parseStyle } from "../../style";
-import EventEmitter, { COMP_EVENTS } from "../../etc/events";
+import Router from "&/core/router";
+import Controller from "&/core/controllers";
+import { parseStyle } from "&/core/style";
+import EventEmitter, { COMP_EVENTS } from "&/core/etc/events";
 
 import { Component } from "../component";
-import { camelToSnake } from "../../etc/str";
+import { camelToSnake } from "&/core/etc/str";
 
 const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
 const SPE_OPERAT = [ "for", "if" ];
@@ -110,7 +110,7 @@ export class ComponentInstance extends EventEmitter {
             compInstance.parentOriginId = this.id;
             compInstance.rebuild();
             compInstance.renderTo(child as HTMLElement);
-            return this.spawnSubComps(compInstance.DOMElem);
+            this.spawnSubComps(compInstance.DOMElem);
         }
     };
 

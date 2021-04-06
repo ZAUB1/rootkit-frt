@@ -1,5 +1,5 @@
 import Editor from "..";
-import Controller from "../../../core/controllers";
+import Controller from "&/core/controllers";
 
 export default class EditorLayers {
     private _editor: Editor;
