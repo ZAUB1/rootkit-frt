@@ -35,7 +35,7 @@ export class ComponentInstance extends EventEmitter {
         return str.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
             const save = sub.toString();
             sub = sub.split("{")[1].split("}")[0].replace(/\s/g, "");
-            if (this.vars[sub])
+            if (this.vars[sub] != undefined)
                 return this.vars[sub];
             return save;
         });
@@ -45,7 +45,7 @@ export class ComponentInstance extends EventEmitter {
         return str.replace(/\{ (.*?) \}/g, (sub: string, ...args: any[]): any => {
             const save = sub.toString();
             sub = sub.split("{")[1].split("}")[0].replace(/\s/g, "");
-            if (this.vars[sub])
+            if (this.vars[sub] != undefined)
                 return this.vars[sub];
             return save;
         });
@@ -58,22 +58,22 @@ export class ComponentInstance extends EventEmitter {
             const opName = child.nodeName.toLowerCase().split("nuc-")[1];
             if (SPE_OPERAT.includes(opName)) {
                 if (opName == "for") {
-                    console.log(child.attributes)
-                    const [ite, _, array] = Object.values(child.attributes).map((val: Attr) => val.name);
+                    const [ite, _, array, iterator] = Object.values(child.attributes).map((val: Attr) => val.name);
                     if (!this.vars[array])
                         continue;
+                    let pos = 0;
                     let res = "";
-                    const baseContent = child.innerHTML;
+                    const baseContent = child.innerHTML as string;
                     for (const _ite of this.vars[array]) {
-                        res += baseContent.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
-                            const save = sub.toString();
-                            sub = sub.split("{")[1].split("}")[0].replace(/\s/g, "").split(".")[1];
-                            if (_ite[sub])
-                                return _ite[sub];
-                            return save;
-                        });
+                        const comp = new Component("",
+                            baseContent.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => sub.replace(new RegExp(`${ite}.`, "g"), "")),
+                            { hideFromStack: true }).create();
+                        comp.vars = _ite;
+                        iterator ? comp.vars[iterator.split("[")[1].split("]")[0]] = pos++ : void 0;
+                        comp.rebuildContent();
+                        res += comp.content;
                     }
-                    child.innerHTML = res;
+                    child.outerHTML = res;
                 }
                 continue;
             }

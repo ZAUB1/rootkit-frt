@@ -1,13 +1,10 @@
 import { Component, ComponentInstance } from "../controllers/component";
 
-let viewerInstance: Viewer;
-
 export default class Viewer {
     // Main UI comp
     public viewerComp: ComponentInstance;
     private components: ComponentInstance[] = [];
     // Holding load handlers
-    private static loadHandlers: Function[] = [];
 
     // Load any comp in the viewer
     public loadCompInside(comp: ComponentInstance) {
@@ -21,18 +18,9 @@ export default class Viewer {
         return comp;
     };
 
-    public static getInstance() {
-        return viewerInstance;
-    };
-
-    // Load handlers
-    public static onLoad(handler: Function) {
-        this.loadHandlers.push(handler);
-    };
-
     public constructor() {
         this.viewerComp = (new Component("Viewer", "", { hideFromStack: true })).create();
-        viewerInstance = this;
-        Viewer.loadHandlers.map(handler => handler(viewerInstance));
     };
 };
+
+export const Instance = new Viewer;

@@ -3,8 +3,6 @@ declare global {
 };
 
 import "./style.scss";
-
-import "./selector/style.scss";
 import body from "./body.html";
 
 import Router from "../router";
@@ -17,8 +15,6 @@ import EditorTraits from "./ui/traits";
 import EditorResizer from "./ui/resizers";
 import EditorLayers from "./ui/layers";
 import EditorTools from "./ui/tools";
-
-let currentInstance: any;
 
 export const CATEGORIES = [ "Containers", "Interacts", "Api Linked", "Layers" ];
 
@@ -127,10 +123,6 @@ export default class Editor {
         this.editorResizer.displayResizers();
     };
 
-    public static getInstance(): Editor {
-        return currentInstance; // == this
-    };
-
     // Recursive to flag all childs as uneditable
     public flagChildsAsEditor(el: HTMLElement) {
         if (!el)
@@ -182,6 +174,7 @@ export default class Editor {
         this.editorDrawer.gen();
         this.flagChildsAsEditor(this.editorComp.DOMElem);
         this.dragHoverElem = this.editorComp.getFirstChild("editor-main");
-        currentInstance = this;
     };
 };
+
+export const Instance = new Editor;

@@ -1,4 +1,4 @@
-import Editor from "..";
+import type Editor from "..";
 import Controller from "&/core/controllers";
 import { genRandId } from "&/core/etc/rand";
 
@@ -18,7 +18,6 @@ export default class EditorTraits {
     // Gen traits menu UI from comp traits
     public displayTraitsMenu() {
         const traits = (Controller.components[this._editor.selectedComp.label] as any).traits;
-        const sideMenu = document.getElementsByTagName("editor-sidemenu")[0] as HTMLElement;
         const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
         const traitsBody = document.getElementById("component-traits");
         traitsBody.innerHTML = `
@@ -83,7 +82,6 @@ export default class EditorTraits {
                 return traitElems;
             })()}
         `;
-        sideMenu.style.display = null;
         traitsMenu.style.display = "block";
 
         // Handler for menu moving

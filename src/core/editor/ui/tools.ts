@@ -1,9 +1,8 @@
-import Editor from "..";
+import type Editor from "..";
 import Router from "../../router";
-import selectorBody from "../selector/body.html";
 
-import { Component } from "&/core/controllers/component";
-import { ComponentInstance } from "&/core/controllers/instance";
+import EditorPicker from "../comps/EditorPicker";
+import type { ComponentInstance } from "&/core/controllers/instance";
 
 export default class EditorTools {
     private _editor: Editor;
@@ -12,9 +11,8 @@ export default class EditorTools {
 
     constructor(_editor: Editor) {
         this._editor = _editor;
-        this.selecterComp = (new Component("EditorSelector", selectorBody, { hideFromStack: true })).create();
+        this.selecterComp = EditorPicker.create();
         this._editor.flagChildsAsEditor(this.selecterComp.DOMElem);
-        this.selecterComp.on("click", () => { this._editor.destroySelectedElem(); this.close() });
     }
 
     public display() {
@@ -23,8 +21,7 @@ export default class EditorTools {
         const el = this.selecterComp.getFirstChild("editor-pick");
         el.style.left = `${rect.x}px`;
         el.style.top = `${rect.bottom + 5}px`;
-        this.selecterComp = this.selecterComp;
-        this.selecterComp.renderTo(Router.getElem());
+        this.selecterComp.render();
         this._editor.selectedElem.style.outline = "2px solid #51c2d5";
     }
 

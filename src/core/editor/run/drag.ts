@@ -1,4 +1,4 @@
-import Editor from "..";
+import type Editor from "..";
 import Controller from "../../controllers";
 
 export default class EditorDrag {
