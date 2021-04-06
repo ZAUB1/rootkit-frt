@@ -13,7 +13,6 @@ export default class EditorTools {
         this._editor = _editor;
         this.selecterComp = EditorPicker.create();
         this._editor.flagChildsAsEditor(this.selecterComp.DOMElem);
-        this.selecterComp.on("click", () => { this._editor.destroySelectedElem(); this.close() });
     }
 
     public display() {
