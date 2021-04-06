@@ -30,6 +30,24 @@ export class ComponentInstance extends EventEmitter {
     public parent: ComponentInstance;
     public parentOriginId: string;
     private models: { [id: string]: ComponentInstance | HTMLElement } = {};
+    private modelElementsHandlers: { model: string, event: string, cb: (comp: ComponentInstance | HTMLElement) => void }[] = [];
+
+    private elementEventHandler(model: string, event: string, cb: (comp: ComponentInstance | HTMLElement) => void) {
+        const elem = this.getCompByModel(model) as HTMLElement;
+        if (!elem)
+            return console.error("Element not found with model:", model);
+        elem.addEventListener(event, () => { cb.call(this, elem) });
+    };
+
+    public addElementEventHandler(model: string, event: string, cb: (comp: ComponentInstance | HTMLElement) => void) {
+        this.modelElementsHandlers.push({ model, event, cb });
+        this.elementEventHandler(model, event, cb);
+    };
+
+    private regenEventHandlers() {
+        for (const modelElem of this.modelElementsHandlers)
+            this.elementEventHandler(modelElem.model, modelElem.event, modelElem.cb);
+    };
 
     private replaceStrByVar(str: string) {
         return str.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
@@ -134,6 +152,7 @@ export class ComponentInstance extends EventEmitter {
         // Parse style from inner body
         this.rebuild();
         this.spawnSubComps(this.DOMElem);
+        this.regenEventHandlers();
     };
 
     private parseChildren(elem: any) {
