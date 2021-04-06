@@ -20,10 +20,15 @@ export default class EditorTools {
         const rect = this._editor.getParentMovable(this._editor.selectedElem).getBoundingClientRect();
         const el = this.selecterComp.getFirstChild("editor-pick");
         el.style.left = `${rect.x}px`;
-        el.style.top = `${rect.top - 47.5}px`;
-        el.style.zIndex = 10;
+        el.style.opacity = 0;
+        el.style.top = `${rect.top - 40}px`;
         this.selecterComp.render();
         this._editor.selectedElem.style.outline = "2px solid #51c2d5";
+        setTimeout(() => {
+            el.style.top = `${rect.top - 47.5}px`;
+            el.style.opacity = 1;
+            el.style.zIndex = 10;
+        }, 10);
     }
 
     public close() {
