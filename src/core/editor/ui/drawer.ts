@@ -1,18 +1,25 @@
-import Editor, { CATEGORIES } from "..";
+import type Editor from "..";
 import Controller from "&/core/controllers";
+
+import DrawerComp from "../comps/EditorDrawer";
+import type { ComponentInstance } from "&/core/controllers/instance";
 
 export default class EditorDrawer {
     private _editor: Editor;
     public currentDrawer: number = 0;
+    private comp: ComponentInstance;
 
     public constructor(_editor: Editor) {
         this._editor = _editor;
+        this.comp = DrawerComp.create();
+        this._editor.flagChildsAsEditor(this.comp.DOMElem);
         window.editor.clickCompMenuHandler = (el: HTMLElement, menu: number) => { el && this.clickMenuHandler(el, menu) };
+        this.comp.render();
     };
 
     // Generate component drawer
     public gen(child: number = 0) {
-        const compMenu = this._editor.editorComp.getFirstChild("editor-components");
+        /* const compMenu = this.comp.getFirstChild("editor-components");
         if (!compMenu)
             return;
         compMenu.innerHTML = null;
@@ -48,12 +55,12 @@ export default class EditorDrawer {
                 }
                 return compsButtons;
             })()}
-        `;
+        `; */
     };
 
     // Components UI menu click handler @DRAWER
     public clickMenuHandler(el: HTMLElement, menu: number) {
-        const compMenu = this._editor.editorComp.getFirstChild("category-buttons");
+        /* const compMenu = this._editor.editorComp.getFirstChild("category-buttons");
         const compTitle = document.getElementById("component-title-menu");
         if (!compMenu)
             return;
@@ -64,6 +71,6 @@ export default class EditorDrawer {
         el.style.backgroundColor = "#f7f6f9";
         el.style.borderBottom = "3px solid crimson";
         compTitle.innerHTML = CATEGORIES[menu];
-        this.gen(menu);
+        this.gen(menu); */
     }
 };
