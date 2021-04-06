@@ -101,7 +101,8 @@ editor-traitmenu {
     //box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 16px 64px 0px, rgba(0, 0, 0, 0.01) 0px 0px 0px 1px;
     display: none;
-    transition: box-shadow .1s linear;
+    opacity: 0;
+    transition: box-shadow .1s linear, opacity .1s ease-in-out;
 
     header {
         position: relative;

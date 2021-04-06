@@ -83,16 +83,20 @@ export default class EditorTraits {
             })()}
         `;
         traitsMenu.style.display = "block";
+        setTimeout(() => {
+            traitsMenu.style.opacity = "1";
+        }, 20);
 
         // Handler for menu moving
         traitsMenu.addEventListener("mousedown", this.traitMenuClickHandler);
     };
 
     public hideTraitsMenu() {
-        const sideMenu = document.getElementsByTagName("editor-sidemenu")[0] as HTMLElement;
         const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
-        sideMenu.style.display = "block";
-        traitsMenu.style.display = null;
+        traitsMenu.style.opacity = "0";
+        setTimeout(() => {
+            traitsMenu.style.display = null;
+        }, 200);
     };
 
     // Key change
