@@ -147,7 +147,6 @@ export class ComponentInstance extends EventEmitter {
         this.DOMElem.innerHTML = this.content;
 
         this.parseChildren(this.DOMElem);
-        this.origin.buildHandler ? this.origin.buildHandler(this) : void 0;
     };
 
     public rebuildContent() {
@@ -155,6 +154,7 @@ export class ComponentInstance extends EventEmitter {
         this.rebuild();
         this.spawnSubComps(this.DOMElem);
         this.regenEventHandlers();
+        this.origin.buildHandler ? this.origin.buildHandler(this) : void 0;
     };
 
     private parseChildren(elem: any) {
