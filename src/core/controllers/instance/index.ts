@@ -30,6 +30,26 @@ export class ComponentInstance extends EventEmitter {
     public parent: ComponentInstance;
     public parentOriginId: string;
     private models: { [id: string]: ComponentInstance | HTMLElement } = {};
+    private modelElementsHandlers: { model: string, event: string, cb: (comp: ComponentInstance | HTMLElement) => void }[] = [];
+
+    private elementEventHandler(model: string, event: string, cb: (comp: ComponentInstance | HTMLElement) => void) {
+        const elem = this.getCompByModel(model) as HTMLElement;
+        if (!elem)
+            return console.error("Element not found with model:", model);
+        elem.addEventListener(event, () => { cb.call(this, elem) });
+    };
+
+    public addElementEventHandler(model: string, event: string, cb: (comp: ComponentInstance | HTMLElement) => void) {
+        this.modelElementsHandlers.push({ model, event, cb });
+        this.elementEventHandler(model, event, cb);
+    };
+
+    private regenEventHandlers() {
+        for (const modelElem of this.modelElementsHandlers)
+            this.elementEventHandler(modelElem.model, modelElem.event, modelElem.cb);
+        for (const eventName of DOM_EVENTS)
+            this.DOMElem.addEventListener(eventName, (ev) => { this.emitEventListener(eventName, ev) });
+    };
 
     private replaceStrByVar(str: string) {
         return str.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
@@ -127,12 +147,14 @@ export class ComponentInstance extends EventEmitter {
         this.DOMElem.innerHTML = this.content;
 
         this.parseChildren(this.DOMElem);
+        this.origin.buildHandler ? this.origin.buildHandler(this) : void 0;
     };
 
     public rebuildContent() {
         // Parse style from inner body
         this.rebuild();
         this.spawnSubComps(this.DOMElem);
+        this.regenEventHandlers();
     };
 
     private parseChildren(elem: any) {
@@ -215,6 +237,16 @@ export class ComponentInstance extends EventEmitter {
             ? Controller.componentHandlers[this.label][event](this, ..._) : void 0;
     }
 
+    public setChildsAttrs(el: HTMLElement, prop: string, value: string) {
+        if (!el)
+            return;
+        el.setAttribute(prop, value);
+        if (!el.children.length)
+            return;
+        for (const child of el.children as any)
+            this.setChildsAttrs(child as HTMLElement, prop, value);
+    }
+
     public constructor(label: string, content: string, element: any, { style, vars = [], origin }: any) {
         super();
         this.label = label;
@@ -227,8 +259,5 @@ export class ComponentInstance extends EventEmitter {
         this.id = this.DOMElem.id;
         this.origin = origin;
         this.rebuildContent();
-
-        for (const eventName of DOM_EVENTS)
-            this.DOMElem.addEventListener(eventName, (ev) => { this.emitEventListener(eventName, ev) });
     };
 };

@@ -20,6 +20,7 @@ export class Component extends EventEmitter {
     public hideFromStack: boolean = false;
     // render handler
     public renderHandler: Function;
+    public buildHandler: Function;
 
     public constructor(label: string, content: string, { style, category = "Default", vars = {}, hideFromStack = false }: any = {}) {
         super();

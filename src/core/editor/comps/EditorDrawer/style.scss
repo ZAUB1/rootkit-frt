@@ -1,0 +1,84 @@
+$menu-width: 250px;
+$navbar-height: 50px;
+
+// #30364c
+$main-color: crimson;
+
+editor-sidemenu {
+    position: absolute;
+    left: 0px;
+    top: $navbar-height;
+    height: calc(100vh - #{$navbar-height});
+    overflow-y: hidden;
+    min-width: $menu-width;
+    /* border-right: 1px solid rgba(0, 0, 0, .1); */
+    overflow-y: auto;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+    category-buttons {
+        display: flex;
+        justify-content: stretch;
+        height: 60px;
+        box-sizing: border-box;
+
+        span {
+            width: 100%;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-bottom: 3px solid transparent;
+        }
+    }
+
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+        margin: 0 10px;
+        height: 40px;
+        width: 100%;
+        color: rgb(39, 39, 39);
+    }
+
+    span {
+        font-weight: bold;
+    }
+
+    editor-components {
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 250px;
+
+        compbtn-div {
+            user-select: none;
+            flex: 1 0 50%;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            /* border: 1px solid rgba(0,0,0,.1); */
+            outline: 1px solid rgba(0,0,0,.1);
+            height: 75px;
+            /* box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px; */
+            background-color: #fafafa;
+            transition: all .1s ease-in-out;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            font-weight: 400;
+            text-align: center;
+
+            &:hover {
+                background-color: rgb(232, 232, 232);
+            }
+        }
+    }
+
+
+};
