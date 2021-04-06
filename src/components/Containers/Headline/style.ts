@@ -5,11 +5,20 @@ export default {
     mainCont: {
         minHeight: "600px",
         width: "100%",
-        background: "url('https://www.goodfreephotos.com/albums/austria/other-austria/mountain-valley-landscape-with-stream-running-through.jpg')",
         backgroundSize: "cover",
         display: "flex",
-        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center"
     },
+    image: {
+        height: "50%",
+        width: "45%"
+    },
+    textCont: {
+        display: "flex",
+        flexDirection: "column",
+        width: "45%",
+        alignItems: "center",
+        textAlign: "center"
+    }
 };
