@@ -1,7 +1,6 @@
 import "./style.scss";
 import body from "./body.html";
 
-import * as Editor from "&/core/editor";
 import * as Nucleus from "&/core/controllers/component";
 import { Built, Vars, Rendered } from "&/core/controllers/decorators/component";
 import Controller from "&/core/controllers";

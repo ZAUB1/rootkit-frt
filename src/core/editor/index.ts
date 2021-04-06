@@ -171,7 +171,6 @@ export default class Editor {
 
         // Avoid editor detection
         // Draw UI
-        this.editorDrawer.gen();
         this.flagChildsAsEditor(this.editorComp.DOMElem);
         this.dragHoverElem = this.editorComp.getFirstChild("editor-main");
     };
