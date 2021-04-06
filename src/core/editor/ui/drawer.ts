@@ -1,5 +1,4 @@
 import type Editor from "..";
-import Controller from "&/core/controllers";
 
 import DrawerComp from "../comps/EditorDrawer";
 import type { ComponentInstance } from "&/core/controllers/instance";
