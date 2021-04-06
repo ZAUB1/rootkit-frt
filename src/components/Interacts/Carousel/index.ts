@@ -1,4 +1,4 @@
-// import style from "./style";
+import style from "./style";
 import body from "./body.html";
 
 import { Component, ComponentInstance } from "../../../core/controllers/component";
@@ -41,7 +41,7 @@ import { Vars } from "../../../core/controllers/decorators/component";
 })
 class Carousel extends Component {
     constructor() {
-        super("Carousel", body, { });
+        super("Carousel", body, { style });
     }
 };
 
