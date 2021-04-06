@@ -20,7 +20,8 @@ export default class EditorTools {
         const rect = this._editor.getParentMovable(this._editor.selectedElem).getBoundingClientRect();
         const el = this.selecterComp.getFirstChild("editor-pick");
         el.style.left = `${rect.x}px`;
-        el.style.top = `${rect.bottom + 5}px`;
+        el.style.top = `${rect.top - 47.5}px`;
+        el.style.zIndex = 10;
         this.selecterComp.render();
         this._editor.selectedElem.style.outline = "2px solid #51c2d5";
     }
