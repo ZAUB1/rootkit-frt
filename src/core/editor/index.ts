@@ -110,7 +110,8 @@ export default class Editor {
         if (hoverElement.nodeName.toLocaleLowerCase() == "body")
             return this.closeElemMenus();
         if (hoverElement.nodeName.toLocaleLowerCase().includes("editor")
-        || hoverElement.attributes.getNamedItem("editor"))
+        || hoverElement.attributes.getNamedItem("editor")
+        || hoverElement == this.selectedElem)
             return;
         (this.selectedElem) ? this.selectedElem.style.outline = null : void 0;
         this.lastHover = null;
