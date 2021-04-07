@@ -27,4 +27,3 @@ class Tooltip extends Component {
 };
 
 export default new Tooltip;
-
