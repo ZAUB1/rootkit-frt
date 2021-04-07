@@ -2,6 +2,7 @@ import style from "./style";
 import body from "./body.html";
 
 import { Component } from "../../../core/controllers/component";
+import type { ComponentInstance } from "../../../core/controllers/component";
 import { Category, Icon } from "../../../core/controllers/decorators/editor";
 import { ModelEventHandler } from "../../../core/controllers/decorators/model";
 
