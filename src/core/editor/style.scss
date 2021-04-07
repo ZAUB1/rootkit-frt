@@ -4,13 +4,19 @@ $navbar-height: 50px;
 // #30364c
 $main-color: crimson;
 
+body {
+    overflow: hidden;
+}
+
 editor-main {
     position: absolute;
     width: calc(100% - #{$menu-width});
+    height: 100%;
     left: $menu-width;
     top: $navbar-height;
     box-sizing: border-box;
     padding: 10px;
+    overflow-y: scroll;
 };
 
 nav {
