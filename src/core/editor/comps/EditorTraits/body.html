@@ -1,0 +1,21 @@
+<editor-traitmenu>
+    <header>
+        <div style="position: absolute; right: 15px; cursor: pointer" onclick="window.editor.closeTraitMenu()">&#10005</div>
+    </header>
+    <traits model="component-traits">
+        <nuc-for trait in traits>
+            <trait nuc-if="{ trait.type } == 'text'">
+                <label editor for="">{ trait.label }</label>
+                <input editor id="" type='text' value="{ trait.value }">
+            </trait>
+            <trait nuc-if="{ trait.type } == 'number'">
+                <label editor for="">{ trait.label }</label>
+                <input editor id="" type='number' value="{ trait.value }">
+            </trait>
+            <trait nuc-if="{ trait.type } == 'checkbox'">
+                <label editor for="">{ trait.label }</label>
+                <input editor id="" type='checkbox' checked="{ trait.value }">
+            </trait>
+        </nuc-for>
+    </traits>
+</editor-traitmenu>

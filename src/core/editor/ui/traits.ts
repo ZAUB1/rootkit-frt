@@ -2,8 +2,13 @@ import type Editor from "..";
 import Controller from "&/core/controllers";
 import { genRandId } from "&/core/etc/rand";
 
+import TraitsComp from "../comps/EditorTraits";
+import type { ComponentInstance } from "&/core/controllers/instance";
+import type { Trait } from "&/core/controllers/decorators/editor";
+
 export default class EditorTraits {
     private _editor: Editor;
+    private menu: ComponentInstance;
 
     constructor(_editor: Editor) {
         this._editor = _editor;
@@ -13,12 +18,23 @@ export default class EditorTraits {
         window.editor.traitChangeHandler = (event: KeyboardEvent, traitName: string) => { this.traitChangeHandler(event, traitName) };
         window.editor.traitCheckHandler = (event: KeyboardEvent, traitName: string, array: any) => { this.traitCheckHandler(event, traitName, array) };
         window.editor.closeTraitMenu = () => { this.hideTraitsMenu() };
+        this.menu = TraitsComp.create();
     }
 
     // Gen traits menu UI from comp traits
     public displayTraitsMenu() {
+        if (this.menu.appened)
+        this.menu.remove();
         const traits = (Controller.components[this._editor.selectedComp.label] as any).traits;
-        const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
+        this.menu.setVar("traits", traits.map((trait: Trait) => {
+            return {
+                ...trait,
+                value: this._editor.selectedComp.vars[trait.name]
+            }
+        }));
+        this.menu.render();
+
+        /* const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
         const traitsBody = document.getElementById("component-traits");
         if (!traits || !traits.length)
             return;
@@ -90,15 +106,11 @@ export default class EditorTraits {
         }, 20);
 
         // Handler for menu moving
-        traitsMenu.addEventListener("mousedown", this.traitMenuClickHandler);
+        traitsMenu.addEventListener("mousedown", this.traitMenuClickHandler); */
     };
 
     public hideTraitsMenu() {
-        const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
-        traitsMenu.style.opacity = "0";
-        setTimeout(() => {
-            traitsMenu.style.display = null;
-        }, 200);
+        this.menu.remove();
     };
 
     // Key change

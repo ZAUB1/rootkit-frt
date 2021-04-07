@@ -9,6 +9,14 @@ import { camelToSnake } from "&/core/etc/str";
 const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
 const SPE_OPERAT = [ "for", "if" ];
 
+const parseBool = (str: string) => {
+    if (str == "true")
+        return true;
+    if (str == "false")
+        return false;
+    return str;
+};
+
 export class ComponentInstance extends EventEmitter {
     public id: string;
     public label: string;
@@ -96,6 +104,41 @@ export class ComponentInstance extends EventEmitter {
                     child.outerHTML = res;
                 }
                 continue;
+            }
+
+            // If cond
+            const ifCond = child.attributes.getNamedItem("nuc-if");
+            if (ifCond) {
+                let [ val, operator, comparaison ] = ifCond.value.split(" ");
+                console.log(this.DOMElem.getElementsByTagName("traits"));
+                const traitsBody = this.getCompByModel("component-traits") as HTMLElement;
+                val = val.replace(/['"]+/g, '');
+                comparaison = comparaison.replace(/['"]+/g, '');
+                (parseFloat(val)) ? val = parseFloat(val) : void 0;
+                (parseFloat(comparaison)) ? comparaison = parseFloat(comparaison) : void 0;
+                val = parseBool(val);
+                comparaison = parseBool(comparaison);
+                (this.vars[val]) ? val = this.vars[val] : void 0;
+                (this.vars[comparaison]) ? comparaison = this.vars[comparaison] : void 0;
+                console.log(val, comparaison, operator, val != comparaison);
+                switch (operator) {
+                    case "==":
+                        if (val != comparaison) {
+                            //el.removeChild(child);
+                            child.style.display = "none";
+                            //child.innerHTML = "";
+                            //traitsBody.removeChild(child);
+                            child.innerHTML = "";
+                            continue;
+                        }
+                        break;
+                    case "!=":
+                        if (val == comparaison) {
+                            child.remove();
+                            continue;
+                        }
+                        break;
+                }
             }
 
             // Is tag a component ?
