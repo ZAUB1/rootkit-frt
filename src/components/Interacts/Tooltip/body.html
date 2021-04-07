@@ -1,14 +1,13 @@
-<div class="tooltip top">Show Top</div>
-<div class="tooltip right">Show Right</div>
-<div class="tooltip left">Show Left</div>
-<div class="tooltip bottom">Show Bottom</div>
+<nuc-for tooltip in tooltips>
+	<div class="tooltip { tooltip.position }">{ tooltip.name }</div>
+</nuc-for>
 
 <style>
   @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 
 .tooltip {
-	background-color: #ffaffc;
-	border-radius: 10px;
+	background-color: { backgroundColor };
+	border-radius: { borderRadius };
 	padding: 10px 15px;
 	position: relative;
 	margin: 15px;

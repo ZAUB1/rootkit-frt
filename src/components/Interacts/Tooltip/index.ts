@@ -5,37 +5,15 @@ import { Category, Icon, Traits } from "../../../core/controllers/decorators/edi
 import { Vars } from "../../../core/controllers/decorators/component";
 
 @Vars({
-    body: "Text",
-    backgroundColor: "#d7d7d7",
-    borderRadius: "0px",
-    tooltip1: "tooltip",
-    tooltip2: "tooltip",
-    tooltip3: "tooltip",
-    tooltip4: "tooltip",
+    borderRadius: "5px",
+    backgroundColor: "grey",
+    tooltips: [
+        { name: "tooltip", position: "bottom" }
+    ]
 })
 @Icon("fas fa-square")
 @Category("Interacts")
 @Traits([{
-    type: "text",
-    name: "logo",
-    label: "Logo",
-},{
-    type: "text",
-    name: "link",
-    label: "Liens",
-},{
-    type: "text",
-    name: "link",
-    label: "Liens",
-},{
-    type: "text",
-    name: "link",
-    label: "Liens",
-},{
-    type: "color",
-    name: "backgroundColor",
-    label: "Couleur de fond"
-},{
     type: "checkbox",
     name: "borderRadius",
     label: "Bords arrondis",
