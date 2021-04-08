@@ -21,6 +21,74 @@ export default class ComponentDOM {
         return str;
     };
 
+    private for(child: HTMLElement, ite: string, array: string, iterator: string) {
+        let pos = 0;
+        let res = "";
+        const baseContent = child.innerHTML as string;
+        for (const _ite of this._instance.vars[array]) {
+            const comp = new Component("",
+                baseContent.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => sub.replace(new RegExp(`${ite}.`, "g"), "")),
+                { hideFromStack: true }).create();
+            comp.vars = _ite;
+            iterator ? comp.vars[iterator.split("[")[1].split("]")[0]] = pos++ : void 0;
+            comp.rebuild();
+            res += comp.content;
+        }
+        child.outerHTML = res;
+    };
+
+    private if(rmPool: HTMLElement[], child: HTMLElement, ifCond: Attr) {
+        const rmChild = () => {
+            child.innerHTML = "";
+            rmPool.push(child);
+        };
+
+        let [ val, operator, comparaison ] = ifCond.value.split(" ") as any;
+        val = val.replace(/['"]+/g, '');
+        comparaison = comparaison.replace(/['"]+/g, '');
+        (parseFloat(val)) ? val = parseFloat(val) : void 0;
+        (parseFloat(comparaison)) ? comparaison = parseFloat(comparaison) : void 0;
+        val = this.parseBool(val);
+        comparaison = this.parseBool(comparaison);
+        (this._instance.vars[val]) ? val = this._instance.vars[val] : void 0;
+        (this._instance.vars[comparaison]) ? comparaison = this._instance.vars[comparaison] : void 0;
+        switch (operator) {
+            case "==":
+                if (val != comparaison)
+                    rmChild();
+                break;
+            case "!=":
+                if (val == comparaison)
+                    rmChild();
+                break;
+        }
+    };
+
+    private createAndRenderComp(child: HTMLElement) {
+        const nodeName = child.nodeName.toLowerCase();
+        const comp: Component = Controller.components[`${nodeName.charAt(0).toUpperCase()}${nodeName.slice(1, nodeName.length)}`];
+        const compInstance = comp.create();
+
+        // Look for model
+        compInstance.model = child.attributes.getNamedItem("nuc-model")?.value;
+        compInstance.model ? this._instance.models[compInstance.model] = compInstance : void 0;
+
+        // Look for default vars
+        const keys = Object.keys(compInstance.vars);
+        for (const key of keys) {
+            const childVal = child.attributes.getNamedItem(camelToSnake(key));
+            if (!childVal)
+                continue;
+            compInstance.vars[key] = childVal.value;
+        }
+
+        // Saving parent
+        compInstance.parent = this._instance;
+        compInstance.parentOriginId = this._instance.id;
+        compInstance.rebuild();
+        compInstance.renderTo(child as HTMLElement);
+    };
+
     public spawnSubComps(el: HTMLElement): void {
         const rmPool: HTMLElement[] = [];
         const tagNames = Object.keys(Controller.components).map(tag => tag.toLowerCase());
@@ -32,85 +100,31 @@ export default class ComponentDOM {
                     const [ite, _, array, iterator] = Object.values(child.attributes).map((val: Attr) => val.name);
                     if (!this._instance.vars[array])
                         continue;
-                    let pos = 0;
-                    let res = "";
-                    const baseContent = child.innerHTML as string;
-                    console.log(array, baseContent);
-                    for (const _ite of this._instance.vars[array]) {
-                        const comp = new Component("",
-                            baseContent.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => sub.replace(new RegExp(`${ite}.`, "g"), "")),
-                            { hideFromStack: true }).create();
-                        comp.vars = _ite;
-                        iterator ? comp.vars[iterator.split("[")[1].split("]")[0]] = pos++ : void 0;
-                        comp.rebuild();
-                        res += comp.content;
-                    }
-                    child.outerHTML = res;
+                    this.for(child, ite, array, iterator);
                 }
                 //continue;
             }
 
-            const rmChild = () => {
-                child.innerHTML = "";
-                rmPool.push(child);
-            };
-
-            // If cond
+            // If cond handling
             const ifCond = child.attributes.getNamedItem("nuc-if");
             if (ifCond) {
-                let [ val, operator, comparaison ] = ifCond.value.split(" ");
-                val = val.replace(/['"]+/g, '');
-                comparaison = comparaison.replace(/['"]+/g, '');
-                (parseFloat(val)) ? val = parseFloat(val) : void 0;
-                (parseFloat(comparaison)) ? comparaison = parseFloat(comparaison) : void 0;
-                val = this.parseBool(val);
-                comparaison = this.parseBool(comparaison);
-                (this._instance.vars[val]) ? val = this._instance.vars[val] : void 0;
-                (this._instance.vars[comparaison]) ? comparaison = this._instance.vars[comparaison] : void 0;
-                switch (operator) {
-                    case "==":
-                        if (val != comparaison) { rmChild(); continue; }
-                        break;
-                    case "!=":
-                        if (val == comparaison) { rmChild(); continue; };
-                        break;
-                }
+                this.if(rmPool, child, ifCond);
+                continue;
             }
 
             // Is tag a component ?
             if (!tagNames.includes(child.nodeName.toLowerCase())) {
                 const model = child.attributes.getNamedItem("nuc-model")?.value;
                 (model) ? this._instance.models[model] = child as HTMLElement : void 0;
-
                 this.spawnSubComps(child as HTMLElement);
                 continue;
             }
 
             // Create component
-            const nodeName = child.nodeName.toLowerCase();
-            const comp: Component = Controller.components[`${nodeName.charAt(0).toUpperCase()}${nodeName.slice(1, nodeName.length)}`];
-            const compInstance = comp.create();
-
-            // Look for model
-            compInstance.model = child.attributes.getNamedItem("nuc-model")?.value;
-            compInstance.model ? this._instance.models[compInstance.model] = compInstance : void 0;
-
-            // Look for default vars
-            const keys = Object.keys(compInstance.vars);
-            for (const key of keys) {
-                const childVal = child.attributes.getNamedItem(camelToSnake(key));
-                if (!childVal)
-                    continue;
-                compInstance.vars[key] = childVal.value;
-            }
-
-            // Saving parent
-            compInstance.parent = this._instance;
-            compInstance.parentOriginId = this._instance.id;
-            compInstance.rebuild();
-            compInstance.renderTo(child as HTMLElement);
-            //this.spawnSubComps(compInstance.DOMElem);
+            this.createAndRenderComp(child);
         }
+
+        // Clear the mess
         for (const elem of rmPool)
             elem.remove();
     };
