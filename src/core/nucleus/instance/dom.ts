@@ -41,6 +41,7 @@ export default class ComponentDOM {
         const rmChild = () => {
             child.innerHTML = "";
             rmPool.push(child);
+            return true;
         };
 
         let [ val, operator, comparaison ] = ifCond.value.split(" ") as any;
@@ -55,13 +56,14 @@ export default class ComponentDOM {
         switch (operator) {
             case "==":
                 if (val != comparaison)
-                    rmChild();
-                break;
+                    return rmChild();
+                return false;
             case "!=":
                 if (val == comparaison)
-                    rmChild();
-                break;
+                    return rmChild();
+                return false;
         }
+        return false;
     };
 
     private createAndRenderComp(child: HTMLElement) {
@@ -108,8 +110,8 @@ export default class ComponentDOM {
             // If cond handling
             const ifCond = child.attributes.getNamedItem("nuc-if");
             if (ifCond) {
-                this.if(rmPool, child, ifCond);
-                continue;
+                if (this.if(rmPool, child, ifCond))
+                    continue;
             }
 
             // Is tag a component ?
