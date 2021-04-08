@@ -1,4 +1,4 @@
-import Controller from "./index";
+import Nucleus from "./index";
 import { genRandId } from "&/core/etc/rand";
 import EventEmitter from "&/core/etc/events";
 
@@ -31,7 +31,7 @@ export class NucleusComponent extends EventEmitter {
         this.content = content;
         this.hideFromStack = hideFromStack;
 
-        (!hideFromStack) ? Controller.components[this.label] = this : void 0;
+        (!hideFromStack) ? Nucleus.components[this.label] = this : void 0;
     };
 
     // Generate NucleusInstance from NucleusComponent
@@ -42,7 +42,7 @@ export class NucleusComponent extends EventEmitter {
         el.setAttribute(`data-${randId}`, "true");
         el.setAttribute("component-instance", "true");
         const compInstance = new NucleusInstance(this.label, this.content, el, { style: this.style, vars: this.vars, origin: this });
-        (!this.hideFromStack) ? Controller.componentsInstances[randId] = compInstance : void 0;
+        (!this.hideFromStack) ? Nucleus.componentsInstances[randId] = compInstance : void 0;
         this.emit("instance::created", compInstance);
         return compInstance;
     };
@@ -56,7 +56,7 @@ export class NucleusComponent extends EventEmitter {
 
     // Retreive comp class by its model
     public getByModel(model: string): NucleusInstance {
-        for (const comp of Object.values(Controller.componentsInstances)) {
+        for (const comp of Object.values(Nucleus.componentsInstances)) {
             if (comp?.model == model)
                 return comp;
         }

@@ -1,5 +1,5 @@
 import type Editor from "..";
-import Controller from "&/core/nucleus";
+import Nucleus from "&/core/nucleus";
 import { genRandId } from "&/core/etc/rand";
 
 import TraitsComp from "../comps/EditorTraits";
@@ -25,7 +25,7 @@ export default class EditorTraits {
     public displayTraitsMenu() {
         if (this.menu.appened)
         this.menu.remove();
-        const traits = (Controller.components[this._editor.selectedComp.label] as any).traits;
+        const traits = (Nucleus.components[this._editor.selectedComp.label] as any).traits;
         this.menu.setVar("traits", traits.map((trait: Trait) => {
             return {
                 ...trait,

@@ -1,6 +1,6 @@
 import { NucleusComponent } from "../component";
 import type { NucleusInstance } from ".";
-import Controller from "&/core/nucleus";
+import Nucleus from "&/core/nucleus";
 import { camelToSnake } from "&/core/etc/str";
 
 const SPE_OPERAT = [ "for", "if" ];
@@ -66,7 +66,7 @@ export default class ComponentDOM {
 
     private createAndRenderComp(child: HTMLElement) {
         const nodeName = child.nodeName.toLowerCase();
-        const comp: NucleusComponent = Controller.components[`${nodeName.charAt(0).toUpperCase()}${nodeName.slice(1, nodeName.length)}`];
+        const comp: NucleusComponent = Nucleus.components[`${nodeName.charAt(0).toUpperCase()}${nodeName.slice(1, nodeName.length)}`];
         const compInstance = comp.create();
 
         // Look for model
@@ -91,7 +91,7 @@ export default class ComponentDOM {
 
     public spawnSubComps(el: HTMLElement): void {
         const rmPool: HTMLElement[] = [];
-        const tagNames = Object.keys(Controller.components).map(tag => tag.toLowerCase());
+        const tagNames = Object.keys(Nucleus.components).map(tag => tag.toLowerCase());
         for (const child of el.children as any) {
             // Special components for loops and conditions handling
             const opName = child.nodeName.toLowerCase().split("nuc-")[1];

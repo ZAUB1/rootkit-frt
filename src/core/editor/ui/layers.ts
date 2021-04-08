@@ -1,5 +1,5 @@
 import type Editor from "..";
-import Controller from "&/core/nucleus";
+import Nucleus from "&/core/nucleus";
 
 export default class EditorLayers {
     private _editor: Editor;
@@ -7,7 +7,7 @@ export default class EditorLayers {
 
     public hoverHandler(id: string) {
         (this.lastHoverLayer) ? this.lastHoverLayer.style.outline = null : void 0;
-        const comp = Controller.componentsInstances[id];
+        const comp = Nucleus.componentsInstances[id];
         if (!comp)
             return;
         comp.childrens[comp.childrens.length - 1].style.outline = "2px solid #ec4646";

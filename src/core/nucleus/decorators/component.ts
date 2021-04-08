@@ -1,4 +1,4 @@
-import Controller from "..";
+import Nucleus from "..";
 
 export function Vars(vars: { [key: string]: any } = {}) {
     return function <T extends { new(...args: any[]): {} }>(constructor: T) {
@@ -17,9 +17,9 @@ export function Click(cb: Function) {
         const nclass: any = class extends constructor {
             constructor(..._: any[]) {
                 super();
-                if (!Controller.componentHandlers[(this as any).label])
-                    Controller.componentHandlers[(this as any).label] = {}
-                Controller.componentHandlers[(this as any).label].click = cb;
+                if (!Nucleus.componentHandlers[(this as any).label])
+                    Nucleus.componentHandlers[(this as any).label] = {}
+                Nucleus.componentHandlers[(this as any).label].click = cb;
             }
         }
         return nclass;

@@ -1,5 +1,5 @@
 import type Editor from "..";
-import Controller from "../../nucleus";
+import Nucleus from "../../nucleus";
 
 export default class EditorDrag {
     private _editor: Editor;
@@ -28,9 +28,9 @@ export default class EditorDrag {
     };
 
     public stopDrag(event: DragEvent) {
-        const comp = Controller.getComponent(this._editor.currentDragComp).create();
+        const comp = Nucleus.getComponent(this._editor.currentDragComp).create();
         comp.parentOriginId = this._editor.dragHoverElem.id;
-        const parent = Controller.componentsInstances[this._editor.dragHoverElem.parentElement.parentElement.id];
+        const parent = Nucleus.componentsInstances[this._editor.dragHoverElem.parentElement.parentElement.id];
         (parent) ? comp.parent = parent : void 0;
         this._editor.spawnedComponents.push(comp);
         this.setDraggable(comp.DOMElem);

@@ -1,4 +1,4 @@
-import Controller from "..";
+import Nucleus from "..";
 import type { NucleusInstance } from "../instance";
 
 export function ModelEventHandler(model: string, event: string, cb: (comp: NucleusInstance | HTMLElement) => void) {

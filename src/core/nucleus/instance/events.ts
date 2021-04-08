@@ -1,4 +1,4 @@
-import Controller from "&/core/nucleus";
+import Nucleus from "&/core/nucleus";
 import type { NucleusInstance } from ".";
 
 const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
@@ -14,10 +14,10 @@ export default class ComponentEvents {
 
     private emitEventListener(event: string, ..._: any) {
         this._instance.emit(event, ..._);
-        Controller?.componentHandlers
-        && Controller?.componentHandlers[this._instance.label]
-        && Controller.componentHandlers[this._instance.label][event] 
-            ? Controller.componentHandlers[this._instance.label][event](this._instance, ..._) : void 0;
+        Nucleus?.componentHandlers
+        && Nucleus?.componentHandlers[this._instance.label]
+        && Nucleus.componentHandlers[this._instance.label][event] 
+            ? Nucleus.componentHandlers[this._instance.label][event](this._instance, ..._) : void 0;
     }
 
     private elementEventHandler(model: string, event: string, cb: (comp: NucleusInstance | HTMLElement) => void) {
