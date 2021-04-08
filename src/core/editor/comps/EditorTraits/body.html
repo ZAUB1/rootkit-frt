@@ -1,33 +1,33 @@
-<editor-traitmenu>
-    <header>
+<div class="editor-trait-menu">
+    <div class="header">
         <div style="position: absolute; right: 15px; cursor: pointer" onclick="window.editor.closeTraitMenu()">&#10005</div>
-    </header>
-    <traits model="component-traits">
+    </div>
+    <div class="traits" model="component-traits">
         <nuc-for trait in traits>
-            <trait nuc-if="{ trait.type } == 'text'">
-                <label for="{ trait.rand }">{ trait.label }</label>
-                <input id="{ trait.rand }" type='text' value="{ trait.value }" onkeydown='editor.traitKeyHandler(event, "{ trait.name }")'>
-            </trait>
-            <trait nuc-if="{ trait.type } == 'number'">
-                <label for="{ trait.rand }">{ trait.label }</label>
-                <input id="{ trait.rand }" type='number' value="{ trait.value }" onkeydown='editor.traitKeyHandler(event, "{ trait.name }")'>
-            </trait>
-            <trait nuc-if="{ trait.type } == 'checkbox'">
-                <label for="{ trait.rand }">{ trait.label }</label>
-                <input id="{ trait.rand }" type='checkbox' checked="{ trait.value }" onclick='editor.traitCheckHandler(event, "{ trait.name }", ["{ trait.valueTrue }", "{ trait.valueFalse }"])'>
-            </trait>
-            <trait nuc-if="{ trait.type } == 'color'" style="border-radius: 100%">
-                <label for="{ trait.rand }">{ trait.label }</label>
-                <input id="{ trait.rand }" type='color' value="{ trait.value }" oninput='editor.traitChangeHandler(event, "{ trait.name }")'>
-            </trait>
-            <trait nuc-if="{ trait.type } == 'select'">
-                <label for="{ trait.rand }">{ trait.label }</label>
-                <select id="{ trait.rand }" value="{ trait.value }">
+            <div class="trait" nuc-if="{ trait.type } == 'text'">
+                <label class="label" for="{ trait.rand }">{ trait.label }</label>
+                <input class="input-field" id="{ trait.rand }" type='text' value="{ trait.value }" onkeydown='editor.traitKeyHandler(event, "{ trait.name }")'>
+            </div>
+            <div class="trait" nuc-if="{ trait.type } == 'number'">
+                <label class="label" for="{ trait.rand }">{ trait.label }</label>
+                <input class="input-field" id="{ trait.rand }" type='number' value="{ trait.value }" onkeydown='editor.traitKeyHandler(event, "{ trait.name }")'>
+            </div>
+            <div class="trait" nuc-if="{ trait.type } == 'checkbox'">
+                <label class="label" for="{ trait.rand }">{ trait.label }</label>
+                <input class="input-field" id="{ trait.rand }" type='checkbox' checked="{ trait.value }" onclick='editor.traitCheckHandler(event, "{ trait.name }", ["{ trait.valueTrue }", "{ trait.valueFalse }"])'>
+            </div>
+            <div class="trait" nuc-if="{ trait.type } == 'color'" style="border-radius: 100%">
+                <label class="label" for="{ trait.rand }">{ trait.label }</label>
+                <input class="input-field" id="{ trait.rand }" type='color' value="{ trait.value }" oninput='editor.traitChangeHandler(event, "{ trait.name }")'>
+            </div>
+            <div class="trait" nuc-if="{ trait.type } == 'select'">
+                <label class="label" for="{ trait.rand }">{ trait.label }</label>
+                <!-- <select id="{ trait.rand }" value="{ trait.value }">
                     <nuc-for option in trait.options>
                         <option value="">{ option.name }</option>
                     </nuc-for>
-                </select>
-            </trait>
+                </select> -->
+            </div>
         </nuc-for>
-    </traits>
-</editor-traitmenu>
+    </div>
+</div>

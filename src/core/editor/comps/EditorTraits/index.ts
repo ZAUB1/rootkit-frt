@@ -1,4 +1,4 @@
-import "./style.scss";
+import style from "./style";
 import body from "./body.html"
 import { Component } from "&/core/controllers/component";
 import { Vars } from "&/core/controllers/decorators/component";
@@ -9,7 +9,7 @@ import { ModelEventHandler } from "&/core/controllers/decorators/model";
 })
 class EditorTraits extends Component {
     constructor() {
-        super("EditorTraits", body, {  });
+        super("EditorTraits", body, { style });
     }
 };
 
