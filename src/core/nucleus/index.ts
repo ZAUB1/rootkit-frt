@@ -1,3 +1,6 @@
+import logo from "./logo.html";
+console.log(logo);
+
 import type { Trait } from "../editor/decorators";
 import type { NucleusComponent, NucleusInstance } from "./component";
 

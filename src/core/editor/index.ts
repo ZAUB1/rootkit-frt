@@ -137,6 +137,7 @@ export default class Editor {
     };
 
     public constructor() {
+        console.time("editorBuild");
         // Global access point
         window.editor = {};
 
@@ -175,6 +176,7 @@ export default class Editor {
         // Draw UI
         this.flagChildsAsEditor(this.editorComp.DOMElem);
         this.dragHoverElem = this.editorComp.getFirstChild("editor-main");
+        console.timeEnd("editorBuild");
     };
 };
 
