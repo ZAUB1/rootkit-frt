@@ -8,7 +8,7 @@ export interface Route {
     componentLoad?: Function;
 };
 
-export default new class Router {
+export default new class NucleusRouter {
     // Holds current route
     private currentRoute: Route;
     // Holds all the routes

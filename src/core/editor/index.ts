@@ -5,7 +5,7 @@ declare global {
 import "./style.scss";
 import body from "./body.html";
 
-import Router from "../router";
+import Router from "../nucleus-router";
 import Controller from "&/core/nucleus";
 import { NucleusComponent, NucleusInstance } from "../nucleus/component";
 

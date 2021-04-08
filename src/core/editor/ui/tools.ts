@@ -1,5 +1,5 @@
 import type Editor from "..";
-import Router from "../../router";
+import Router from "../../nucleus-router";
 
 import EditorPicker from "../comps/EditorPicker";
 import type { NucleusInstance } from "&/core/nucleus/instance";
