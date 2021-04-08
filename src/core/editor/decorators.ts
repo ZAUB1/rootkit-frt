@@ -1,4 +1,11 @@
-import Controller from "../nucleus";
+import Nucleus from "&/core/nucleus";
+
+Nucleus.globalStorage.set("editorCategories", [
+    [],
+    [],
+    [],
+    []
+]);
 
 export interface Trait {
     type: string;
@@ -46,13 +53,12 @@ export function Category(category: string = "Containers") {
                 super();
                 switch (category) {
                     case "Containers":
-                        Controller.componentsCategories[0].push(this as any);
+                        Nucleus.globalStorage.get("editorCategories")[0].push(this as any);
                         break;
                     case "Interacts":
-                        Controller.componentsCategories[1].push(this as any);
+                        Nucleus.globalStorage.get("editorCategories")[1].push(this as any);
                         break;
                     case "ApiLinked":
-                        Controller.componentsCategories[2].push(this as any);
                         break;
                 }
             }

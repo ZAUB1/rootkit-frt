@@ -7,10 +7,9 @@ const _Nucleus = new (class Nucleus {
     // All component instances created since t(0) stored by id / value
     public componentsInstances: { [id: string]: NucleusInstance } = {};
 
-    // NucleusComponent editors cateogiers
-    public componentsCategories: NucleusComponent[][] = [ [], [], [], [] ];
     // Event handler (stored by original brower event name)
     public componentHandlers: { [id: string]: any } = {};
+    public globalStorage: Map<string, any> = new Map;
 
     public getComponent(id: string): NucleusComponent {
         if (!id || !this.components[id])
@@ -25,15 +24,6 @@ const _Nucleus = new (class Nucleus {
     };
 
     public constructor() {
-        // Garbage collector
-        setInterval(() => {
-            /* Object.values(this.componentsInstances).filter(instance => {
-                if (instance.render)
-                    return;
-                instance.remove();
-                console.warn("Garbage collector deleted:", instance.label);
-            }); */
-        }, 3000);
     }
 });
 

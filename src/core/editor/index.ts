@@ -6,7 +6,8 @@ import "./style.scss";
 import body from "./body.html";
 
 import Router from "../nucleus-router";
-import Controller from "&/core/nucleus";
+import Nucleus from "&/core/nucleus";
+
 import { NucleusComponent, NucleusInstance } from "../nucleus/component";
 
 import EditorDrawer from "./ui/drawer";
@@ -75,7 +76,7 @@ export default class Editor {
 
     // @DEPRECATED
     private createComponent(name: string = "Text") {
-        return Controller.getComponent(name).createAndRender();
+        return Nucleus.getComponent(name).createAndRender();
     };
 
     // Handler delete button
@@ -88,7 +89,7 @@ export default class Editor {
     };
 
     private destroyElemById(id: string) {
-        const comp = Controller.getComponentInstance(id);
+        const comp = Nucleus.getComponentInstance(id);
         if (!comp)
             return; // @TODO Error case
         comp.remove();
@@ -117,7 +118,7 @@ export default class Editor {
         this.lastHover = null;
         this.selectedElem = hoverElement;
         const parentCompElem = this.getParentMovable(this.selectedElem);
-        this.selectedComp = Controller.getComponentInstance(parentCompElem.id);
+        this.selectedComp = Nucleus.getComponentInstance(parentCompElem.id);
 
         this.editorTraits.displayTraitsMenu();
         this.editorTools.display();

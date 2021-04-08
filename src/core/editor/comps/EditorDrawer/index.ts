@@ -1,14 +1,14 @@
 import "./style.scss";
 import body from "./body.html";
 
-import * as Nucleus from "&/core/nucleus/component";
+import Nucleus from "&/core/nucleus";
+
+import { NucleusComponent, NucleusInstance } from "&/core/nucleus/component";
 import { Built, Vars, Rendered } from "&/core/nucleus/decorators/component";
-import Controller from "&/core/nucleus";
 import { ModelEventHandler } from "&/core/nucleus/decorators/model";
-import type { NucleusInstance } from "&/core/nucleus/component";
 
 function setCurrentMenu(menu: number) {
-    this.setVar("comps", Controller.componentsCategories[menu]);
+    this.setVar("comps", Nucleus.globalStorage.get("editorCategories")[menu]);
     this.getCompByModel(`menuBtn${this.getVar("currentSelected")}`).style.borderBottom = null;
     this.setVarNoBuild("currentSelected", menu);
     this.getCompByModel(`menuBtn${this.getVar("currentSelected")}`).style.borderBottom = "2px solid #9677CF";
@@ -22,7 +22,7 @@ function setCurrentMenu(menu: number) {
         { icon: "fas fa-layer-group" },
     ],
     currentSelected: 0,
-    comps: Controller.componentsCategories[0]
+    comps: []
 })
 @Built((_this: NucleusInstance) => {
     _this.setChildsAttrs(_this.DOMElem, "editor", "true");
@@ -32,7 +32,7 @@ function setCurrentMenu(menu: number) {
 })
 @ModelEventHandler("menuBtn0", "click", function() { setCurrentMenu.call(this, 0) })
 @ModelEventHandler("menuBtn1", "click", function() { setCurrentMenu.call(this, 1) })
-class EditorDrawer extends Nucleus.NucleusComponent {
+class EditorDrawer extends NucleusComponent {
     constructor() {
         super("EditorDrawer", body, {  });
     }
