@@ -1,6 +1,6 @@
 import Nucleus from "./index";
-import { genRandId } from "&/core/etc/rand";
-import EventEmitter from "&/core/etc/events";
+import { genRandId } from "&/core/nucleus/etc/rand";
+import EventEmitter from "&/core/nucleus/etc/events";
 
 import { NucleusInstance } from "./instance";
 export { NucleusInstance } from "./instance";

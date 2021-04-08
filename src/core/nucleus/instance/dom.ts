@@ -1,7 +1,7 @@
 import { NucleusComponent } from "../component";
 import type { NucleusInstance } from ".";
 import Nucleus from "&/core/nucleus";
-import { camelToSnake } from "&/core/etc/str";
+import { camelToSnake } from "&/core/nucleus/etc/str";
 
 const SPE_OPERAT = [ "for", "if" ];
 

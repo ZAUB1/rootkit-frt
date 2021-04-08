@@ -1,4 +1,4 @@
-import { parseStyle } from "&/core/style";
+import { parseStyle } from "&/core/nucleus/style";
 import type { NucleusInstance } from ".";
 
 export default class ComponentCompiler {

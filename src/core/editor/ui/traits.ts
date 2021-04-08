@@ -1,6 +1,6 @@
 import type Editor from "..";
 import Nucleus from "&/core/nucleus";
-import { genRandId } from "&/core/etc/rand";
+import { genRandId } from "&/core/nucleus/etc/rand";
 
 import TraitsComp from "../comps/EditorTraits";
 import type { NucleusInstance } from "&/core/nucleus/instance";

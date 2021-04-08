@@ -1,5 +1,5 @@
 import Router from "&/core/nucleus-router";
-import EventEmitter, { COMP_EVENTS } from "&/core/etc/events";
+import EventEmitter, { COMP_EVENTS } from "&/core/nucleus/etc/events";
 
 import type { NucleusComponent } from "../component";
 
