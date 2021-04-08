@@ -5,7 +5,7 @@ const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
 
 export default class ComponentEvents {
     private _instance: NucleusInstance;
-    private modelElementsHandlers: { model: string, event: string, cb: (comp: NucleusInstance | HTMLElement) => void }[] = [];
+    private modelElementsHandlers: { model: string, event: string, cb: (comp: NucleusInstance | HTMLElement, event: any) => void }[] = [];
 
     constructor(_instance: NucleusInstance) {
         // Forward instance
@@ -20,14 +20,14 @@ export default class ComponentEvents {
             ? Nucleus.componentHandlers[this._instance.label][event](this._instance, ..._) : void 0;
     }
 
-    private elementEventHandler(model: string, event: string, cb: (comp: NucleusInstance | HTMLElement) => void) {
+    private elementEventHandler(model: string, event: string, cb: (comp: NucleusInstance | HTMLElement, event: any) => void) {
         const elem = this._instance.getCompByModel(model) as HTMLElement;
         if (!elem)
             return console.error("Element not found with model:", model);
-        elem.addEventListener(event, () => { cb.call(this._instance, elem) });
+        elem.addEventListener(event, () => { cb.call(this._instance, elem, event) });
     };
 
-    public addElementEventHandler(model: string, event: string, cb: (comp: NucleusInstance | HTMLElement) => void) {
+    public addElementEventHandler(model: string, event: string, cb: (comp: NucleusInstance | HTMLElement, event: any) => void) {
         this.modelElementsHandlers.push({ model, event, cb });
         this.elementEventHandler(model, event, cb);
     };

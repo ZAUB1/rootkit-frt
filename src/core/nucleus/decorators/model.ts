@@ -1,7 +1,7 @@
 import Nucleus from "..";
 import type { NucleusInstance } from "../instance";
 
-export function ModelEventHandler(model: string, event: string, cb: (comp: NucleusInstance | HTMLElement) => void) {
+export function ModelEventHandler(model: string, event: string, cb: (comp: NucleusInstance | HTMLElement, event: any) => void) {
     return function <T extends { new(...args: any[]): {} }>(constructor: T) {
         const nclass: any = class extends constructor {
             constructor(..._: any[]) {
