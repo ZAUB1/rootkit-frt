@@ -2,12 +2,12 @@ import type Editor from "..";
 import Router from "../../router";
 
 import EditorPicker from "../comps/EditorPicker";
-import type { ComponentInstance } from "&/core/controllers/instance";
+import type { NucleusInstance } from "&/core/nucleus/instance";
 
 export default class EditorTools {
     private _editor: Editor;
     // Selector menu UI component
-    public selecterComp: ComponentInstance;
+    public selecterComp: NucleusInstance;
 
     constructor(_editor: Editor) {
         this._editor = _editor;

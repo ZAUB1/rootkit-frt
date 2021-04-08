@@ -1,8 +1,8 @@
 import body from "./body.html";
 
-import { Component } from "../../../core/controllers/component";
-import { Category, Icon, Traits } from "../../../core/controllers/decorators/editor";
-import { Vars } from "../../../core/controllers/decorators/component";
+import { NucleusComponent } from "../../../core/nucleus/component";
+import { Category, Icon, Traits } from "../../../core/editor/decorators";
+import { Vars } from "../../../core/nucleus/decorators/component";
 
 
 @Vars({
@@ -40,7 +40,7 @@ import { Vars } from "../../../core/controllers/decorators/component";
     name: "backgroundColor",
     label: "Couleur de fond"
 }])
-class PillNavigation extends Component {
+class PillNavigation extends NucleusComponent {
     constructor() {
         super("Pill Navigation", body, { });
     }

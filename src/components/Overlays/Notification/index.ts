@@ -1,18 +1,18 @@
 import body from "./body.html";
 import style from "./style";
 
-import { Vars, Rendered } from "../../../core/controllers/decorators/component";
-import { Component, ComponentInstance } from "../../../core/controllers/component";
+import { Vars, Rendered } from "../../../core/nucleus/decorators/component";
+import { NucleusComponent, NucleusInstance } from "../../../core/nucleus/component";
 
 @Vars({
     body: "Test notification"
 })
-@Rendered((comp: ComponentInstance) => {
+@Rendered((comp: NucleusInstance) => {
     setTimeout(() => {
         comp.remove();
     }, 3000);
 })
-class Notification extends Component {
+class Notification extends NucleusComponent {
     constructor() {
         super("Notification", body, { style });
     }

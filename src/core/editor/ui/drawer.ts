@@ -1,12 +1,12 @@
 import type Editor from "..";
 
 import DrawerComp from "../comps/EditorDrawer";
-import type { ComponentInstance } from "&/core/controllers/instance";
+import type { NucleusInstance } from "&/core/nucleus/instance";
 
 export default class EditorDrawer {
     private _editor: Editor;
     public currentDrawer: number = 0;
-    private comp: ComponentInstance;
+    private comp: NucleusInstance;
 
     public constructor(_editor: Editor) {
         this._editor = _editor;

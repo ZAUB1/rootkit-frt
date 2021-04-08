@@ -1,9 +1,9 @@
 import body from "./body.html";
 import style from "./style";
 
-import { Component, ComponentInstance } from "../../../core/controllers/component";
-import { Vars, Click } from "../../../core/controllers/decorators/component";
-import { Icon, Category, Traits } from "../../../core/controllers/decorators/editor";
+import { NucleusComponent, NucleusInstance } from "../../../core/nucleus/component";
+import { Vars, Click } from "../../../core/nucleus/decorators/component";
+import { Icon, Category, Traits } from "../../../core/editor/decorators";
 
 @Vars({
     body: "Text...",
@@ -27,9 +27,9 @@ import { Icon, Category, Traits } from "../../../core/controllers/decorators/edi
     valueTrue: "5px",
     valueFalse: "0px"
 }])
-@Click((_this: ComponentInstance) => {
+@Click((_this: NucleusInstance) => {
 })
-class Button extends Component {
+class Button extends NucleusComponent {
     constructor() {
         super("Button", body, { style });
     }

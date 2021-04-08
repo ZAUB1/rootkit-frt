@@ -1,8 +1,8 @@
 import body from "./body.html";
 
-import { Component } from "../../../core/controllers/component";
-import { Category, Icon, Traits } from "../../../core/controllers/decorators/editor";
-import { Vars } from "../../../core/controllers/decorators/component";
+import { NucleusComponent } from "../../../core/nucleus/component";
+import { Category, Icon, Traits } from "../../../core/editor/decorators";
+import { Vars } from "../../../core/nucleus/decorators/component";
 
 @Vars({
     borderRadius: "5px",
@@ -20,7 +20,7 @@ import { Vars } from "../../../core/controllers/decorators/component";
     valueTrue: "5px",
     valueFalse: "0px"
 }])
-class Tooltip extends Component {
+class Tooltip extends NucleusComponent {
     constructor() {
         super("Tooltip", body, { });
     }

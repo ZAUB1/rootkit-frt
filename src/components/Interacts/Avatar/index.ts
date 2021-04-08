@@ -1,11 +1,11 @@
 import body from "./body.html";
 
-import { Component } from "../../../core/controllers/component";
-import { Category, Icon } from "../../../core/controllers/decorators/editor";
+import { NucleusComponent } from "../../../core/nucleus/component";
+import { Category, Icon } from "../../../core/editor/decorators";
 
 @Category("Interacts")
 @Icon("fas fa-square")
-class Avatar extends Component {
+class Avatar extends NucleusComponent {
     constructor() {
         super("Avatar", body, { });
     }

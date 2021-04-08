@@ -1,9 +1,9 @@
 import body from "./body.html";
-import { Component } from "&/core/controllers/component";
-import { Category } from "&/core/controllers/decorators/editor";
+import { NucleusComponent } from "&/core/nucleus/component";
+import { Category } from "&/core/editor/decorators";
 
 @Category("Interacts")
-class Switch extends Component {
+class Switch extends NucleusComponent {
     constructor() {
         super("Switch", body, {  });
     }

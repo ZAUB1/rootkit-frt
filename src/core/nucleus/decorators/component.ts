@@ -1,4 +1,4 @@
-import Controller from "../";
+import Controller from "..";
 
 export function Vars(vars: { [key: string]: any } = {}) {
     return function <T extends { new(...args: any[]): {} }>(constructor: T) {

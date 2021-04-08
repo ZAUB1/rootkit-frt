@@ -1,10 +1,10 @@
 import style from "./style";
 import body from "./body.html";
 
-import { Component, ComponentInstance } from "../../../core/controllers/component";
-import { Category, Icon } from "../../../core/controllers/decorators/editor";
-import { ModelEventHandler } from "../../../core/controllers/decorators/model";
-import { Vars } from "../../../core/controllers/decorators/component";
+import { NucleusComponent, NucleusInstance } from "../../../core/nucleus/component";
+import { Category, Icon } from "../../../core/editor/decorators";
+import { ModelEventHandler } from "../../../core/nucleus/decorators/model";
+import { Vars } from "../../../core/nucleus/decorators/component";
 
 @Category("Interacts")
 @Icon("fas fa-square")
@@ -39,7 +39,7 @@ import { Vars } from "../../../core/controllers/decorators/component";
 @Vars({
     currentSlide: 0
 })
-class Carousel extends Component {
+class Carousel extends NucleusComponent {
     constructor() {
         super("Carousel", body, { style });
     }

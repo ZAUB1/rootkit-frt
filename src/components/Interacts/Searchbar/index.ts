@@ -1,10 +1,10 @@
 import body from "./body.html";
 
-import { Component } from "../../../core/controllers/component";
-import { Category, Icon } from "../../../core/controllers/decorators/editor";
+import { NucleusComponent } from "../../../core/nucleus/component";
+import { Category, Icon } from "../../../core/editor/decorators";
 @Category("Interacts")
 @Icon("fas fa-square")
-class Searchbar extends Component {
+class Searchbar extends NucleusComponent {
     constructor() {
         super("Searchbar", body, { });
     }

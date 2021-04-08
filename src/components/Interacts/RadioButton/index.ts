@@ -1,5 +1,5 @@
 import body from "./body.html";
 
-import { Component } from "../../../core/controllers/component";
+import { NucleusComponent } from "../../../core/nucleus/component";
 
-export default new Component("RadioButton", body, {});
+export default new NucleusComponent("RadioButton", body, {});

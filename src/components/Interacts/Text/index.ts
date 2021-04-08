@@ -1,8 +1,8 @@
 import body from "./body.html";
 
-import { Component } from "../../../core/controllers/component";
-import { Vars } from "../../../core/controllers/decorators/component";
-import { Traits, Category, Icon } from "../../../core/controllers/decorators/editor";
+import { NucleusComponent } from "../../../core/nucleus/component";
+import { Vars } from "../../../core/nucleus/decorators/component";
+import { Traits, Category, Icon } from "../../../core/editor/decorators";
 
 @Vars({
     weight: "normal",
@@ -64,7 +64,7 @@ import { Traits, Category, Icon } from "../../../core/controllers/decorators/edi
 }])
 @Icon("fas fa-font")
 @Category("Interacts")
-class Text extends Component {
+class Text extends NucleusComponent {
     constructor() {
         super("Text", body);
     }

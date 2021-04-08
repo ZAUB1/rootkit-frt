@@ -6,8 +6,8 @@ import "./style.scss";
 import body from "./body.html";
 
 import Router from "../router";
-import Controller from "&/core/controllers";
-import { Component, ComponentInstance } from "../controllers/component";
+import Controller from "&/core/nucleus";
+import { NucleusComponent, NucleusInstance } from "../nucleus/component";
 
 import EditorDrawer from "./ui/drawer";
 import EditorDrag from "./run/drag";
@@ -25,9 +25,9 @@ export default class Editor {
     public selectedElem: HTMLElement;
 
     // Editor UI component
-    public editorComp: ComponentInstance;
+    public editorComp: NucleusInstance;
     // Current clicked component instance
-    public selectedComp: ComponentInstance;
+    public selectedComp: NucleusInstance;
 
     // Store for dragging
     public dragHoverElem: HTMLElement = Router.getElem();
@@ -48,7 +48,7 @@ export default class Editor {
     public editorTools: EditorTools;
 
     // Hold the spawned components from the editor from t(0)
-    public spawnedComponents: ComponentInstance[] = [];
+    public spawnedComponents: NucleusInstance[] = [];
 
     // mouseover handler
     private elementHoverHandler(ev: MouseEvent) {
@@ -168,7 +168,7 @@ export default class Editor {
         }
 
         // Start editor sub comps
-        this.editorComp = (new Component("EditorMain", body, { hideFromStack: true })).create();
+        this.editorComp = (new NucleusComponent("EditorMain", body, { hideFromStack: true })).create();
 
         // Avoid editor detection
         // Draw UI

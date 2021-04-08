@@ -1,16 +1,16 @@
 import type { Route } from ".";
-import type { ComponentInstance } from "../controllers/component";
+import type { NucleusInstance } from "../nucleus/component";
 
 const routes: Array<Route> = [{
     name: "Viewer",
     path: "/",
-    componentLoad: async (): Promise<ComponentInstance> => {
+    componentLoad: async (): Promise<NucleusInstance> => {
         return (await import("../viewer")).Instance.viewerComp;
     }
 }, {
     name: "Editor",
     path: "/editor",
-    componentLoad: async (): Promise<ComponentInstance> => {
+    componentLoad: async (): Promise<NucleusInstance> => {
         return (await import("../editor")).Instance.editorComp;
     }
 }];

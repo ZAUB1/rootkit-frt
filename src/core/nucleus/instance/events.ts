@@ -1,13 +1,13 @@
-import Controller from "&/core/controllers";
-import type { ComponentInstance } from "./";
+import Controller from "&/core/nucleus";
+import type { NucleusInstance } from ".";
 
 const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
 
 export default class ComponentEvents {
-    private _instance: ComponentInstance;
-    private modelElementsHandlers: { model: string, event: string, cb: (comp: ComponentInstance | HTMLElement) => void }[] = [];
+    private _instance: NucleusInstance;
+    private modelElementsHandlers: { model: string, event: string, cb: (comp: NucleusInstance | HTMLElement) => void }[] = [];
 
-    constructor(_instance: ComponentInstance) {
+    constructor(_instance: NucleusInstance) {
         // Forward instance
         this._instance = _instance;
     };
@@ -20,14 +20,14 @@ export default class ComponentEvents {
             ? Controller.componentHandlers[this._instance.label][event](this._instance, ..._) : void 0;
     }
 
-    private elementEventHandler(model: string, event: string, cb: (comp: ComponentInstance | HTMLElement) => void) {
+    private elementEventHandler(model: string, event: string, cb: (comp: NucleusInstance | HTMLElement) => void) {
         const elem = this._instance.getCompByModel(model) as HTMLElement;
         if (!elem)
             return console.error("Element not found with model:", model);
         elem.addEventListener(event, () => { cb.call(this._instance, elem) });
     };
 
-    public addElementEventHandler(model: string, event: string, cb: (comp: ComponentInstance | HTMLElement) => void) {
+    public addElementEventHandler(model: string, event: string, cb: (comp: NucleusInstance | HTMLElement) => void) {
         this.modelElementsHandlers.push({ model, event, cb });
         this.elementEventHandler(model, event, cb);
     };

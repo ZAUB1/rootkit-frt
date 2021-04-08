@@ -2,9 +2,9 @@ import "./style.scss";
 import body from "./body.html";
 
 import * as Editor from "&/core/editor";
-import * as Nucleus from "&/core/controllers/component";
-import { ModelEventHandler } from "&/core/controllers/decorators/model";
-import { Vars } from "&/core/controllers/decorators/component";
+import * as Nucleus from "&/core/nucleus/component";
+import { ModelEventHandler } from "&/core/nucleus/decorators/model";
+import { Vars } from "&/core/nucleus/decorators/component";
 
 @Vars({
     buttons: [
@@ -22,7 +22,7 @@ import { Vars } from "&/core/controllers/decorators/component";
     // Close UI
     Editor.Instance.editorTools.close();
 })
-class EditorPicker extends Nucleus.Component {
+class EditorPicker extends Nucleus.NucleusComponent {
     constructor() {
         super("EditorPicker", body, { });
     }

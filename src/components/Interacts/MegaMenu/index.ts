@@ -1,8 +1,8 @@
 import body from "./body.html";
 
-import { Component, ComponentInstance } from "../../../core/controllers/component";
-import { Category, Icon } from "../../../core/controllers/decorators/editor";
-import { ModelEventHandler } from "../../../core/controllers/decorators/model";
+import { NucleusComponent, NucleusInstance } from "../../../core/nucleus/component";
+import { Category, Icon } from "../../../core/editor/decorators";
+import { ModelEventHandler } from "../../../core/nucleus/decorators/model";
 
 @Category("Interacts")
 @Icon("fas fa-square")
@@ -14,7 +14,7 @@ import { ModelEventHandler } from "../../../core/controllers/decorators/model";
     const dropContent = this.getCompByModel("dropContent") as HTMLElement;
     dropContent.style.display = null;
 })
-class MegaMenu extends Component {
+class MegaMenu extends NucleusComponent {
     constructor() {
         super("Mega Menu", body, { });
     }

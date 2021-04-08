@@ -1,16 +1,16 @@
-import Controller from "../";
-import type { ComponentInstance } from "../instance";
+import Controller from "..";
+import type { NucleusInstance } from "../instance";
 
-export function ModelEventHandler(model: string, event: string, cb: (comp: ComponentInstance | HTMLElement) => void) {
+export function ModelEventHandler(model: string, event: string, cb: (comp: NucleusInstance | HTMLElement) => void) {
     return function <T extends { new(...args: any[]): {} }>(constructor: T) {
         const nclass: any = class extends constructor {
             constructor(..._: any[]) {
                 super();
-                (this as any).on("instance::created", (_this: ComponentInstance) => {
+                (this as any).on("instance::created", (_this: NucleusInstance) => {
                     let comp = _this.getCompByModel(model);
                     (comp instanceof HTMLElement) ?
                         _this.events.addElementEventHandler(model, event, cb) :
-                        (comp as ComponentInstance)?.on(event, () => { cb.call(_this, comp) });
+                        (comp as NucleusInstance)?.on(event, () => { cb.call(_this, comp) });
                 });
             }
         }
@@ -23,7 +23,7 @@ export function ModelCreated(model: string, cb: Function) {
         const nclass: any = class extends constructor {
             constructor(..._: any[]) {
                 super();
-                (this as any).on("instance::created", (_this: ComponentInstance) => { cb(_this) });
+                (this as any).on("instance::created", (_this: NucleusInstance) => { cb(_this) });
             }
         }
         return nclass;

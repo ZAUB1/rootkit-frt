@@ -1,24 +1,24 @@
-import type { Trait } from "./decorators/editor";
-import type { Component, ComponentInstance } from "./component";
+import type { Trait } from "../editor/decorators";
+import type { NucleusComponent, NucleusInstance } from "./component";
 
-const _Controller = new (class Controller {
+const _Nucleus = new (class Nucleus {
     // Holding all components classes in key value pair
-    public components: { [id: string]: Component } = {};
+    public components: { [id: string]: NucleusComponent } = {};
     // All component instances created since t(0) stored by id / value
-    public componentsInstances: { [id: string]: ComponentInstance } = {};
+    public componentsInstances: { [id: string]: NucleusInstance } = {};
 
-    // Component editors cateogiers
-    public componentsCategories: Component[][] = [ [], [], [], [] ];
+    // NucleusComponent editors cateogiers
+    public componentsCategories: NucleusComponent[][] = [ [], [], [], [] ];
     // Event handler (stored by original brower event name)
     public componentHandlers: { [id: string]: any } = {};
 
-    public getComponent(id: string): Component {
+    public getComponent(id: string): NucleusComponent {
         if (!id || !this.components[id])
             return undefined;
         return this.components[id];
     };
 
-    public getComponentInstance(id: string): ComponentInstance {
+    public getComponentInstance(id: string): NucleusInstance {
         if (!id || !this.componentsInstances[id])
             return undefined;
         return this.componentsInstances[id];
@@ -37,4 +37,4 @@ const _Controller = new (class Controller {
     }
 });
 
-export default _Controller;
+export default _Nucleus;

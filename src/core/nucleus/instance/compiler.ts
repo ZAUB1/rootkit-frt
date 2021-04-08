@@ -1,10 +1,10 @@
 import { parseStyle } from "&/core/style";
-import type { ComponentInstance } from "./";
+import type { NucleusInstance } from ".";
 
 export default class ComponentCompiler {
-    private _instance: ComponentInstance;
+    private _instance: NucleusInstance;
 
-    constructor(_instance: ComponentInstance) {
+    constructor(_instance: NucleusInstance) {
         // Forward instance
         this._instance = _instance;
     };

@@ -1,16 +1,16 @@
 import body from "./body.html";
 import style from "../SimpleColumn/style";
 
-import { Component } from "../../../core/controllers/component";
-import { Vars } from "../../../core/controllers/decorators/component";
-import { Category, Icon, Traits } from "../../../core/controllers/decorators/editor";
+import { NucleusComponent } from "../../../core/nucleus/component";
+import { Vars } from "../../../core/nucleus/decorators/component";
+import { Category, Icon, Traits } from "../../../core/editor/decorators";
 import { traits, vars } from "../SimpleColumn";
 
 @Vars(vars)
 @Traits(traits)
 @Category("Containers")
 @Icon("fas fa-dice-three")
-class TripleColumn extends Component {
+class TripleColumn extends NucleusComponent {
     constructor() {
         super("Triple Column", body, { style });
     }

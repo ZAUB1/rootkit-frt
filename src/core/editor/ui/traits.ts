@@ -1,14 +1,14 @@
 import type Editor from "..";
-import Controller from "&/core/controllers";
+import Controller from "&/core/nucleus";
 import { genRandId } from "&/core/etc/rand";
 
 import TraitsComp from "../comps/EditorTraits";
-import type { ComponentInstance } from "&/core/controllers/instance";
-import type { Trait } from "&/core/controllers/decorators/editor";
+import type { NucleusInstance } from "&/core/nucleus/instance";
+import type { Trait } from "&/core/editor/decorators";
 
 export default class EditorTraits {
     private _editor: Editor;
-    private menu: ComponentInstance;
+    private menu: NucleusInstance;
 
     constructor(_editor: Editor) {
         this._editor = _editor;

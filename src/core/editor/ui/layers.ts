@@ -1,5 +1,5 @@
 import type Editor from "..";
-import Controller from "&/core/controllers";
+import Controller from "&/core/nucleus";
 
 export default class EditorLayers {
     private _editor: Editor;

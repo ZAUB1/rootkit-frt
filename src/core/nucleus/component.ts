@@ -2,11 +2,11 @@ import Controller from "./index";
 import { genRandId } from "&/core/etc/rand";
 import EventEmitter from "&/core/etc/events";
 
-import { ComponentInstance } from "./instance";
-export { ComponentInstance } from "./instance";
+import { NucleusInstance } from "./instance";
+export { NucleusInstance } from "./instance";
 
-export class Component extends EventEmitter {
-    // Component name
+export class NucleusComponent extends EventEmitter {
+    // NucleusComponent name
     public label: string;
     // Category
     public category: string;
@@ -34,28 +34,28 @@ export class Component extends EventEmitter {
         (!hideFromStack) ? Controller.components[this.label] = this : void 0;
     };
 
-    // Generate ComponentInstance from Component
-    public create(): ComponentInstance {
+    // Generate NucleusInstance from NucleusComponent
+    public create(): NucleusInstance {
         const randId = genRandId(5);
         const el = document.createElement("div");
         el.setAttribute("id", randId);
         el.setAttribute(`data-${randId}`, "true");
         el.setAttribute("component-instance", "true");
-        const compInstance = new ComponentInstance(this.label, this.content, el, { style: this.style, vars: this.vars, origin: this });
+        const compInstance = new NucleusInstance(this.label, this.content, el, { style: this.style, vars: this.vars, origin: this });
         (!this.hideFromStack) ? Controller.componentsInstances[randId] = compInstance : void 0;
         this.emit("instance::created", compInstance);
         return compInstance;
     };
 
     // Generate and add to main UI
-    public createAndRender(): ComponentInstance {
+    public createAndRender(): NucleusInstance {
         const com = this.create();
         com.render();
         return com;
     };
 
     // Retreive comp class by its model
-    public getByModel(model: string): ComponentInstance {
+    public getByModel(model: string): NucleusInstance {
         for (const comp of Object.values(Controller.componentsInstances)) {
             if (comp?.model == model)
                 return comp;

@@ -1,10 +1,10 @@
 import routes from "./routes";
-import type { ComponentInstance } from "../controllers/component";
+import type { NucleusInstance } from "../nucleus/component";
 
 export interface Route {
     name: string;
     path: string;
-    component?: ComponentInstance;
+    component?: NucleusInstance;
     componentLoad?: Function;
 };
 
@@ -33,9 +33,9 @@ export default new class Router {
     };
 
     // Hard set component in viewer
-    private setComponent(comp: ComponentInstance) {
+    private setComponent(comp: NucleusInstance) {
         if (!comp)
-            return this.showError("Component not found");
+            return this.showError("NucleusComponent not found");
         comp.renderTo(this.DOMElem);
     };
 

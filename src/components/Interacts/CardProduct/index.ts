@@ -1,10 +1,10 @@
 import body from "./body.html";
 
-import { Component, ComponentInstance } from "../../../core/controllers/component";
+import { NucleusComponent, NucleusInstance } from "../../../core/nucleus/component";
 
-import { Vars } from "../../../core/controllers/decorators/component";
-import { ModelEventHandler } from "../../../core/controllers/decorators/model";
-import { Traits, Category, Icon } from "../../../core/controllers/decorators/editor";
+import { Vars } from "../../../core/nucleus/decorators/component";
+import { ModelEventHandler } from "../../../core/nucleus/decorators/model";
+import { Traits, Category, Icon } from "../../../core/editor/decorators";
 
 import Notification from "../../Overlays/Notification";
 
@@ -33,7 +33,7 @@ import Notification from "../../Overlays/Notification";
     notif.setVar("body", "You bought this");
     notif.render();
 })
-class CardProduct extends Component {
+class CardProduct extends NucleusComponent {
     constructor() {
         super("Card Product", body, { });
     }

@@ -1,8 +1,8 @@
 import body from "./body.html";
 
-import { Component } from "../../../core/controllers/component";
-import { Vars } from "../../../core/controllers/decorators/component";
-import { Category, Icon, Traits } from "../../../core/controllers/decorators/editor";
+import { NucleusComponent } from "../../../core/nucleus/component";
+import { Vars } from "../../../core/nucleus/decorators/component";
+import { Category, Icon, Traits } from "../../../core/editor/decorators";
 
 @Vars({
     fullname: "Lara Win",
@@ -25,7 +25,7 @@ import { Category, Icon, Traits } from "../../../core/controllers/decorators/edi
 
 @Category("Interacts")
 @Icon("fas fa-square")
-class CardProfile extends Component {
+class CardProfile extends NucleusComponent {
     constructor() {
         super("Card Profile", body, { });
     }

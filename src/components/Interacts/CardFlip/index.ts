@@ -1,10 +1,10 @@
 import body from "./body.html";
 
-import { Component } from "../../../core/controllers/component";
+import { NucleusComponent } from "../../../core/nucleus/component";
 
-import { Vars } from "../../../core/controllers/decorators/component";
-import { Traits, Category, Icon } from "../../../core/controllers/decorators/editor";
-import { ModelEventHandler } from "../../../core/controllers/decorators/model";
+import { Vars } from "../../../core/nucleus/decorators/component";
+import { Traits, Category, Icon } from "../../../core/editor/decorators";
+import { ModelEventHandler } from "../../../core/nucleus/decorators/model";
 
 @Vars({
     fullname: "fullname",
@@ -26,7 +26,7 @@ import { ModelEventHandler } from "../../../core/controllers/decorators/model";
 }])
 @Icon("fas fa-square")
 @Category("Interacts")
-class CardFlip extends Component {
+class CardFlip extends NucleusComponent {
     constructor() {
         super("Card Flip", body, { });
     }

@@ -1,10 +1,10 @@
 import body from "./body.html";
 import style from "./style";
 
-import { Component } from "../../../core/controllers/component";
-import { Icon, Trait } from "../../../core/controllers/decorators/editor";
-import { Vars } from "../../../core/controllers/decorators/component";
-import { Category, Traits } from "../../../core/controllers/decorators/editor";
+import { NucleusComponent } from "../../../core/nucleus/component";
+import { Icon, Trait } from "../../../core/editor/decorators";
+import { Vars } from "../../../core/nucleus/decorators/component";
+import { Category, Traits } from "../../../core/editor/decorators";
 
 export const vars: { [key: string]: any } = {
     border: "none",
@@ -29,7 +29,7 @@ export const traits: Array<Trait> = [{
 @Vars(vars)
 @Traits(traits)
 @Icon("fas fa-dice-one")
-class SimpleColumn extends Component {
+class SimpleColumn extends NucleusComponent {
     constructor() {
         super("Simple Column", body, { style });
     }

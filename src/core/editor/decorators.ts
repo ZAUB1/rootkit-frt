@@ -1,4 +1,4 @@
-import Controller from "../";
+import Controller from "../nucleus";
 
 export interface Trait {
     type: string;

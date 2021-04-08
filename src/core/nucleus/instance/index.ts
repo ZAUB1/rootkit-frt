@@ -1,13 +1,13 @@
 import Router from "&/core/router";
 import EventEmitter, { COMP_EVENTS } from "&/core/etc/events";
 
-import type { Component } from "../component";
+import type { NucleusComponent } from "../component";
 
 import ComponentDOM from "./dom";
 import ComponentEvents from "./events";
 import ComponentCompiler from "./compiler";
 
-export class ComponentInstance extends EventEmitter {
+export class NucleusInstance extends EventEmitter {
     public id: string;
     public label: string;
     public attributes: any;
@@ -24,10 +24,10 @@ export class ComponentInstance extends EventEmitter {
 
     public appened: boolean = false;
 
-    public origin: Component;
-    public parent: ComponentInstance;
+    public origin: NucleusComponent;
+    public parent: NucleusInstance;
     public parentOriginId: string;
-    public models: { [id: string]: ComponentInstance | HTMLElement } = {};
+    public models: { [id: string]: NucleusInstance | HTMLElement } = {};
 
     private dom: ComponentDOM;
     public events: ComponentEvents;
@@ -58,10 +58,10 @@ export class ComponentInstance extends EventEmitter {
         this.origin.renderHandler && this.origin.renderHandler(this);
     };
 
-    public renderTo(comp: ComponentInstance): void
+    public renderTo(comp: NucleusInstance): void
     public renderTo(container: HTMLElement): void
-    public renderTo(elem: ComponentInstance | HTMLElement): void {
-        this.originContainer = (elem instanceof ComponentInstance) ? elem.DOMElem : elem;
+    public renderTo(elem: NucleusInstance | HTMLElement): void {
+        this.originContainer = (elem instanceof NucleusInstance) ? elem.DOMElem : elem;
         this.render();
     };
 
@@ -105,7 +105,7 @@ export class ComponentInstance extends EventEmitter {
         return childs;
     };
 
-    public getCompByModel(model: string): ComponentInstance | HTMLElement {
+    public getCompByModel(model: string): NucleusInstance | HTMLElement {
         if (!model)
             return undefined;
         return this.models[model];

@@ -1,14 +1,14 @@
-import { Component } from "../component";
-import type { ComponentInstance } from "./";
-import Controller from "&/core/controllers";
+import { NucleusComponent } from "../component";
+import type { NucleusInstance } from ".";
+import Controller from "&/core/nucleus";
 import { camelToSnake } from "&/core/etc/str";
 
 const SPE_OPERAT = [ "for", "if" ];
 
 export default class ComponentDOM {
-    private _instance: ComponentInstance;
+    private _instance: NucleusInstance;
 
-    constructor(_instance: ComponentInstance) {
+    constructor(_instance: NucleusInstance) {
         // Forward instance
         this._instance = _instance;
     };
@@ -26,7 +26,7 @@ export default class ComponentDOM {
         let res = "";
         const baseContent = child.innerHTML as string;
         for (const _ite of this._instance.vars[array]) {
-            const comp = new Component("",
+            const comp = new NucleusComponent("",
                 baseContent.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => sub.replace(new RegExp(`${ite}.`, "g"), "")),
                 { hideFromStack: true }).create();
             comp.vars = _ite;
@@ -66,7 +66,7 @@ export default class ComponentDOM {
 
     private createAndRenderComp(child: HTMLElement) {
         const nodeName = child.nodeName.toLowerCase();
-        const comp: Component = Controller.components[`${nodeName.charAt(0).toUpperCase()}${nodeName.slice(1, nodeName.length)}`];
+        const comp: NucleusComponent = Controller.components[`${nodeName.charAt(0).toUpperCase()}${nodeName.slice(1, nodeName.length)}`];
         const compInstance = comp.create();
 
         // Look for model

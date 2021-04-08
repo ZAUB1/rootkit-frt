@@ -1,9 +1,9 @@
 import body from "./body.html";
 import style from "./style";
 
-import { Component } from "../../../core/controllers/component";
-import { Category, Icon } from "../../../core/controllers/decorators/editor";
-import { ModelEventHandler } from "&/core/controllers/decorators/model";
+import { NucleusComponent } from "../../../core/nucleus/component";
+import { Category, Icon } from "../../../core/editor/decorators";
+import { ModelEventHandler } from "&/core/nucleus/decorators/model";
 
 @Category("Interacts")
 @Icon("fas fa-square")
@@ -12,7 +12,7 @@ import { ModelEventHandler } from "&/core/controllers/decorators/model";
     (content.style.visibility == "hidden") ? content.style.visibility = null : content.style.visibility = "visible";
     (content.style.opacity == 1) ? content.style.opacity = 0 : content.style.opacity = 1;
 })
-class Dropdown extends Component {
+class Dropdown extends NucleusComponent {
     constructor() {
         super("Dropdown", body, { style });
     }

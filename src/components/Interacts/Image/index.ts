@@ -1,6 +1,6 @@
-import { Component } from "../../../core/controllers/component";
+import { NucleusComponent } from "../../../core/nucleus/component";
 
-export default new Component(
+export default new NucleusComponent(
     "Image",
     "",
     { }
