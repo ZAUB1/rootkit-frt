@@ -5,24 +5,24 @@
     <traits model="component-traits">
         <nuc-for trait in traits>
             <trait nuc-if="{ trait.type } == 'text'">
-                <label for="">{ trait.label }</label>
-                <input id="" type='text' value="{ trait.value }">
+                <label for="{ trait.rand }">{ trait.label }</label>
+                <input id="{ trait.rand }" type='text' value="{ trait.value }" onkeydown='editor.traitKeyHandler(event, "{ trait.name }")'>
             </trait>
             <trait nuc-if="{ trait.type } == 'number'">
-                <label for="">{ trait.label }</label>
-                <input id="" type='number' value="{ trait.value }">
+                <label for="{ trait.rand }">{ trait.label }</label>
+                <input id="{ trait.rand }" type='number' value="{ trait.value }" onkeydown='editor.traitKeyHandler(event, "{ trait.name }")'>
             </trait>
             <trait nuc-if="{ trait.type } == 'checkbox'">
-                <label for="">{ trait.label }</label>
-                <input id="" type='checkbox' checked="{ trait.value }">
+                <label for="{ trait.rand }">{ trait.label }</label>
+                <input id="{ trait.rand }" type='checkbox' checked="{ trait.value }" onclick='editor.traitCheckHandler(event, "{ trait.name }", ["{ trait.valueTrue }", "{ trait.valueFalse }"])'>
             </trait>
             <trait nuc-if="{ trait.type } == 'color'" style="border-radius: 100%">
-                <label for="">{ trait.label }</label>
-                <input id="" type='color' value="{ trait.value }">
+                <label for="{ trait.rand }">{ trait.label }</label>
+                <input id="{ trait.rand }" type='color' value="{ trait.value }" oninput='editor.traitChangeHandler(event, "{ trait.name }")'>
             </trait>
             <trait nuc-if="{ trait.type } == 'select'">
-                <label for="">{ trait.label }</label>
-                <select id="" value="{ trait.value }">
+                <label for="{ trait.rand }">{ trait.label }</label>
+                <select id="{ trait.rand }" value="{ trait.value }">
                     <nuc-for option in trait.options>
                         <option value="">{ option.name }</option>
                     </nuc-for>

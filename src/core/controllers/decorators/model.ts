@@ -8,7 +8,7 @@ export function ModelEventHandler(model: string, event: string, cb: (comp: Compo
                 super();
                 (this as any).on("instance::created", (_this: ComponentInstance) => {
                     let comp = _this.getCompByModel(model);
-                    ("classList" in comp) ?
+                    (comp instanceof HTMLElement) ?
                         _this.addElementEventHandler(model, event, cb) :
                         (comp as ComponentInstance)?.on(event, () => { cb.call(_this, comp) });
                 });

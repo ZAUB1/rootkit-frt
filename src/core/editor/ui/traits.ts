@@ -29,6 +29,7 @@ export default class EditorTraits {
         this.menu.setVar("traits", traits.map((trait: Trait) => {
             return {
                 ...trait,
+                rand: genRandId(10),
                 value: this._editor.selectedComp.vars[trait.name]
             }
         }));

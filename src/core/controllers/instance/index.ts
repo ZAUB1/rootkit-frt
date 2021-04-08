@@ -100,7 +100,6 @@ export class ComponentInstance extends EventEmitter {
                         comp.vars = _ite;
                         iterator ? comp.vars[iterator.split("[")[1].split("]")[0]] = pos++ : void 0;
                         comp.rebuildContent();
-                        console.log(comp.content);
                         res += comp.content;
                     }
                     child.outerHTML = res;
