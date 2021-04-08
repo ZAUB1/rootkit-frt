@@ -172,7 +172,7 @@ class ComponentInstance {
 
     public appened: boolean = false;
 
-    public rebuildContent();
+    public rebuild();
     public render();
     public renderTo(comp: ComponentInstance): void;
     public renderTo(container: HTMLElement): void;

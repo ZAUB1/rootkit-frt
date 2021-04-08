@@ -1,21 +1,13 @@
 import Router from "&/core/router";
 import Controller from "&/core/controllers";
-import { parseStyle } from "&/core/style";
 import EventEmitter, { COMP_EVENTS } from "&/core/etc/events";
 
-import { Component } from "../component";
-import { camelToSnake } from "&/core/etc/str";
+import type { Component } from "../component";
+
+import ComponentDOM from "./dom";
+import ComponentCompiler from "./compiler";
 
 const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
-const SPE_OPERAT = [ "for", "if" ];
-
-const parseBool = (str: string) => {
-    if (str == "true")
-        return true;
-    if (str == "false")
-        return false;
-    return str;
-};
 
 export class ComponentInstance extends EventEmitter {
     public id: string;
@@ -25,8 +17,8 @@ export class ComponentInstance extends EventEmitter {
     public model: string;
 
     public vars: any = {};
-    private style: any = {};
-    private baseContent: string;
+    public style: any = {};
+    public baseContent: string;
 
     public DOMElem: HTMLDivElement;
     public originContainer: HTMLElement = Router.getElem();
@@ -37,8 +29,11 @@ export class ComponentInstance extends EventEmitter {
     public origin: Component;
     public parent: ComponentInstance;
     public parentOriginId: string;
-    private models: { [id: string]: ComponentInstance | HTMLElement } = {};
+    public models: { [id: string]: ComponentInstance | HTMLElement } = {};
     private modelElementsHandlers: { model: string, event: string, cb: (comp: ComponentInstance | HTMLElement) => void }[] = [];
+
+    private dom: ComponentDOM;
+    private compiler: ComponentCompiler;
 
     private elementEventHandler(model: string, event: string, cb: (comp: ComponentInstance | HTMLElement) => void) {
         const elem = this.getCompByModel(model) as HTMLElement;
@@ -59,145 +54,17 @@ export class ComponentInstance extends EventEmitter {
             this.DOMElem.addEventListener(eventName, (ev) => { this.emitEventListener(eventName, ev) });
     };
 
-    private replaceStrByVar(str: string) {
-        return str.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => {
-            const save = sub.toString();
-            sub = sub.split("{")[1].split("}")[0].replace(/\s/g, "");
-            if (this.vars[sub] != undefined)
-                return this.vars[sub];
-            return save;
-        });
-    }
-
-    private replaceCssByVar(str: string) {
-        return str.replace(/\{ (.*?) \}/g, (sub: string, ...args: any[]): any => {
-            const save = sub.toString();
-            sub = sub.split("{")[1].split("}")[0].replace(/\s/g, "");
-            if (this.vars[sub] != undefined)
-                return this.vars[sub];
-            return save;
-        });
-    }
-
-    private spawnSubComps(el: HTMLElement): void {
-        const rmPool: HTMLElement[] = [];
-        const tagNames = Object.keys(Controller.components).map(tag => tag.toLowerCase());
-        for (const child of el.children as any) {
-            // Special components for loops and conditions handling
-            const opName = child.nodeName.toLowerCase().split("nuc-")[1];
-            if (SPE_OPERAT.includes(opName)) {
-                if (opName == "for") {
-                    const [ite, _, array, iterator] = Object.values(child.attributes).map((val: Attr) => val.name);
-                    if (!this.vars[array])
-                        continue;
-                    let pos = 0;
-                    let res = "";
-                    const baseContent = child.innerHTML as string;
-                    for (const _ite of this.vars[array]) {
-                        const comp = new Component("",
-                            baseContent.replace(/\{ (.*?) \}|\{(.*?)\}/g, (sub: string, ...args: any[]): any => sub.replace(new RegExp(`${ite}.`, "g"), "")),
-                            { hideFromStack: true }).create();
-                        comp.vars = _ite;
-                        iterator ? comp.vars[iterator.split("[")[1].split("]")[0]] = pos++ : void 0;
-                        comp.rebuildContent();
-                        res += comp.content;
-                    }
-                    child.outerHTML = res;
-                }
-                continue;
-            }
-
-            const rmChild = () => {
-                child.innerHTML = "";
-                rmPool.push(child);
-            };
-
-            // If cond
-            const ifCond = child.attributes.getNamedItem("nuc-if");
-            if (ifCond) {
-                let [ val, operator, comparaison ] = ifCond.value.split(" ");
-                val = val.replace(/['"]+/g, '');
-                comparaison = comparaison.replace(/['"]+/g, '');
-                (parseFloat(val)) ? val = parseFloat(val) : void 0;
-                (parseFloat(comparaison)) ? comparaison = parseFloat(comparaison) : void 0;
-                val = parseBool(val);
-                comparaison = parseBool(comparaison);
-                (this.vars[val]) ? val = this.vars[val] : void 0;
-                (this.vars[comparaison]) ? comparaison = this.vars[comparaison] : void 0;
-                switch (operator) {
-                    case "==":
-                        if (val != comparaison) { rmChild(); continue; }
-                        break;
-                    case "!=":
-                        if (val == comparaison) { rmChild(); continue; };
-                        break;
-                }
-            }
-
-            // Is tag a component ?
-            if (!tagNames.includes(child.nodeName.toLowerCase())) {
-                const model = child.attributes.getNamedItem("nuc-model")?.value;
-                (model) ? this.models[model] = child as HTMLElement : void 0;
-
-                this.spawnSubComps(child as HTMLElement);
-                continue;
-            }
-
-            // Create component
-            const nodeName = child.nodeName.toLowerCase();
-            const comp: Component = Controller.components[`${nodeName.charAt(0).toUpperCase()}${nodeName.slice(1, nodeName.length)}`];
-            const compInstance = comp.create();
-
-            // Look for model
-            compInstance.model = child.attributes.getNamedItem("nuc-model")?.value;
-            compInstance.model ? this.models[compInstance.model] = compInstance : void 0;
-
-            // Look for default vars
-            const keys = Object.keys(compInstance.vars);
-            for (const key of keys) {
-                const childVal = child.attributes.getNamedItem(camelToSnake(key));
-                if (!childVal)
-                    continue;
-                compInstance.vars[key] = childVal.value;
-            }
-
-            // Saving parent
-            compInstance.parent = this;
-            compInstance.parentOriginId = this.id;
-            compInstance.rebuild();
-            compInstance.renderTo(child as HTMLElement);
-            this.spawnSubComps(compInstance.DOMElem);
-        }
-        for (const elem of rmPool)
-            elem.remove();
-    };
-
     public rebuild() {
-        let style = "<style>"
-        style += (this.baseContent.match(/<style>(.|\n)*?<\/style>/)) ? this.baseContent.match(/<style>(.|\n)*?<\/style>/)[0]?.split("<style>")[1]?.split("</style>")[0] : "";
-        style = this.replaceCssByVar(style);
-        style += (this.style) ? this.replaceCssByVar(parseStyle(this.style)) : "";
-        style += "</style>"
-        style = (style || "").replace(/(\.([a-zA-Z_-]{1}[\w-_]+))/g, (sub: string, ..._): any => {
-            return `#${this.DOMElem.id} ${sub}`;
-        });
-        this.content = (style || "") + this.replaceStrByVar(this.baseContent);
-        this.DOMElem.innerHTML = this.content;
-
-        this.parseChildren(this.DOMElem);
-    };
-
-    public rebuildContent() {
         console.time(`build-${this.id}${this.label ? ' (' + this.label + ')' : ''}`);
         // Parse style from inner body
-        this.rebuild();
-        this.spawnSubComps(this.DOMElem);
+        this.compiler.rebuild();
+        this.dom.spawnSubComps(this.DOMElem);
         this.regenEventHandlers();
         this.origin.buildHandler ? this.origin.buildHandler(this) : void 0;
         console.timeEnd(`build-${this.id}${this.label ? ' (' + this.label + ')' : ''}`);
     };
 
-    private parseChildren(elem: any) {
+    public parseChildren(elem: any) {
         if (!elem.children.length)
             this.childrens.push(elem);
         for (let i = 0; i < elem.children.length; i++) {
@@ -245,7 +112,7 @@ export class ComponentInstance extends EventEmitter {
 
     public setVar(key: string, value: any) {
         this.setVarNoBuild(key, value);
-        this.rebuildContent();
+        this.rebuild();
     };
 
     public getChilds(key: string = "*") {
@@ -289,6 +156,11 @@ export class ComponentInstance extends EventEmitter {
 
     public constructor(label: string, content: string, element: any, { style, vars = [], origin }: any) {
         super();
+
+        // Initiate subs
+        this.dom = new ComponentDOM(this);
+        this.compiler = new ComponentCompiler(this);
+
         this.label = label;
         this.content = content;
         this.baseContent = content as string;
@@ -298,6 +170,6 @@ export class ComponentInstance extends EventEmitter {
         this.DOMElem = element;
         this.id = this.DOMElem.id;
         this.origin = origin;
-        this.rebuildContent();
+        this.rebuild();
     };
 };

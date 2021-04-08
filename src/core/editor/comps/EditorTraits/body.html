@@ -22,11 +22,11 @@
             </div>
             <div class="trait" nuc-if="{ trait.type } == 'select'">
                 <label class="label" for="{ trait.rand }">{ trait.label }</label>
-                <!-- <select id="{ trait.rand }" value="{ trait.value }">
+                <select id="{ trait.rand }" value="{ trait.value }">
                     <nuc-for option in trait.options>
                         <option value="">{ option.name }</option>
                     </nuc-for>
-                </select> -->
+                </select>
             </div>
         </nuc-for>
     </div>
