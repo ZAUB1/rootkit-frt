@@ -1,13 +1,11 @@
 import Router from "&/core/router";
-import Controller from "&/core/controllers";
 import EventEmitter, { COMP_EVENTS } from "&/core/etc/events";
 
 import type { Component } from "../component";
 
 import ComponentDOM from "./dom";
+import ComponentEvents from "./events";
 import ComponentCompiler from "./compiler";
-
-const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
 
 export class ComponentInstance extends EventEmitter {
     public id: string;
@@ -30,36 +28,17 @@ export class ComponentInstance extends EventEmitter {
     public parent: ComponentInstance;
     public parentOriginId: string;
     public models: { [id: string]: ComponentInstance | HTMLElement } = {};
-    private modelElementsHandlers: { model: string, event: string, cb: (comp: ComponentInstance | HTMLElement) => void }[] = [];
 
     private dom: ComponentDOM;
+    public events: ComponentEvents;
     private compiler: ComponentCompiler;
-
-    private elementEventHandler(model: string, event: string, cb: (comp: ComponentInstance | HTMLElement) => void) {
-        const elem = this.getCompByModel(model) as HTMLElement;
-        if (!elem)
-            return console.error("Element not found with model:", model);
-        elem.addEventListener(event, () => { cb.call(this, elem) });
-    };
-
-    public addElementEventHandler(model: string, event: string, cb: (comp: ComponentInstance | HTMLElement) => void) {
-        this.modelElementsHandlers.push({ model, event, cb });
-        this.elementEventHandler(model, event, cb);
-    };
-
-    private regenEventHandlers() {
-        for (const modelElem of this.modelElementsHandlers)
-            this.elementEventHandler(modelElem.model, modelElem.event, modelElem.cb);
-        for (const eventName of DOM_EVENTS)
-            this.DOMElem.addEventListener(eventName, (ev) => { this.emitEventListener(eventName, ev) });
-    };
 
     public rebuild() {
         console.time(`build-${this.id}${this.label ? ' (' + this.label + ')' : ''}`);
         // Parse style from inner body
         this.compiler.rebuild();
         this.dom.spawnSubComps(this.DOMElem);
-        this.regenEventHandlers();
+        this.events.regenEventHandlers();
         this.origin.buildHandler ? this.origin.buildHandler(this) : void 0;
         console.timeEnd(`build-${this.id}${this.label ? ' (' + this.label + ')' : ''}`);
     };
@@ -136,14 +115,6 @@ export class ComponentInstance extends EventEmitter {
         return this.getChilds(key)[0];
     }
 
-    private emitEventListener(event: string, ..._: any) {
-        this.emit(event, ..._);
-        Controller?.componentHandlers
-        && Controller?.componentHandlers[this.label]
-        && Controller.componentHandlers[this.label][event] 
-            ? Controller.componentHandlers[this.label][event](this, ..._) : void 0;
-    }
-
     public setChildsAttrs(el: HTMLElement, prop: string, value: string) {
         if (!el)
             return;
@@ -159,6 +130,7 @@ export class ComponentInstance extends EventEmitter {
 
         // Initiate subs
         this.dom = new ComponentDOM(this);
+        this.events = new ComponentEvents(this);
         this.compiler = new ComponentCompiler(this);
 
         this.label = label;
