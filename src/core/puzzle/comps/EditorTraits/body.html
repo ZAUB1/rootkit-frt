@@ -14,7 +14,7 @@
             </div>
             <div class="trait" nuc-if="{ trait.type } == 'checkbox'">
                 <label class="label" for="{ trait.rand }">{ trait.label }</label>
-                <input class="input-field" id="{ trait.rand }" type='checkbox' checked="{ trait.value }" onclick='editor.traitCheckHandler(event, "{ trait.name }", ["{ trait.valueTrue }", "{ trait.valueFalse }"])'>
+                <Switch onclick='editor.traitCheckHandler(event, "{ trait.name }", ["{ trait.valueTrue }", "{ trait.valueFalse }"])'></Switch>
             </div>
             <div class="trait" nuc-if="{ trait.type } == 'color'" style="border-radius: 100%">
                 <label class="label" for="{ trait.rand }">{ trait.label }</label>

@@ -9,7 +9,7 @@ import { ModelEventHandler } from "&/core/nucleus/decorators/model";
     traits: []
 })
 @ModelEventHandler("mainContainer", "click", function(model: HTMLElement, event: any) {
-    const target = model;
+    /* const target = model;
     if (this.getVar("isUp"))
         return;
     //event.preventDefault();
@@ -31,7 +31,7 @@ import { ModelEventHandler } from "&/core/nucleus/decorators/model";
     window.addEventListener("mousemove", mouseMove);
     window.addEventListener("mouseup", mouseUp);
     document.body.style.cursor = "move";
-    this.setVarNoBuild("isUp", true);
+    this.setVarNoBuild("isUp", true); */
 })
 class EditorTraits extends NucleusComponent {
     constructor() {
