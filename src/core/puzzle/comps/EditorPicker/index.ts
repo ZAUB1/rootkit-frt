@@ -1,7 +1,7 @@
 import "./style.scss";
 import body from "./body.html";
 
-import * as Editor from "&/core/editor";
+import * as Editor from "&/core/puzzle";
 import * as Nucleus from "&/core/nucleus/component";
 import { ModelEventHandler } from "&/core/nucleus/decorators/model";
 import { Vars } from "&/core/nucleus/decorators/component";

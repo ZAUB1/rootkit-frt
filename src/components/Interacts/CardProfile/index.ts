@@ -2,7 +2,7 @@ import body from "./body.html";
 
 import { NucleusComponent } from "../../../core/nucleus/component";
 import { Vars } from "../../../core/nucleus/decorators/component";
-import { Category, Icon, Traits } from "../../../core/editor/decorators";
+import { Category, Icon, Traits } from "../../../core/puzzle/decorators";
 
 @Vars({
     fullname: "Lara Win",

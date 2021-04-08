@@ -4,7 +4,7 @@ import { genRandId } from "&/core/nucleus/etc/rand";
 
 import TraitsComp from "../comps/EditorTraits";
 import type { NucleusInstance } from "&/core/nucleus/instance";
-import type { Trait } from "&/core/editor/decorators";
+import type { Trait } from "&/core/puzzle/decorators";
 
 export default class EditorTraits {
     private _editor: Editor;

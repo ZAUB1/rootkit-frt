@@ -2,7 +2,7 @@ import body from "./body.html";
 import style from "./style";
 
 import { NucleusComponent } from "../../../core/nucleus/component";
-import { Category, Icon } from "../../../core/editor/decorators";
+import { Category, Icon } from "../../../core/puzzle/decorators";
 import { ModelEventHandler } from "&/core/nucleus/decorators/model";
 
 @Category("Interacts")

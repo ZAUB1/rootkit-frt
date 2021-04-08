@@ -4,7 +4,7 @@ import { NucleusComponent, NucleusInstance } from "../../../core/nucleus/compone
 
 import { Vars } from "../../../core/nucleus/decorators/component";
 import { ModelEventHandler } from "../../../core/nucleus/decorators/model";
-import { Traits, Category, Icon } from "../../../core/editor/decorators";
+import { Traits, Category, Icon } from "../../../core/puzzle/decorators";
 
 import Notification from "../../Overlays/Notification";
 

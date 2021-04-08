@@ -1,6 +1,6 @@
 import body from "./body.html";
 import { NucleusComponent } from "&/core/nucleus/component";
-import { Category } from "&/core/editor/decorators";
+import { Category } from "&/core/puzzle/decorators";
 
 @Category("Interacts")
 class Switch extends NucleusComponent {

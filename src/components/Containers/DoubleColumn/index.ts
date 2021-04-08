@@ -3,7 +3,7 @@ import style from "../SimpleColumn/style";
 
 import { NucleusComponent } from "../../../core/nucleus/component";
 import { Vars } from "../../../core/nucleus/decorators/component";
-import { Category, Icon, Traits } from "../../../core/editor/decorators";
+import { Category, Icon, Traits } from "../../../core/puzzle/decorators";
 import { traits, vars } from "../SimpleColumn";
 
 @Category("Containers")

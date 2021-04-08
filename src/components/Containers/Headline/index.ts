@@ -2,9 +2,9 @@ import body from "./body.html";
 import style from "./style";
 
 import { NucleusComponent } from "../../../core/nucleus/component";
-import { Icon, Trait } from "../../../core/editor/decorators";
+import { Icon, Trait } from "../../../core/puzzle/decorators";
 import { Vars } from "../../../core/nucleus/decorators/component";
-import { Category, Traits } from "../../../core/editor/decorators";
+import { Category, Traits } from "../../../core/puzzle/decorators";
 
 @Category("Containers")
 @Icon("fas fa-box")

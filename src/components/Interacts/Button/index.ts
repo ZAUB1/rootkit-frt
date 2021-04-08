@@ -3,7 +3,7 @@ import style from "./style";
 
 import { NucleusComponent, NucleusInstance } from "../../../core/nucleus/component";
 import { Vars, Click } from "../../../core/nucleus/decorators/component";
-import { Icon, Category, Traits } from "../../../core/editor/decorators";
+import { Icon, Category, Traits } from "../../../core/puzzle/decorators";
 
 @Vars({
     body: "Text...",

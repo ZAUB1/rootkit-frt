@@ -3,7 +3,7 @@ import body from "./body.html";
 
 import { NucleusComponent } from "../../../core/nucleus/component";
 import type { NucleusInstance } from "../../../core/nucleus/component";
-import { Category, Icon } from "../../../core/editor/decorators";
+import { Category, Icon } from "../../../core/puzzle/decorators";
 import { ModelEventHandler } from "../../../core/nucleus/decorators/model";
 
 import ModalContent from "../../Overlays/ModalContent";

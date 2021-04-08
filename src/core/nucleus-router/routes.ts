@@ -11,7 +11,7 @@ const routes: Array<Route> = [{
     name: "Editor",
     path: "/editor",
     componentLoad: async (): Promise<NucleusInstance> => {
-        return (await import("../editor")).Instance.editorComp;
+        return (await import("../puzzle")).Instance.editorComp;
     }
 }];
 

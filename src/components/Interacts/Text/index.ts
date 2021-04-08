@@ -2,7 +2,7 @@ import body from "./body.html";
 
 import { NucleusComponent } from "../../../core/nucleus/component";
 import { Vars } from "../../../core/nucleus/decorators/component";
-import { Traits, Category, Icon } from "../../../core/editor/decorators";
+import { Traits, Category, Icon } from "../../../core/puzzle/decorators";
 
 @Vars({
     weight: "normal",
