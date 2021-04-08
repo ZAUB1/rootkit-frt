@@ -32,81 +32,8 @@ export default class EditorTraits {
                 value: this._editor.selectedComp.vars[trait.name]
             }
         }));
+        this.menu.setChildsAttrs(this.menu.DOMElem, "editor", "true");
         this.menu.render();
-
-        /* const traitsMenu = document.getElementsByTagName("editor-traitmenu")[0] as HTMLElement;
-        const traitsBody = document.getElementById("component-traits");
-        if (!traits || !traits.length)
-            return;
-        traitsBody.innerHTML = `
-            <!--<span editor>Component ID: #${(this._editor.selectedElem.parentNode as HTMLElement).id}</span>
-            <span editor>Component type: ${this._editor.selectedComp.label}</span>!-->
-            ${(() => {
-                if (!traits)
-                    return "";
-                let traitElems = "";
-                for (const trait of traits as any[]) {
-                    const traitId = genRandId(10);
-                    switch (trait.type) {
-                        case "text":
-                            traitElems += `
-                                <trait>
-                                    <label editor for="${traitId}">${trait.label}</label>
-                                    <input editor id="${traitId}" type='text' onkeydown='editor.traitKeyHandler(event, "${trait.name}")' value="${this._editor.selectedComp.getVar(trait.name)}">
-                                </trait>
-                            `;
-                            break;
-                        case "number":
-                            traitElems += `
-                                <trait>
-                                    <label editor for="${traitId}">${trait.label}</label>
-                                    <input editor id="${traitId}" type='number' onkeydown='editor.traitKeyHandler(event, "${trait.name}")' onchange='editor.traitChangeHandler(event, "${trait.name}")' value="${this._editor.selectedComp.getVar(trait.name)}">
-                                </trait>
-                            `;
-                            break;
-                        case "checkbox":
-                            traitElems += `
-                                <trait>
-                                    <label editor for="${traitId}">${trait.label}</label>
-                                    <input editor id="${traitId}" type='checkbox' onclick='editor.traitCheckHandler(event, "${trait.name}", ["${trait.valueTrue}", "${trait.valueFalse}"])' value="${this._editor.selectedComp.getVar(trait.name)}">
-                                </trait>
-                            `;
-                            break;
-                        case "color":
-                            traitElems += `
-                                <trait style="border-radius: 100%">
-                                    <label editor for="${traitId}">${trait.label}</label>
-                                    <input editor id="${traitId}" type='color' oninput='editor.traitChangeHandler(event, "${trait.name}")'>
-                                </trait>
-                            `;
-                            break;
-                        case "select":
-                            traitElems += `
-                                <trait>
-                                    <label editor for="${traitId}">${trait.label}</label>
-                                    <select editor id="${traitId}" onchange='editor.traitChangeHandler(event, "${trait.name}")' value="${this._editor.selectedComp.getVar(trait.name)}">>
-                                        ${(() => {
-                                            let selectOptions = "";
-                                            for (const option of trait.options)
-                                                selectOptions += `<option editor value="${option.id}">${option.name}</option>`;
-                                            return selectOptions;
-                                        })()}
-                                    </select>
-                                </trait>
-                            `;
-                            break;
-                    }
-                }
-                return traitElems;
-            })()}
-        `;
-        traitsMenu.style.display = "block";
-        setTimeout(() => {
-            traitsMenu.style.opacity = "1";
-        }, 20);
-
-        // Handler for menu moving
-        traitsMenu.addEventListener("mousedown", this.traitMenuClickHandler); */
     };
 
     public hideTraitsMenu() {
