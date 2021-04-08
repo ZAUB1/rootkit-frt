@@ -35,34 +35,3 @@
         </nav-connect>
     </nav-container>
 </nav>
-
-
-
-    <editor-traitmenu>
-        <header>
-            <div style="position: absolute; right: 15px; cursor: pointer" onclick="window.editor.closeTraitMenu()">&#10005</div>
-        </header>
-        <traits id="component-traits"></traits>
-    </editor-traitmenu>
-
-<script>
-    /* When the user clicks on the button, 
-    toggle between hiding and showing the dropdown content */
-    function myFunction() {
-      document.getElementById("myDropdown").classList.toggle("show");
-    }
-    
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function(event) {
-      if (!event.target.matches('.dropbtn')) {
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        var i;
-        for (i = 0; i < dropdowns.length; i++) {
-          var openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-          }
-        }
-      }
-    }
-</script>

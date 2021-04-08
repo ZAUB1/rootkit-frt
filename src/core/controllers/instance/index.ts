@@ -9,6 +9,14 @@ import { camelToSnake } from "&/core/etc/str";
 const DOM_EVENTS = [ "click", "mouseover", "contextmenu" ];
 const SPE_OPERAT = [ "for", "if" ];
 
+const parseBool = (str: string) => {
+    if (str == "true")
+        return true;
+    if (str == "false")
+        return false;
+    return str;
+};
+
 export class ComponentInstance extends EventEmitter {
     public id: string;
     public label: string;
@@ -72,6 +80,7 @@ export class ComponentInstance extends EventEmitter {
     }
 
     private spawnSubComps(el: HTMLElement): void {
+        const rmPool: HTMLElement[] = [];
         const tagNames = Object.keys(Controller.components).map(tag => tag.toLowerCase());
         for (const child of el.children as any) {
             // Special components for loops and conditions handling
@@ -91,11 +100,39 @@ export class ComponentInstance extends EventEmitter {
                         comp.vars = _ite;
                         iterator ? comp.vars[iterator.split("[")[1].split("]")[0]] = pos++ : void 0;
                         comp.rebuildContent();
+                        console.log(comp.content);
                         res += comp.content;
                     }
                     child.outerHTML = res;
                 }
                 continue;
+            }
+
+            const rmChild = () => {
+                child.innerHTML = "";
+                rmPool.push(child);
+            };
+
+            // If cond
+            const ifCond = child.attributes.getNamedItem("nuc-if");
+            if (ifCond) {
+                let [ val, operator, comparaison ] = ifCond.value.split(" ");
+                val = val.replace(/['"]+/g, '');
+                comparaison = comparaison.replace(/['"]+/g, '');
+                (parseFloat(val)) ? val = parseFloat(val) : void 0;
+                (parseFloat(comparaison)) ? comparaison = parseFloat(comparaison) : void 0;
+                val = parseBool(val);
+                comparaison = parseBool(comparaison);
+                (this.vars[val]) ? val = this.vars[val] : void 0;
+                (this.vars[comparaison]) ? comparaison = this.vars[comparaison] : void 0;
+                switch (operator) {
+                    case "==":
+                        if (val != comparaison) { rmChild(); continue; }
+                        break;
+                    case "!=":
+                        if (val == comparaison) { rmChild(); continue; };
+                        break;
+                }
             }
 
             // Is tag a component ?
@@ -132,6 +169,8 @@ export class ComponentInstance extends EventEmitter {
             compInstance.renderTo(child as HTMLElement);
             this.spawnSubComps(compInstance.DOMElem);
         }
+        for (const elem of rmPool)
+            elem.remove();
     };
 
     public rebuild() {
@@ -150,11 +189,13 @@ export class ComponentInstance extends EventEmitter {
     };
 
     public rebuildContent() {
+        console.time(`build-${this.id}${this.label ? ' (' + this.label + ')' : ''}`);
         // Parse style from inner body
         this.rebuild();
         this.spawnSubComps(this.DOMElem);
         this.regenEventHandlers();
         this.origin.buildHandler ? this.origin.buildHandler(this) : void 0;
+        console.timeEnd(`build-${this.id}${this.label ? ' (' + this.label + ')' : ''}`);
     };
 
     private parseChildren(elem: any) {
